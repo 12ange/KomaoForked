@@ -1,6 +1,7 @@
 
-
 $(function(){
+	//non-jQuery-JSer 向け覚え書き：ここは DOMContentLoaded の時に処理される
+
 	//プレローディング
 	preLoading();
 
@@ -194,7 +195,7 @@ function preLoading(){
 	//駒
 	//表
 	for(var i=1; i<=8; i++){
-		for(var j=1; j<=2; j++){
+		for(var j=0; j<2; j++){
 			$("<img>")
 			.attr("src","komaImage/" + j + "0" + i + ".png");
 		}
@@ -202,7 +203,7 @@ function preLoading(){
 	//裏
 	var uraNum = [1,2,3,4,6,7];
 	for(var i=0; i<6; i++){
-		for(var j=1; j<=2; j++){
+		for(var j=0; j<2; j++){
 			$("<img>")
 			.attr("src","komaImage/" + j + "1" + uraNum[i] + ".png");
 		}
