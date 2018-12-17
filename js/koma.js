@@ -1,28 +1,27 @@
 
-
 function Koma(idNum,suji,dan,kind,sengo,use){
 	//駒コンストラクタ
-	this.pos = 16 * suji + dan;//位置//持ち駒は-1
-	this.kind = kind;
-	this.isNari = 0;//0:生, 1:成
-	this.isMochi = 0;//0:盤上, 1:持ち
-	this.sengo = sengo;//0:先手, 1:後手
-	this.idNum = idNum;//駒のid番号
-	this.isUse = use;//この駒を使うかどうか
+	this.pos = 16 * suji + dan; //位置・持ち駒は-1
+	this.kind = kind;           //[1..8]=[歩,香,桂,銀,金,角,飛,玉]
+	this.isNari = 0;            //0:生, 1:成
+	this.isMochi = 0;           //0:盤上, 1:持ち
+	this.sengo = sengo;         //0:先手, 1:後手
+	this.idNum = idNum;         //駒のid番号
+	this.isUse = use;           //この駒を使うかどうか
 }
 
 function initialKoma(){
 	//駒初期化
-	koma[0] = new Koma(0,1,7,1,0,1);
-	koma[1] = new Koma(1,2,7,1,0,1);
-	koma[2] = new Koma(2,3,7,1,0,1);
-	koma[3] = new Koma(3,4,7,1,0,1);
-	koma[4] = new Koma(4,5,7,1,0,1);
-	koma[5] = new Koma(5,6,7,1,0,1);
-	koma[6] = new Koma(6,7,7,1,0,1);
-	koma[7] = new Koma(7,8,7,1,0,1);
-	koma[8] = new Koma(8,9,7,1,0,1);
-	koma[9] = new Koma(9,1,9,2,0,1);
+	koma[ 0] = new Koma( 0,1,7,1,0,1);
+	koma[ 1] = new Koma( 1,2,7,1,0,1);
+	koma[ 2] = new Koma( 2,3,7,1,0,1);
+	koma[ 3] = new Koma( 3,4,7,1,0,1);
+	koma[ 4] = new Koma( 4,5,7,1,0,1);
+	koma[ 5] = new Koma( 5,6,7,1,0,1);
+	koma[ 6] = new Koma( 6,7,7,1,0,1);
+	koma[ 7] = new Koma( 7,8,7,1,0,1);
+	koma[ 8] = new Koma( 8,9,7,1,0,1);
+	koma[ 9] = new Koma( 9,1,9,2,0,1);
 	koma[10] = new Koma(10,9,9,2,0,1);
 	koma[11] = new Koma(11,2,9,3,0,1);
 	koma[12] = new Koma(12,8,9,3,0,1);
@@ -60,81 +59,57 @@ function initialKoma(){
 			mochi[i][j] = 0;
 		}
 	}
-
 }
 
-function komaOtosu(removeNum){
-	//駒を落とす
+//最大値最小値の範囲に畳み込む
+function getValueMinMax(test,min,max){
+	if(test < min) return min;
+	if(max < test) return max;
+	return test;
+}
 
-	if(removeNum==0){//落とさない
-		return;
-	}else if(removeNum==2){
-		koma[37].isUse = 0;
-		koma[38].isUse = 0;
-	}else if(removeNum==4){
-		koma[37].isUse = 0;
-		koma[38].isUse = 0;
-		koma[29].isUse = 0;
-		koma[30].isUse = 0;
-	}else if(removeNum==6){
-		koma[37].isUse = 0;
-		koma[38].isUse = 0;
-		koma[29].isUse = 0;
-		koma[30].isUse = 0;
-		koma[31].isUse = 0;
-		koma[32].isUse = 0;
-	}else if(removeNum==8){
-		koma[37].isUse = 0;
-		koma[38].isUse = 0;
-		koma[29].isUse = 0;
-		koma[30].isUse = 0;
-		koma[31].isUse = 0;
-		koma[32].isUse = 0;
-		koma[33].isUse = 0;
-		koma[34].isUse = 0;
-	}else if(removeNum==10){
-		koma[37].isUse = 0;
-		koma[38].isUse = 0;
-		koma[29].isUse = 0;
-		koma[30].isUse = 0;
-		koma[31].isUse = 0;
-		koma[32].isUse = 0;
-		koma[33].isUse = 0;
-		koma[34].isUse = 0;
-		koma[35].isUse = 0;
-		koma[36].isUse = 0;
-	}
+//駒を落とす
+function komaOtosu(removeNum){
+
+	//駒落とし順 [角,飛,香L,香R,桂L,桂R,銀L,銀R,金L,金R]
+	var orderOtosuIdx = [38,37,29,30,31,32,33,34,35,36];
+
+	//引数を畳みつつ(念の為に)整数化
+	removeNum = getValueMinMax(removeNum, 0, orderOtosuIdx.length)|0;
+
+	//落とす。
+	while(removeNum>0){ koma[ orderOtosuIdx[--removeNum] ].isUse = 0; }
 }
 
 function initialState(){
 	//内部の状態の初期化
 
+	var i,suji,dan;
+
 	//idナンバー
-	for(var i=0; i<idBan.length; i++){
+	for(i=0; i<idBan.length; i++){
 		//一度全てを-1にする
 		idBan[i] = -1;
 	}
-	for(var i=0; i<koma.length; i++){
+	for(i=0; i<koma.length; i++){
 		//使う駒ならidナンバーをふる
 		if(koma[i].isUse){
 			idBan[koma[i].pos] = i;
 		}
 	}
 
-	var suji,dan;
-
 	//0空白・1先手・2後手・4壁
-	for(var i=0; i<blankBan.length; i++){
+	for(i=0; i<blankBan.length; i++){
 		//全てを壁か空白にする
-		suji = Math.floor(i / 16);
-		dan = i % 16;
+		suji = i >>> 4;
+		dan = i & 15;
 		if((1<=suji) && (suji<=9) && (1<=dan) && (dan<=9)){
 			blankBan[i] = 0;//空白
 		}else{
 			blankBan[i] = 4;//壁
 		}
 	}
-	for(var i=0; i<koma.length; i++){
+	for(i=0; i<koma.length; i++){
 		//使う駒なら先後を記録
 		if(koma[i].isUse){
 			if(koma[i].sengo==0){//先手
@@ -146,5 +121,3 @@ function initialState(){
 	}
 
 }
-
-
