@@ -326,7 +326,7 @@ function questionTextShow(){
 	.css("background-color","#aa88ff")
 	.css("width","200")
 	.css("z-index","20")
-	.click(function(){determineIsNaru(1);})
+	.click(function(){determineIsNaru(true);})
 	.appendTo("#ban");//index.htmlにあるdivのid
 
 	$("<div>")
@@ -339,7 +339,7 @@ function questionTextShow(){
 	.css("background-color","#ff88aa")
 	.css("width","200")
 	.css("z-index","20")
-	.click(function(){determineIsNaru(0);})
+	.click(function(){determineIsNaru(false);})
 	.appendTo("#ban");//index.htmlにあるdivのid
 
 	//ダイアログを消す

@@ -182,14 +182,14 @@ function toriTori(oneTe){
 	if(isTadadori(oneTe)==true){
 		return(komaValue[koma[oneTe.tottaKoma].kind]
 		+ nariValue[ koma[oneTe.tottaKoma].isNari?1:0 ]
-		+ nattaValue[oneTe.isNaru]);
+		+ nattaValue[ oneTe.isNaru?1:0 ]);
 	}
 
 	//と金と歩は取れるなら取る
 	if(isFuTori(oneTe)==true){
 		return(komaValue[koma[oneTe.tottaKoma].kind]
 		+ nariValue[ koma[oneTe.tottaKoma].isNari?1:0 ]
-		+ nattaValue[oneTe.isNaru]
+		+ nattaValue[ oneTe.isNaru?1:0 ]
 		+ fuTori);
 	}
 
@@ -198,7 +198,7 @@ function toriTori(oneTe){
 		return(komaValue[koma[oneTe.tottaKoma].kind]
 		+ nariValue[ koma[oneTe.tottaKoma].isNari?1:0 ]
 		- komaValue[koma[oneTe.id].kind]
-		+ nattaValue[oneTe.isNaru]
+		+ nattaValue[ oneTe.isNaru?1:0 ]
 		+ torikaeshiConst);
 	}
 
@@ -294,7 +294,7 @@ function isTorikaeshi(oneTe){
 
 function bonusNaru(oneTe){
 	//成るボーナス15
-	if(oneTe.isUtsu==0 && oneTe.isNaru==1){
+	if(oneTe.isUtsu==0 && oneTe.isNaru){
 		return(15);
 	}else{
 		return(0);

@@ -72,28 +72,31 @@ function isKomatoruHuman(te){
 	}
 }
 
+//成る
 function isNaruHuman(te){
-	//成る
-
-	if(te.isUtsu==0 && te.isNaru==1){
-		if(koma[idBan[te.toSuji*16+te.toDan]].kind==1){//歩
-			newText("と金にゃ　危険にゃ");
-		}else if(koma[idBan[te.toSuji*16+te.toDan]].kind==2){//香
-			newText("ああっ　成られたにゃ");
-		}else if(koma[idBan[te.toSuji*16+te.toDan]].kind==3){//桂
-			newText("ああっ　成られたにゃ");
-		}else if(koma[idBan[te.toSuji*16+te.toDan]].kind==4){//銀
-			newText("成られたにゃ");
-		}else if(koma[idBan[te.toSuji*16+te.toDan]].kind==6){//角
-			newText("馬は怖いにゃ");
-		}else if(koma[idBan[te.toSuji*16+te.toDan]].kind==7){//飛
-			newText("竜は最強にゃ");
+	if(te.isUtsu==0 && te.isNaru){
+		switch (koma[idBan[te.toSuji*16+te.toDan]].kind) {
+			case 1://歩
+				newText("と金にゃ　危険にゃ");
+				break;
+			case 2://香
+			case 3://桂
+				newText("ああっ　成られたにゃ");
+				break;
+			case 4://銀
+				newText("成られたにゃ");
+				break;
+			case 6://角
+				newText("馬は怖いにゃ");
+				break;
+			case 7://飛
+				newText("竜は最強にゃ");
+				break;
 		}
-
-		return(true);
+		return true;
+	}else{
+		return false;
 	}
-
-	return(false);
 }
 
 function isNextKomatoriHuman(te){

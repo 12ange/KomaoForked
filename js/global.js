@@ -60,7 +60,7 @@ var TSashite = function TSashite(){
 	this.tottaNari = false; //TKoma.isNariのコピー。.tottaKomaが有効なIDなら参照される
 	this.toSuji = 0;
 	this.toDan = 0;
-	this.isNaru = 0;
+	this.isNaru = false;
 	this.id = -1;
 	this.isOK = true;//合法手生成時に使用
 }

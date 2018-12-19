@@ -417,8 +417,8 @@ function numOfCandidateMove(){
 
 	//候補手との照らし合わせ
 	for(var i=0; i<candidateCount; i++){
-		if(isSameTe(te,candidateTe[i])==true){//成不成で二つある場合がある
-			if(candidateTe[i].isOK==true){//どちらかが反則の場合もある
+		if(isSameTe(te,candidateTe[i])){//成不成で二つある場合がある
+			if(candidateTe[i].isOK){//どちらかが反則の場合もある
 				numCand++;
 				te.isNaru = candidateTe[i].isNaru;//一つだけのときのために写しておく
 			}
@@ -489,7 +489,7 @@ function forwardKoma(te,teban){
 			$("#k"+komaId)
 			.css("z-index","30");
 			//成りの考慮
-			if(te.isNaru==1){
+			if(te.isNaru){
 				$("#k"+komaId)
 				.attr("src","komaImage/" + teban + 1 + koma[komaId].kind + ".png");
 			}
