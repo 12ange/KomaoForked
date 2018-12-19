@@ -285,7 +285,8 @@ function removeIllegalMove(gouhouTe,gouhouCount){
 		for(var j=0; j<gouhouForOuteCount; j++){
 			if(gouhouForOuteTe[j].tottaKoma!=-1){
 				if(koma[gouhouForOuteTe[j].tottaKoma].kind==8){//玉を取ることができるなら
-					gouhouTe[i].isOK = "王様が取られてしまうにゃ";
+					gouhouTe[i].isOK = false;
+					gouhouTe[i].strWhyNoGood = "王様が取られてしまうにゃ";
 					disCount++;
 					break;
 				}
@@ -298,43 +299,49 @@ function removeIllegalMove(gouhouTe,gouhouCount){
 	//行き所のない駒
 	var komaId,komaKind;
 	for(var i=0; i<gouhouCount; i++){
-		if(gouhouTe[i].isOK==true){
+		if(gouhouTe[i].isOK){
 			komaId = gouhouTe[i].id;
 			komaKind = koma[komaId].kind;
 			if(teban==0 && komaKind==1 &&
 			((!koma[komaId].isNari && !gouhouTe[i].isNaru) || gouhouTe[i].isUtsu==1)){//先手・歩
 				if(gouhouTe[i].toDan==1){
-					gouhouTe[i].isOK = "どこにも行けない駒になってしまうにゃ";
+					gouhouTe[i].isOK = false;
+					gouhouTe[i].strWhyNoGood = "どこにも行けない駒になってしまうにゃ";
 					disCount++;
 				}
 			}else if(teban==1 && komaKind==1 &&
 			((!koma[komaId].isNari && !gouhouTe[i].isNaru) || gouhouTe[i].isUtsu==1)){//後手・歩
 				if(gouhouTe[i].toDan==9){
-					gouhouTe[i].isOK = "どこにも行けない駒になってしまうにゃ";
+					gouhouTe[i].isOK = false;
+					gouhouTe[i].strWhyNoGood = "どこにも行けない駒になってしまうにゃ";
 					disCount++;
 				}
 			}else if(teban==0 && komaKind==2 &&
 			((!koma[komaId].isNari && !gouhouTe[i].isNaru) || gouhouTe[i].isUtsu==1)){//先手・香
 				if(gouhouTe[i].toDan==1){
-					gouhouTe[i].isOK = "どこにも行けない駒になってしまうにゃ";
+					gouhouTe[i].isOK = false;
+					gouhouTe[i].strWhyNoGood = "どこにも行けない駒になってしまうにゃ";
 					disCount++;
 				}
 			}else if(teban==1 && komaKind==2 &&
 			((!koma[komaId].isNari && !gouhouTe[i].isNaru) || gouhouTe[i].isUtsu==1)){//後手・香
 				if(gouhouTe[i].toDan==9){
-					gouhouTe[i].isOK = "どこにも行けない駒になってしまうにゃ";
+					gouhouTe[i].isOK = false;
+					gouhouTe[i].strWhyNoGood = "どこにも行けない駒になってしまうにゃ";
 					disCount++;
 				}
 			}else if(teban==0 && komaKind==3 &&
 			((!koma[komaId].isNari && !gouhouTe[i].isNaru) || gouhouTe[i].isUtsu==1)){//先手・桂
 				if(gouhouTe[i].toDan<=2){
-					gouhouTe[i].isOK = "どこにも行けない駒になってしまうにゃ";
+					gouhouTe[i].isOK = false;
+					gouhouTe[i].strWhyNoGood = "どこにも行けない駒になってしまうにゃ";
 					disCount++;
 				}
 			}else if(teban==1 && komaKind==3 &&
 			((!koma[komaId].isNari && !gouhouTe[i].isNaru) || gouhouTe[i].isUtsu==1)){//後手・桂
 				if(gouhouTe[i].toDan>=8){
-					gouhouTe[i].isOK = "どこにも行けない駒になってしまうにゃ";
+					gouhouTe[i].isOK = false;
+					gouhouTe[i].strWhyNoGood = "どこにも行けない駒になってしまうにゃ";
 					disCount++;
 				}
 			}
@@ -343,7 +350,7 @@ function removeIllegalMove(gouhouTe,gouhouCount){
 
 	//二歩
 	for(var i=0; i<gouhouCount; i++){
-		if(gouhouTe[i].isOK==true){
+		if(gouhouTe[i].isOK){
 			komaId = gouhouTe[i].id;
 			if(gouhouTe[i].isUtsu==1 && gouhouTe[i].MochiKoma==1){
 				for(var j=0; j<40; j++){
@@ -354,7 +361,8 @@ function removeIllegalMove(gouhouTe,gouhouCount){
 					&& !koma[j].isMochi
 					&& Math.floor(koma[j].pos/16)==gouhouTe[i].toSuji){
 
-						gouhouTe[i].isOK = "歩がある筋に歩は打てないにゃ";
+						gouhouTe[i].isOK = false;
+						gouhouTe[i].strWhyNoGood = "歩がある筋に歩は打てないにゃ";
 						disCount++;
 						break;
 					}
@@ -371,7 +379,7 @@ function removeIllegalMove(gouhouTe,gouhouCount){
 		gouhouForTodomeTe[i] = new TSashite();
 	}
 	for(var i=0; i<gouhouCount; i++){
-		if(gouhouTe[i].isOK==true){
+		if(gouhouTe[i].isOK){
 			if(gouhouTe[i].isUtsu==1 && gouhouTe[i].MochiKoma==1){
 				if((teban==0 && (koma[39].pos+1)==(gouhouTe[i].toSuji*16+gouhouTe[i].toDan))//先手の歩
 				|| (teban==1 && (koma[19].pos-1)==(gouhouTe[i].toSuji*16+gouhouTe[i].toDan))){//後手の歩
@@ -401,7 +409,8 @@ function removeIllegalMove(gouhouTe,gouhouCount){
 					if(teban==0){teban=1;}else{teban=0;}//手番交代
 					backwardState(gouhouTe[i],teban,utsuId);//内部で戻す
 					if(escapable==false){
-						gouhouTe[i].isOK = "歩を打って詰ましてはだめにゃ";
+						gouhouTe[i].isOK = false;
+						gouhouTe[i].strWhyNoGood = "歩を打って詰ましてはだめにゃ";
 						disCount++;
 						break;
 					}
@@ -412,11 +421,12 @@ function removeIllegalMove(gouhouTe,gouhouCount){
 
 	//金と玉は裏返らない
 	for(var i=0; i<gouhouCount; i++){
-		if(gouhouTe[i].isOK==true){
+		if(gouhouTe[i].isOK){
 			if((koma[gouhouTe[i].id].kind==5 || koma[gouhouTe[i].id].kind==8)
 			&& gouhouTe[i].isNaru
 			&& gouhouTe[i].isUtsu==0){
-				gouhouTe[i].isOK = "裏返せないにゃ";
+				gouhouTe[i].isOK = false;
+				gouhouTe[i].strWhyNoGood = "裏返せないにゃ";
 				disCount++;
 			}
 		}

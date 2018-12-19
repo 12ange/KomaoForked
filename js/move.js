@@ -399,9 +399,13 @@ function isMovable(){
 		}
 		//候補手との照らし合わせ
 		for(var i=0; i<candidateCount; i++){
-			if(isSameTe(te,candidateTe[i])==true){//成不成で二つある場合がある
-				isMovableOrImpossibleMessage = candidateTe[i].isOK;//エラーメッセージの場合も
-				if(isMovableOrImpossibleMessage==true){break;}
+			if( isSameTe(te,candidateTe[i]) ){//成不成で二つある場合がある
+				if(candidateTe[i].isOK){
+					break;
+				}else{
+					//エラーメッセージを取り出す
+					isMovableOrImpossibleMessage = candidateTe[i].strWhyNoGood;
+				}
 			}
 		}
 	}

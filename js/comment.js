@@ -37,7 +37,7 @@ function isOuteHuman(){
 	for(var i=0; i<outeTe.length; i++){outeTe[i] = new TSashite();}
 	var outeCount = makeCandidateTe(outeTe);
 	for(var i=0; i<outeCount; i++){
-		if(outeTe[i].isOK==true && outeTe[i].tottaKoma!=-1){
+		if(outeTe[i].isOK && outeTe[i].tottaKoma!=-1){
 			if(koma[outeTe[i].tottaKoma].kind==8){//玉が取れるなら
 				newText("王手されたにゃっ");
 				return(true);
@@ -108,7 +108,7 @@ function isNextKomatoriHuman(te){
 	for(var i=0; i<toruTe.length; i++){toruTe[i] = new TSashite();}
 	var toruCount = makeCandidateTe(toruTe);
 	for(var i=0; i<toruCount; i++){
-		if(toruTe[i].isOK==true &&
+		if(toruTe[i].isOK &&
 		toruTe[i].tottaKoma!=-1 &&
 		toruTe[i].fromSuji==te.toSuji &&
 		toruTe[i].fromDan==te.toDan){//動かした駒だけ
@@ -181,7 +181,7 @@ function isTokinHuman(te){
 		var toruCount = makeCandidateTe(toruTe);
 		var isTorareru = false;
 		for(var i=0; i<toruCount; i++){
-			if(toruTe[i].isOK==true && toruTe[i].tottaKoma==komaId){//取り返される
+			if(toruTe[i].isOK && toruTe[i].tottaKoma==komaId){//取り返される
 				isTorareru = true;
 				break;
 			}
@@ -210,7 +210,7 @@ function isKingUtsu(te){
 		var toruCount = makeCandidateTe(toruTe);
 		var isTorareru = false;
 		for(var i=0; i<toruCount; i++){
-			if(toruTe[i].isOK==true && toruTe[i].tottaKoma==komaId){//取り返される
+			if(toruTe[i].isOK && toruTe[i].tottaKoma==komaId){//取り返される
 				isTorareru = true;
 				break;
 			}

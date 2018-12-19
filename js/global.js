@@ -62,5 +62,6 @@ var TSashite = function TSashite(){
 	this.toDan = 0;
 	this.isNaru = false;
 	this.id = -1;
-	this.isOK = true;//合法手生成時に使用
+	this.isOK = true;       //合法手生成時に使用
+	this.strWhyNoGood = ""; //合法手生成時に使用
 }
