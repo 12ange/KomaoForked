@@ -34,7 +34,7 @@ function isOuteHuman(){
 
 	//人間の手番のまま合法手生成
 	var outeTe = Array(GouhouNum);
-	for(var i=0; i<outeTe.length; i++){outeTe[i] = new Te();}
+	for(var i=0; i<outeTe.length; i++){outeTe[i] = new TSashite();}
 	var outeCount = makeCandidateTe(outeTe);
 	for(var i=0; i<outeCount; i++){
 		if(outeTe[i].isOK==true && outeTe[i].tottaKoma!=-1){
@@ -48,42 +48,28 @@ function isOuteHuman(){
 	return(false);
 }
 
+//駒を取る
 function isKomatoruHuman(te){
-	//駒を取る
-
 	if(te.isUtsu==0 && te.tottaKoma!=-1){
-		if(koma[te.tottaKoma].kind==1 && te.tottaNari==0){//歩
-			newText("歩ならいくらでもあげるにゃ");
-		}else if(koma[te.tottaKoma].kind==2 && te.tottaNari==0){//香
-			newText("香車が取られたにゃ　微妙にショックにゃ");
-		}else if(koma[te.tottaKoma].kind==3 && te.tottaNari==0){//桂
-			newText("桂馬が取られたにゃ　困るにゃ");
-		}else if(koma[te.tottaKoma].kind==4 && te.tottaNari==0){//銀
-			newText("銀が取られたにゃ　泣きたいにゃ");
-		}else if(koma[te.tottaKoma].kind==5 && te.tottaNari==0){//金
+		if(koma[te.tottaKoma].kind==1){//歩,と
+			newText(te.tottaNari?"と金を払われたにゃ":"歩ならいくらでもあげるにゃ");
+		}else if(koma[te.tottaKoma].kind==2){//香,杏
+			newText(te.tottaNari?"成香が取られたにゃ　軽く落ち込むにゃ":"香車が取られたにゃ　微妙にショックにゃ");
+		}else if(koma[te.tottaKoma].kind==3){//桂,圭
+			newText(te.tottaNari?"成桂が取られたにゃ　気が滅入るにゃ":"桂馬が取られたにゃ　困るにゃ");
+		}else if(koma[te.tottaKoma].kind==4){//銀,全
+			newText(te.tottaNari?"成銀が取られたにゃ　きびしいにゃ":"銀が取られたにゃ　泣きたいにゃ");
+		}else if(koma[te.tottaKoma].kind==5){//金
 			newText("金が取られたにゃ　まずいにゃ");
-		}else if(koma[te.tottaKoma].kind==6 && te.tottaNari==0){//角
-			newText("角が取られたにゃ　生きた心地がしないにゃ");
-		}else if(koma[te.tottaKoma].kind==7 && te.tottaNari==0){//飛
-			newText("飛車が取られたにゃ　もうだめにゃ");
-		}else if(koma[te.tottaKoma].kind==1 && te.tottaNari==1){//と
-			newText("と金を払われたにゃ");
-		}else if(koma[te.tottaKoma].kind==2 && te.tottaNari==1){//杏
-			newText("成香が取られたにゃ　軽く落ち込むにゃ");
-		}else if(koma[te.tottaKoma].kind==3 && te.tottaNari==1){//圭
-			newText("成桂が取られたにゃ　気が滅入るにゃ");
-		}else if(koma[te.tottaKoma].kind==4 && te.tottaNari==1){//全
-			newText("成銀が取られたにゃ　きびしいにゃ");
-		}else if(koma[te.tottaKoma].kind==6 && te.tottaNari==1){//馬
-			newText("馬が取られたにゃ　もう対局をやめたいにゃ");
-		}else if(koma[te.tottaKoma].kind==7 && te.tottaNari==1){//竜
-			newText("竜が取られたにゃ　人生おわったにゃ");
+		}else if(koma[te.tottaKoma].kind==6){//角,馬
+			newText(te.tottaNari?"馬が取られたにゃ　もう対局をやめたいにゃ":"角が取られたにゃ　生きた心地がしないにゃ");
+		}else if(koma[te.tottaKoma].kind==7){//飛,竜
+			newText(te.tottaNari?"竜が取られたにゃ　人生おわったにゃ":"飛車が取られたにゃ　もうだめにゃ");
 		}
-
-		return(true);
+		return true;
+	}else{
+		return false;
 	}
-
-	return(false);
 }
 
 function isNaruHuman(te){
@@ -114,10 +100,9 @@ function isNextKomatoriHuman(te){
 	//格下の駒に当てられる
 
 	//人間の手番のまま合法手生成
-	var toruKoma = -1;
-	var toruNari = -1;
+	var toruKoma = -1, toruNari;
 	var toruTe = Array(GouhouNum);
-	for(var i=0; i<toruTe.length; i++){toruTe[i] = new Te();}
+	for(var i=0; i<toruTe.length; i++){toruTe[i] = new TSashite();}
 	var toruCount = makeCandidateTe(toruTe);
 	for(var i=0; i<toruCount; i++){
 		if(toruTe[i].isOK==true &&
@@ -134,7 +119,7 @@ function isNextKomatoriHuman(te){
 			forwardState(toruTe[i],teban,-1);//内部で進める
 			if(teban==0){teban=1;}else{teban=0;}//手番交代
 			var torikaesuTe = Array(GouhouNum);
-			for(var j=0; j<torikaesuTe.length; j++){torikaesuTe[j] = new Te();}
+			for(var j=0; j<torikaesuTe.length; j++){torikaesuTe[j] = new TSashite();}
 			var torikaesuCount = makeMoveTe(torikaesuTe);
 			var isTorikaesareru = false;
 			for(var j=0; j<torikaesuCount; j++){
@@ -154,45 +139,30 @@ function isNextKomatoriHuman(te){
 	}
 
 	if(toruKoma==-1){//当てていない
-		return(false);
+		return false;
 	}else if(toruKoma==1){//歩
-		return(false);//当てていないのと同じ
-	}else if(toruKoma==2 && toruNari==0){//香
-		newText("香車が狙われているにゃ");
-		return(true);
-	}else if(toruKoma==2 && toruNari==1){//杏
-		newText("成香が狙われているにゃ");
-		return(true);
-	}else if(toruKoma==3 && toruNari==0){//桂
-		newText("桂馬はあげたくないにゃ");
-		return(true);
-	}else if(toruKoma==3 && toruNari==1){//圭
-		newText("成桂はあげたくないにゃ");
-		return(true);
-	}else if(toruKoma==4 && toruNari==0){//銀
-		newText("銀がピンチにゃ");
-		return(true);
-	}else if(toruKoma==4 && toruNari==1){//全
-		newText("成銀がピンチにゃ");
-		return(true);
+		return false;//当てていないのと同じ
+	}else if(toruKoma==2){//香,杏
+		newText( (toruNari ? "成香" : "香車")+"が狙われているにゃ");
+		return true;
+	}else if(toruKoma==3){//桂,圭
+		newText( (toruNari ? "成桂" : "桂馬")+"はあげたくないにゃ");
+		return true;
+	}else if(toruKoma==4){//銀,全
+		newText( (toruNari ? "成銀" : "銀")+"がピンチにゃ");
+		return true;
 	}else if(toruKoma==5){//金
 		newText("金が取られそうにゃ");
-		return(true);
-	}else if(toruKoma==6 && toruNari==0){//角
-		newText("角は取らないでほしいにゃ");
-		return(true);
-	}else if(toruKoma==6 && toruNari==1){//馬
-		newText("馬は取らないでほしいにゃ");
-		return(true);
-	}else if(toruKoma==7 && toruNari==0){//飛
-		newText("飛車を取られたらおしまいにゃ");
-		return(true);
-	}else if(toruKoma==7 && toruNari==1){//竜
-		newText("竜を取られたらおしまいにゃ");
-		return(true);
+		return true;
+	}else if(toruKoma==6){//角,馬
+		newText( (toruNari ? "馬" : "角")+"は取らないでほしいにゃ");
+		return true;
+	}else if(toruKoma==7){//飛,竜
+		newText( (toruNari ? "竜" : "飛車")+"を取られたらおしまいにゃ");
+		return true;
+	}else{
+		return false;
 	}
-
-	return(false);
 }
 
 function isTokinHuman(te){
@@ -200,11 +170,11 @@ function isTokinHuman(te){
 
 	var komaId = idBan[te.toSuji*16+te.toDan];
 
-	if(koma[komaId].kind==1 && koma[komaId].isNari==0 && te.toDan<=4){//歩をあと一歩まで動かしたら
+	if(koma[komaId].kind==1 && !koma[komaId].isNari && te.toDan<=4){//歩をあと一歩まで動かしたら
 		//すぐには取られないなら
 		if(teban==0){teban=1;}else{teban=0;}//手番交代
 		var toruTe = Array(GouhouNum);
-		for(var i=0; i<toruTe.length; i++){toruTe[i] = new Te();}
+		for(var i=0; i<toruTe.length; i++){toruTe[i] = new TSashite();}
 		var toruCount = makeCandidateTe(toruTe);
 		var isTorareru = false;
 		for(var i=0; i<toruCount; i++){
@@ -233,7 +203,7 @@ function isKingUtsu(te){
 		//すぐには取られないなら
 		if(teban==0){teban=1;}else{teban=0;}//手番交代
 		var toruTe = Array(GouhouNum);
-		for(var i=0; i<toruTe.length; i++){toruTe[i] = new Te();}
+		for(var i=0; i<toruTe.length; i++){toruTe[i] = new TSashite();}
 		var toruCount = makeCandidateTe(toruTe);
 		var isTorareru = false;
 		for(var i=0; i<toruCount; i++){
@@ -264,7 +234,7 @@ function isSemaru(te){
 	var komaKind = koma[komaId].kind;
 
 	//歩なら
-	if(komaKind==1 && koma[komaId].isNari==0){
+	if(komaKind==1 && !koma[komaId].isNari){
 		var fromDanKyori = Math.abs((koma[39].pos%16) - te.fromDan);
 		var toDanKyori = Math.abs((koma[39].pos%16) - te.toDan);
 		if(fromDanKyori>toDanKyori){//せまっている
@@ -279,7 +249,7 @@ function isSemaru(te){
 	}
 
 	//桂銀金・と金・成香でなければ関係なし
-	if(komaKind>=6 || (komaKind==2 && koma[komaId].isNari==0) || (komaKind==1 && koma[komaId].isNari==0)){
+	if(komaKind>=6 || (komaKind==2 && !koma[komaId].isNari) || (komaKind==1 && !koma[komaId].isNari)){
 		return(false);
 	}
 

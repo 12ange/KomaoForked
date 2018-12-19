@@ -4,7 +4,7 @@ function initialGouhou(){
 
 	//人間の指し手のグローバル変数
 	for(var i=0; i<candidateTe.length; i++){
-		candidateTe[i] = new Te();
+		candidateTe[i] = new TSashite();
 	}
 
 }
@@ -152,8 +152,8 @@ function gouhouMove(gouhouTe,gouhouCount){
 	var forwardPos;
 
 	for(var id=0; id<40; id++){
-		if(koma[id].isMochi==0 && koma[id].sengo==teban && koma[id].isUse==1){
-			komaKind = koma[id].kind + 8 * koma[id].isNari + 16 * koma[id].sengo;
+		if(!koma[id].isMochi && koma[id].sengo==teban && koma[id].isUse){
+			komaKind = koma[id].kind + (koma[id].isNari?8:0) + 16 * koma[id].sengo;
 			//一つずつ
 			for(var d=0; d<OneStep[komaKind].length; d++){
 				forwardPos = koma[id].pos + OneStep[komaKind][d];//進む位置
@@ -165,8 +165,7 @@ function gouhouMove(gouhouTe,gouhouCount){
 					gouhouTe[gouhouCount].fromSuji = Math.floor(koma[id].pos / 16);
 					gouhouTe[gouhouCount].fromDan = koma[id].pos % 16;
 					gouhouTe[gouhouCount].tottaKoma = idBan[forwardPos];
-					gouhouTe[gouhouCount].tottaNari
-						= idBan[forwardPos]==-1 ? -1 : koma[idBan[forwardPos]].isNari;
+					gouhouTe[gouhouCount].tottaNari = idBan[forwardPos]==-1 ? -1 : (koma[idBan[forwardPos]].isNari?1:0);
 					gouhouTe[gouhouCount].toSuji = Math.floor(forwardPos / 16);
 					gouhouTe[gouhouCount].toDan = forwardPos % 16;
 					gouhouTe[gouhouCount].isNaru = 0;
@@ -174,15 +173,14 @@ function gouhouMove(gouhouTe,gouhouCount){
 					gouhouTe[gouhouCount].isOK = true;
 					gouhouCount++;
 					//成れるか？
-					if(koma[id].isNari==0 &&
+					if(!koma[id].isNari &&
 					((forwardPos%16<=3 && teban==0) || (koma[id].pos%16<=3 && teban==0)//先手番
 					|| (forwardPos%16>=7 && teban==1) || (koma[id].pos%16>=7 && teban==1))){//後手番
 						gouhouTe[gouhouCount].isUtsu = 0;
 						gouhouTe[gouhouCount].fromSuji = Math.floor(koma[id].pos / 16);
 						gouhouTe[gouhouCount].fromDan = koma[id].pos % 16;
 						gouhouTe[gouhouCount].tottaKoma = idBan[forwardPos];
-						gouhouTe[gouhouCount].tottaNari
-							= idBan[forwardPos]==-1 ? -1 : koma[idBan[forwardPos]].isNari;
+						gouhouTe[gouhouCount].tottaNari = idBan[forwardPos]==-1 ? -1 : (koma[idBan[forwardPos]].isNari?1:0);
 						gouhouTe[gouhouCount].toSuji = Math.floor(forwardPos / 16);
 						gouhouTe[gouhouCount].toDan = forwardPos % 16;
 						gouhouTe[gouhouCount].isNaru = 1;
@@ -203,8 +201,7 @@ function gouhouMove(gouhouTe,gouhouCount){
 						gouhouTe[gouhouCount].fromSuji = Math.floor(koma[id].pos / 16);
 						gouhouTe[gouhouCount].fromDan = koma[id].pos % 16;
 						gouhouTe[gouhouCount].tottaKoma = idBan[forwardPos];
-						gouhouTe[gouhouCount].tottaNari
-							= idBan[forwardPos]==-1 ? -1 : koma[idBan[forwardPos]].isNari;
+						gouhouTe[gouhouCount].tottaNari = idBan[forwardPos]==-1 ? -1 : (koma[idBan[forwardPos]].isNari?1:0);
 						gouhouTe[gouhouCount].toSuji = Math.floor(forwardPos / 16);
 						gouhouTe[gouhouCount].toDan = forwardPos % 16;
 						gouhouTe[gouhouCount].isNaru = 0;
@@ -212,15 +209,14 @@ function gouhouMove(gouhouTe,gouhouCount){
 						gouhouTe[gouhouCount].isOK = true;
 						gouhouCount++;
 						//成れるか？
-						if(koma[id].isNari==0 &&
+						if(!koma[id].isNari &&
 						((forwardPos%16<=3 && teban==0) || (koma[id].pos%16<=3 && teban==0)//先手番
 						|| (forwardPos%16>=7 && teban==1) || (koma[id].pos%16>=7 && teban==1))){//後手番
 							gouhouTe[gouhouCount].isUtsu = 0;
 							gouhouTe[gouhouCount].fromSuji = Math.floor(koma[id].pos / 16);
 							gouhouTe[gouhouCount].fromDan = koma[id].pos % 16;
 							gouhouTe[gouhouCount].tottaKoma = idBan[forwardPos];
-							gouhouTe[gouhouCount].tottaNari
-								= idBan[forwardPos]==-1 ? -1 : koma[idBan[forwardPos]].isNari;
+							gouhouTe[gouhouCount].tottaNari = idBan[forwardPos]==-1 ? -1 : (koma[idBan[forwardPos]].isNari?1:0);
 							gouhouTe[gouhouCount].toSuji = Math.floor(forwardPos / 16);
 							gouhouTe[gouhouCount].toDan = forwardPos % 16;
 							gouhouTe[gouhouCount].isNaru = 1;
@@ -234,8 +230,7 @@ function gouhouMove(gouhouTe,gouhouCount){
 						gouhouTe[gouhouCount].fromSuji = Math.floor(koma[id].pos / 16);
 						gouhouTe[gouhouCount].fromDan = koma[id].pos % 16;
 						gouhouTe[gouhouCount].tottaKoma = idBan[forwardPos];
-						gouhouTe[gouhouCount].tottaNari
-							= idBan[forwardPos]==-1 ? -1 : koma[idBan[forwardPos]].isNari;
+						gouhouTe[gouhouCount].tottaNari = idBan[forwardPos]==-1 ? -1 : (koma[idBan[forwardPos]].isNari?1:0);
 						gouhouTe[gouhouCount].toSuji = Math.floor(forwardPos / 16);
 						gouhouTe[gouhouCount].toDan = forwardPos % 16;
 						gouhouTe[gouhouCount].isNaru = 0;
@@ -243,15 +238,14 @@ function gouhouMove(gouhouTe,gouhouCount){
 						gouhouTe[gouhouCount].isOK = true;
 						gouhouCount++;
 						//成れるか？
-						if(koma[id].isNari==0 &&
+						if(!koma[id].isNari &&
 						((forwardPos%16<=3 && teban==0) || (koma[id].pos%16<=3 && teban==0)//先手番
 						|| (forwardPos%16>=7 && teban==1) || (koma[id].pos%16>=7 && teban==1))){//後手番
 							gouhouTe[gouhouCount].isUtsu = 0;
 							gouhouTe[gouhouCount].fromSuji = Math.floor(koma[id].pos / 16);
 							gouhouTe[gouhouCount].fromDan = koma[id].pos % 16;
 							gouhouTe[gouhouCount].tottaKoma = idBan[forwardPos];
-							gouhouTe[gouhouCount].tottaNari
-								= idBan[forwardPos]==-1 ? -1 : koma[idBan[forwardPos]].isNari;
+							gouhouTe[gouhouCount].tottaNari = idBan[forwardPos]==-1 ? -1 : (koma[idBan[forwardPos]].isNari?1:0);
 							gouhouTe[gouhouCount].toSuji = Math.floor(forwardPos / 16);
 							gouhouTe[gouhouCount].toDan = forwardPos % 16;
 							gouhouTe[gouhouCount].isNaru = 1;
@@ -280,7 +274,7 @@ function removeIllegalMove(gouhouTe,gouhouCount){
 	var gouhouForOuteCount;
 	var gouhouForOuteTe = Array(GouhouNum);
 	for(var i=0; i<gouhouForOuteTe.length; i++){
-		gouhouForOuteTe[i] = new Te();
+		gouhouForOuteTe[i] = new TSashite();
 	}
 	var disCount = 0;
 	for(var i=0; i<gouhouCount; i++){
@@ -308,37 +302,37 @@ function removeIllegalMove(gouhouTe,gouhouCount){
 			komaId = gouhouTe[i].id;
 			komaKind = koma[komaId].kind;
 			if(teban==0 && komaKind==1 &&
-			((koma[komaId].isNari==0 && gouhouTe[i].isNaru==0) || gouhouTe[i].isUtsu==1)){//先手・歩
+			((!koma[komaId].isNari && gouhouTe[i].isNaru==0) || gouhouTe[i].isUtsu==1)){//先手・歩
 				if(gouhouTe[i].toDan==1){
 					gouhouTe[i].isOK = "どこにも行けない駒になってしまうにゃ";
 					disCount++;
 				}
 			}else if(teban==1 && komaKind==1 &&
-			((koma[komaId].isNari==0 && gouhouTe[i].isNaru==0) || gouhouTe[i].isUtsu==1)){//後手・歩
+			((!koma[komaId].isNari && gouhouTe[i].isNaru==0) || gouhouTe[i].isUtsu==1)){//後手・歩
 				if(gouhouTe[i].toDan==9){
 					gouhouTe[i].isOK = "どこにも行けない駒になってしまうにゃ";
 					disCount++;
 				}
 			}else if(teban==0 && komaKind==2 &&
-			((koma[komaId].isNari==0 && gouhouTe[i].isNaru==0) || gouhouTe[i].isUtsu==1)){//先手・香
+			((!koma[komaId].isNari && gouhouTe[i].isNaru==0) || gouhouTe[i].isUtsu==1)){//先手・香
 				if(gouhouTe[i].toDan==1){
 					gouhouTe[i].isOK = "どこにも行けない駒になってしまうにゃ";
 					disCount++;
 				}
 			}else if(teban==1 && komaKind==2 &&
-			((koma[komaId].isNari==0 && gouhouTe[i].isNaru==0) || gouhouTe[i].isUtsu==1)){//後手・香
+			((!koma[komaId].isNari && gouhouTe[i].isNaru==0) || gouhouTe[i].isUtsu==1)){//後手・香
 				if(gouhouTe[i].toDan==9){
 					gouhouTe[i].isOK = "どこにも行けない駒になってしまうにゃ";
 					disCount++;
 				}
 			}else if(teban==0 && komaKind==3 &&
-			((koma[komaId].isNari==0 && gouhouTe[i].isNaru==0) || gouhouTe[i].isUtsu==1)){//先手・桂
+			((!koma[komaId].isNari && gouhouTe[i].isNaru==0) || gouhouTe[i].isUtsu==1)){//先手・桂
 				if(gouhouTe[i].toDan<=2){
 					gouhouTe[i].isOK = "どこにも行けない駒になってしまうにゃ";
 					disCount++;
 				}
 			}else if(teban==1 && komaKind==3 &&
-			((koma[komaId].isNari==0 && gouhouTe[i].isNaru==0) || gouhouTe[i].isUtsu==1)){//後手・桂
+			((!koma[komaId].isNari && gouhouTe[i].isNaru==0) || gouhouTe[i].isUtsu==1)){//後手・桂
 				if(gouhouTe[i].toDan>=8){
 					gouhouTe[i].isOK = "どこにも行けない駒になってしまうにゃ";
 					disCount++;
@@ -353,11 +347,11 @@ function removeIllegalMove(gouhouTe,gouhouCount){
 			komaId = gouhouTe[i].id;
 			if(gouhouTe[i].isUtsu==1 && gouhouTe[i].MochiKoma==1){
 				for(var j=0; j<40; j++){
-					if(koma[j].isUse==1
+					if(koma[j].isUse
 					&& teban==koma[j].sengo
 					&& koma[j].kind==1
-					&& koma[j].isNari==0
-					&& koma[j].isMochi==0
+					&& !koma[j].isNari
+					&& !koma[j].isMochi
 					&& Math.floor(koma[j].pos/16)==gouhouTe[i].toSuji){
 
 						gouhouTe[i].isOK = "歩がある筋に歩は打てないにゃ";
@@ -374,7 +368,7 @@ function removeIllegalMove(gouhouTe,gouhouCount){
 	var gouhouForTodomeCount;
 	var gouhouForTodomeTe = Array(GouhouNum);
 	for(var i=0; i<gouhouForTodomeTe.length; i++){
-		gouhouForTodomeTe[i] = new Te();
+		gouhouForTodomeTe[i] = new TSashite();
 	}
 	for(var i=0; i<gouhouCount; i++){
 		if(gouhouTe[i].isOK==true){
@@ -437,8 +431,8 @@ function findUtsuID(oneTe){
 	if(oneTe.isUtsu){//打つ
 		for(var id=0; id<40; id++){
 			if(koma[id].kind==oneTe.MochiKoma
-			&& koma[id].isUse==1
-			&& koma[id].isMochi==1
+			&& koma[id].isUse
+			&& koma[id].isMochi
 			&& koma[id].sengo==teban){
 
 				return(id);

@@ -2,7 +2,7 @@
 
 function initialMove(){
 	//指し手の構造体の領域を確保
-	te = new Te;
+	te = new TSashite();
 }
 
 function banClick(event,offset){
@@ -129,21 +129,6 @@ function highlightErase(){
 	//二つ必要
 	$("#highlight").remove();
 	$("#highlight").remove();
-}
-
-function Te(){
-	//指し手の構造体
-	this.isUtsu = 0;
-	this.fromSuji = 0;
-	this.fromDan = 0;
-	this.MochiKoma = 0;
-	this.tottaKoma = 0;
-	this.tottaNari = 0;
-	this.toSuji = 0;
-	this.toDan = 0;
-	this.isNaru = 0;
-	this.id = -1;
-	this.isOK = true;//合法手生成時に使用
 }
 
 function fromInput(suji,dan,errorMessage){
@@ -367,12 +352,12 @@ function toInput(suji,dan){
 
 	if(blank==0){//そこが空白なら
 		te.tottaKoma = -1;
-		te.tottaNari = -1;
+		te.tottaNari = false;
 		te.toSuji = suji;
 		te.toDan = dan;
 	}else if(te.isUtsu==0 && ((teban==0 && blank==2) || (teban==1 && blank==1))){//盤上からの相手の駒なら
 		te.tottaKoma = idBan[16*suji+dan];
-		te.tottaNari = koma[idBan[16*suji+dan]].isNari;
+		te.tottaNari = koma[te.tottaKoma].isNari;
 		te.toSuji = suji;
 		te.toDan = dan;
 	}else if(te.isUtsu==0 && dan==te.fromDan && suji==te.fromSuji){//選択した駒なら
@@ -475,7 +460,7 @@ function forwardKoma(te,teban){
 
 	if(te.isUtsu){//打つ
 		for(var i=0; i<koma.length; i++){
-			if(koma[i].isUse==1 && koma[i].sengo==teban && koma[i].isMochi==1 && koma[i].kind==te.MochiKoma){
+			if(koma[i].isUse && koma[i].sengo==teban && koma[i].isMochi && koma[i].kind==te.MochiKoma){
 				komaId = i;
 				break;
 			}
@@ -540,8 +525,8 @@ function forwardState(te,teban,utsuId){
 		toPos = 16 * te.toSuji + te.toDan;
 		//駒
 		koma[utsuId].pos = toPos;//位置//持ち駒は-1
-		koma[utsuId].isNari = 0;//0:生, 1:成
-		koma[utsuId].isMochi = 0;//0:盤上, 1:持ち
+		koma[utsuId].isNari = false;
+		koma[utsuId].isMochi = false;
 		//持ち駒
 		mochi[teban][koma[utsuId].kind]--;
 		//盤
@@ -560,7 +545,7 @@ function forwardState(te,teban,utsuId){
 		//koma変数
 		koma[komaId].pos = toPos;
 		if(te.isNaru){//成るなら
-			koma[komaId].isNari = 1;
+			koma[komaId].isNari = true;
 		}
 		//盤変数（２つ）
 		idBan[fromPos] = -1;
@@ -576,8 +561,8 @@ function forwardState(te,teban,utsuId){
 		if(te.tottaKoma!=-1){//駒を取っていれば
 			//駒
 			koma[te.tottaKoma].pos = -1;
-			koma[te.tottaKoma].isNari = 0;//0:生, 1:成
-			koma[te.tottaKoma].isMochi = 1;//0:盤上, 1:持ち
+			koma[te.tottaKoma].isNari = false;
+			koma[te.tottaKoma].isMochi = true;
 			koma[te.tottaKoma].sengo = teban;//0:先手, 1:後手
 			mochi[teban][koma[te.tottaKoma].kind]++;
 			//盤
@@ -598,8 +583,8 @@ function backwardState(te,teban,utsuId){
 		toPos = 16 * te.toSuji + te.toDan;
 		//駒
 		koma[utsuId].pos = -1;//位置//持ち駒は-1
-		koma[utsuId].isNari = 0;//0:生, 1:成
-		koma[utsuId].isMochi = 1;//0:盤上, 1:持ち
+		koma[utsuId].isNari = false;
+		koma[utsuId].isMochi = true;//盤上から持ち駒に戻すのだから
 		//持ち駒
 		mochi[teban][koma[utsuId].kind]++;
 		//盤
@@ -614,7 +599,7 @@ function backwardState(te,teban,utsuId){
 		//koma変数
 		koma[komaId].pos = fromPos;
 		if(te.isNaru){//成るなら成る前の状態に
-			koma[komaId].isNari = 0;
+			koma[komaId].isNari = false;
 		}
 		//盤変数（２つ）
 		idBan[fromPos] = komaId;
@@ -629,8 +614,8 @@ function backwardState(te,teban,utsuId){
 		if(te.tottaKoma!=-1){//駒を取っていれば
 			//駒
 			koma[te.tottaKoma].pos = toPos;
-			koma[te.tottaKoma].isNari = te.tottaNari;//0:生, 1:成
-			koma[te.tottaKoma].isMochi = 0;//0:盤上, 1:持ち
+			koma[te.tottaKoma].isNari = te.tottaNari;
+			koma[te.tottaKoma].isMochi = false;//取った駒を盤上に戻すのだから
 			koma[te.tottaKoma].sengo = (teban==0 ? 1 : 0);//0:先手, 1:後手
 			mochi[teban][koma[te.tottaKoma].kind]--;
 			//盤

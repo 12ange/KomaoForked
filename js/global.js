@@ -1,4 +1,6 @@
-//グローバル変数
+//--------------------------------------
+// グローバル変数
+//--------------------------------------
 
 //駒
 var koma = [], mochi = [[],[]];
@@ -32,3 +34,33 @@ var VERYSLOW = 800, SLOW = 600, FAST = 200;
 //指し手のボーナスを計算する割合
 var BonusRate = 0.5;
 
+//--------------------------------------
+//コンストラクタ(グローバル)
+//--------------------------------------
+
+//駒
+var TKoma = function TKoma(idNum,suji,dan,kind,sengo,use){
+	this.idNum = idNum;         //駒のid番号
+	this.pos = 16 * suji + dan; //位置・持ち駒は-1
+	this.kind = kind;           //[1..8]=[歩,香,桂,銀,金,角,飛,玉]
+	this.sengo = sengo;         //0:先手, 1:後手
+	this.isUse = !!use;         //この駒を使うかどうか
+
+	this.isNari = false;        //false:生,   true:成
+	this.isMochi = false;       //false:盤上, true:持ち
+}
+
+//指し手
+var TSashite = function TSashite(){
+	this.isUtsu = 0;
+	this.fromSuji = 0;
+	this.fromDan = 0;
+	this.MochiKoma = 0;
+	this.tottaKoma = 0; //駒IDが入る？
+	this.tottaNari = false; //TKoma.isNariのコピー。.tottaKomaが有効なIDなら参照される
+	this.toSuji = 0;
+	this.toDan = 0;
+	this.isNaru = 0;
+	this.id = -1;
+	this.isOK = true;//合法手生成時に使用
+}
