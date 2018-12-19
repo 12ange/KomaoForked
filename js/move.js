@@ -22,7 +22,7 @@ function banClick(event,offset){
 		dan = clickDan(event,offset);
 		toInput(suji,dan);
 		isMovableOrImpossibleMessage = isMovable();
-		if(isMovableOrImpossibleMessage==true){
+		if(isMovableOrImpossibleMessage===""){
 			controlPhase = 3;
 			movableNum = numOfCandidateMove();//成る場合はこの内部で代入
 			if(movableNum>=2){
@@ -374,7 +374,7 @@ function toInput(suji,dan){
 
 function isMovable(){
 	//そこに動けるか、動けないとしたらなぜか
-	//動けるときにはtrueを返す
+	//動けるときには空文字列を返す
 	//動けないときにはメッセージを返す
 	var isMovableOrImpossibleMessage;
 
@@ -401,6 +401,7 @@ function isMovable(){
 		for(var i=0; i<candidateCount; i++){
 			if( isSameTe(te,candidateTe[i]) ){//成不成で二つある場合がある
 				if(candidateTe[i].isOK){
+					isMovableOrImpossibleMessage = "";
 					break;
 				}else{
 					//エラーメッセージを取り出す
