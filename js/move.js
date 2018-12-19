@@ -378,9 +378,9 @@ function isMovable(){
 	//動けないときにはメッセージを返す
 	var isMovableOrImpossibleMessage;
 
-	//エラーメッセージなし//盤外と選択した駒
+	//盤外と選択した駒
 	if(te.tottaKoma==-2){
-		return("");
+		return("別のにするのにゃ？"); //無害なメッセージ。エラーではないものの動くわけではないので
 	}
 
 	//動けるか
