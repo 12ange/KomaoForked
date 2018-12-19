@@ -9,7 +9,7 @@ function banClick(event,offset){
 	//駒や盤をクリックしたら
 	var suji;
 	var dan;
-	var isMovableOrImpossibleMessage;
+	var messageMovableOrImpossible;
 	var movableNum;
 
 	//駒を動かす
@@ -21,8 +21,8 @@ function banClick(event,offset){
 		suji = clickSuji(event,offset);
 		dan = clickDan(event,offset);
 		toInput(suji,dan);
-		isMovableOrImpossibleMessage = isMovable();
-		if(isMovableOrImpossibleMessage===""){
+		messageMovableOrImpossible = isMovable();
+		if(messageMovableOrImpossible===""){
 			controlPhase = 3;
 			movableNum = numOfCandidateMove();//成る場合はこの内部で代入
 			if(movableNum>=2){
@@ -32,7 +32,7 @@ function banClick(event,offset){
 			}
 		}else{
 			highlightErase();//ハイライトを消す
-			newText(isMovableOrImpossibleMessage);//そこは動かせないにゃなど
+			newText(messageMovableOrImpossible);//そこは動かせないにゃなど
 			controlPhase = 1;
 		}
 	}
@@ -376,42 +376,42 @@ function isMovable(){
 	//そこに動けるか、動けないとしたらなぜか
 	//動けるときには空文字列を返す
 	//動けないときにはメッセージを返す
-	var isMovableOrImpossibleMessage;
+	var messageMovableOrImpossible;
 
 	//盤外と選択した駒
 	if(te.tottaKoma==-2){
-		return("別のにするのにゃ？"); //無害なメッセージ。エラーではないものの動くわけではないので
+		return "別のにするのにゃ？"; //無害なメッセージ。エラーではないものの動くわけではないので
 	}
 
 	//動けるか
 	if(te.toSuji<1 || 9<te.toSuji || te.toDan<1 || 9<te.toDan){//盤上の自分の駒
 		if(te.isUtsu==1){
-			isMovableOrImpossibleMessage = "そこには打てないにゃ";
+			messageMovableOrImpossible = "そこには打てないにゃ";
 		}else{
-			isMovableOrImpossibleMessage = "そこには指せないにゃ";
+			messageMovableOrImpossible = "そこには指せないにゃ";
 		}
 	}else{//盤上の空白と相手の駒
 		//デフォルトメッセージ
 		if(te.isUtsu==1){
-			isMovableOrImpossibleMessage = "そこには打てないにゃ";
+			messageMovableOrImpossible = "そこには打てないにゃ";
 		}else{
-			isMovableOrImpossibleMessage = "そこには指せないにゃ";
+			messageMovableOrImpossible = "そこには指せないにゃ";
 		}
 		//候補手との照らし合わせ
 		for(var i=0; i<candidateCount; i++){
 			if( isSameTe(te,candidateTe[i]) ){//成不成で二つある場合がある
 				if(candidateTe[i].isOK){
-					isMovableOrImpossibleMessage = "";
+					messageMovableOrImpossible = "";
 					break;
 				}else{
 					//エラーメッセージを取り出す
-					isMovableOrImpossibleMessage = candidateTe[i].strWhyNoGood;
+					messageMovableOrImpossible = candidateTe[i].strWhyNoGood;
 				}
 			}
 		}
 	}
 
-	return(isMovableOrImpossibleMessage);
+	return messageMovableOrImpossible;
 }
 
 function numOfCandidateMove(){
