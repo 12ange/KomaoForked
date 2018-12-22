@@ -5,14 +5,17 @@
 この repository "こまおForked" は、とても弱いコンピュータ将棋ソフトウェア(ウェブページ)[「こまお」][komao] を
 
 * Yahoo!ジオシティーズが終了する前に保護しておく
-  * [Yahoo!ジオシティーズ サービス終了のお知らせ](https://info-geocities.yahoo.co.jp/close/index.html)
+  * [Yahoo!ジオシティーズ サービス終了のお知らせ](https://info-geocities.yahoo.co.jp/close/index.html) - 2019年3月31日に閲覧不能になる
 * 原開発者が残したマイナーエラーを修正する
 * (棋譜出力したいけれど kif? ki2? 形式がいくつかあるらしい)
   * (叡王戦は kif で配布されているようなのでそっちがデファクトスタンダードなのかしら)
 
 ために立ち上げたものです。
 
-元のソースコードは いっくん さん ( [Twitter](https://twitter.com/ikkn), [はてなブログ](http://tihara.hateblo.jp/) ) に帰属します。
+元のソースコードは いっくん さん ( [Twitter](https://twitter.com/ikkn), [はてなブログ](http://tihara.hateblo.jp/) ← [HatenaDiary](http://d.hatena.ne.jp/tihara/) ) に帰属します。
+> HatenaDiaryは [2019年2月28日に凍結、6月30日にはてなブログへの完全移行完了を予定](http://d.hatena.ne.jp/hatenadiary/20181113/1542071987) している。この時 [はてなブログに自動移行される](http://d.hatena.ne.jp/hatenadiary/20181004/1538636539) とはあるものの、既にはてなブログを開設しているアカウントにHatenaDiary記事が合流されるのかは不明。
+
+> HatenaDiary の前に Google+ で日記を残していたらしいがリンク切れ (かつ、こちらも2019年4月に個人向けサービス終了予定)
 
 ----
 
