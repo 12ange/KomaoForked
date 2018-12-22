@@ -1,20 +1,25 @@
 
+//手番交代
+function switchTeban(){
+	teban = (teban==0)? 1 : 0;
+}
 
+//コンピュータの番
 function aiMove(){
-	//コンピュータの番
 
 	//人間の手へのリアクション
 	reactForHumanTe(te);
 
 	//コンピュータの手番へ
-	if(teban==0){teban=1;}else{teban=0;}
+	switchTeban();
 
 	//コンピュータの手番
 	setTimeout("comSide()",VERYSLOW);
 }
 
+//コンピュータが考える
 function comSide(){
-	//コンピュータが考える
+
 	var comTe = comThink();
 
 	if(!comTe.isOK){//投了なら
@@ -29,13 +34,13 @@ function comSide(){
 	//explainComTe(comTe,te);////////////////////////////////////////////////////
 
 	//人間の番に戻す
-	if(teban==0){teban=1;}else{teban=0;}
+	switchTeban();
 
 	//人間の候補手
 	candidateCount = makeCandidateTe(candidateTe);
 
 	//人間の指し手はあるか？
-	if(isHumanToryo()==true){
+	if(isHumanToryo()){
 		return;
 	}
 
@@ -50,25 +55,25 @@ function comToryo(){
 	restartText();
 }
 
+//合法手はあるか？
+function hasLegalSashite(_arrSashite, _cntSashite){
+	var bOkay = false, i = 0;
+	while(!bOkay && i<_cntSashite){
+		bOkay = _arrSashite[i++].isOK;
+	}
+	return bOkay;
+}
+
 function isHumanToryo(){
 	//人間の指し手はあるか？
-	var isContinue = false;
-	for(var i=0; i<candidateCount; i++){
-		if(candidateTe[i].isOK){
-			isContinue = true;
-			break;
-		}
-	}
+	var hasSashite = hasLegalSashite(candidateTe, candidateCount);
 
-	if(isContinue==false){
+	if(!hasSashite){ //指し手が見つからなかった
 		newText("ぼくの勝ちにゃ　ありがとうございました");
 		controlPhase = -1;
 		restartText();
-		return(true);
-	}else{
-		return(false);
 	}
-
+	return !hasSashite;
 }
 
 function restartText(){
@@ -106,39 +111,36 @@ function restartPrepare(){
 	selectKomaochi();
 }
 
+var bUseBonus;
+
 function comThink(){
 	//思考ルーチン
 
-	var aiTe = Array(GouhouNum);
-	for(var i=0; i<aiTe.length; i++){aiTe[i] = new TSashite();}
+	var i, aiTe = Array(GouhouNum);
+	for(i=0; i<aiTe.length; i++){aiTe[i] = new TSashite();}
 	var aiCount = makeCandidateTe(aiTe);
 
-	//指す手はあるか？//なければ投了
-	var isContinue = false;
-	for(var i=0; i<aiCount; i++){
-		if(aiTe[i].isOK){
-			isContinue = true;
-			break;
-		}
+	//指す手はあるか？ なければ投了
+	if(!hasLegalSashite(aiTe,aiCount)){
+		return aiTe[0];
 	}
-	if(isContinue==false){return(aiTe[0]);}
 
 	//手のスコアリング
-	if(Math.random()<BonusRate){isUseBonus = true;}else{isUseBonus = false;}
+	bUseBonus = Math.random()<BonusRate;
 	var teScore = Array(GouhouNum);
-	for(var i=0; i<aiCount; i++){
+	for(i=0; i<aiCount; i++){
 		teScore[i] = moveScoring(aiTe[i]);
 	}
 
 	//手を選ぶ
 	var maxIndex = Array();
 	var maxScore = teScore[0];
-	for(var i=0; i<aiCount; i++){
+	for(i=0; i<aiCount; i++){
 		if(maxScore<teScore[i] && aiTe[i].isOK){
 			maxScore = teScore[i];
 		}
 	}
-	for(var i=0; i<aiCount; i++){
+	for(i=0; i<aiCount; i++){
 		if(maxScore==teScore[i] && aiTe[i].isOK){
 			maxIndex.push(i);
 		}
@@ -165,7 +167,7 @@ function moveScoring(oneTe){
 
 	score += bonusNaru(oneTe);//成るボーナス
 
-	if(isUseBonus==true){
+	if(bUseBonus){
 		score += bonusDistanceToKing(oneTe);//動いた先の先手玉との距離1-8
 		score += bonusUtsu(oneTe);//打つボーナス
 		score += bonusAtari(oneTe);//当てるボーナス
@@ -292,29 +294,22 @@ function isTorikaeshi(oneTe){
 	return(false);
 }
 
+//成るボーナス15
 function bonusNaru(oneTe){
-	//成るボーナス15
-	if(oneTe.isUtsu==0 && oneTe.isNaru){
-		return(15);
-	}else{
-		return(0);
-	}
+	return (oneTe.isUtsu==0 && oneTe.isNaru)? 15 : 0;
 }
 
+//打つボーナス13
 function bonusUtsu(oneTe){
-	//打つボーナス13
-	if(oneTe.isUtsu==1){
-		return(13);
-	}else{
-		return(0);
-	}
+	return (oneTe.isUtsu==1)? 13 : 0;
 }
 
-var moveBonusScore = [0,2,0,1,2,2,0,0,0];
-var utsuBonusScore = [0,1,1,1,1,1,2,3,0];
-
+//動かした駒の種類のボーナス
 function bonusKomaKind(oneTe){
-	//動かした駒の種類のボーナス
+
+	var moveBonusScore = [0,2,0,1,2,2,0,0,0];
+	var utsuBonusScore = [0,1,1,1,1,1,2,3,0];
+
 	if(oneTe.isUtsu==1){//打つ
 		return(10*utsuBonusScore[koma[oneTe.id].kind]);
 	}else{//盤上
@@ -464,11 +459,4 @@ function scoreNullToruToru(oneTe){
 	}else{
 		return(minScore);
 	}
-
 }
-
-
-
-
-
-
