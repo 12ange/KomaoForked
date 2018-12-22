@@ -1,20 +1,18 @@
+[komao]:http://www.geocities.jp/komao81/
+
 # こまおForked
 
-この repository "こまおForked" は、とても弱いコンピュータ将棋ソフトウェア(ウェブページ)「こまお」 http://www.geocities.jp/komao81/ を
+この repository "こまおForked" は、とても弱いコンピュータ将棋ソフトウェア(ウェブページ)[「こまお」][komao] を
 
 * Yahoo!ジオシティーズが終了する前に保護しておく
-  * Yahoo!ジオシティーズ サービス終了のお知らせ  
-    https://info-geocities.yahoo.co.jp/close/index.html
+  * [Yahoo!ジオシティーズ サービス終了のお知らせ](https://info-geocities.yahoo.co.jp/close/index.html)
 * 原開発者が残したマイナーエラーを修正する
 * (棋譜出力したいけれど kif? ki2? 形式がいくつかあるらしい)
   * (叡王戦は kif で配布されているようなのでそっちがデファクトスタンダードなのかしら)
 
 ために立ち上げたものです。
 
-元のソースコードは いっくん さんに帰属します。
-
-- https://twitter.com/ikkn  
-  http://tihara.hateblo.jp/
+元のソースコードは いっくん さん ( [Twitter](https://twitter.com/ikkn), [はてなブログ](http://tihara.hateblo.jp/) ) に帰属します。
 
 ----
 
@@ -44,4 +42,22 @@ homePatched から更に見た目の変更を伴う機能の追加拡張を施�
 
 ### master === 公開されるrepository
 
-上記の中から一番新しいブランチを(仮に)masterに置きます。ページ公開はオリジナルの「こまお」 http://www.geocities.jp/komao81/ が公開終了されるまでは非公開の設定にするつもりです。
+上記の中から一番新しいブランチを(仮に)masterに置きます。ページ公開はオリジナルの[「こまお」][komao]が公開終了されるまでは非公開の設定にするつもりです。
+
+----
+
+## おまけ：将棋用語とその英訳
+
+see: [Wikipedia(en) Shogi](https://en.wikipedia.org/wiki/Shogi)
+
+|日本語|英語|
+----|----
+|手番|turn|
+|駒|piece|
+|持ち駒|captured piece(s) ; piece(s) in hand|
+|手|move|
+|(盤上の)駒を指す|move a piece (on the board)|
+|駒を打つ|drop a piece|
+|成-る|promote -ion|
+|王手|check|
+|詰み|checkmate ; mate|
