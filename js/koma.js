@@ -1,45 +1,45 @@
 //駒初期化
 function initialKoma(){
-	koma[ 0] = new TKoma( 0,1,7,1,0,1);
-	koma[ 1] = new TKoma( 1,2,7,1,0,1);
-	koma[ 2] = new TKoma( 2,3,7,1,0,1);
-	koma[ 3] = new TKoma( 3,4,7,1,0,1);
-	koma[ 4] = new TKoma( 4,5,7,1,0,1);
-	koma[ 5] = new TKoma( 5,6,7,1,0,1);
-	koma[ 6] = new TKoma( 6,7,7,1,0,1);
-	koma[ 7] = new TKoma( 7,8,7,1,0,1);
-	koma[ 8] = new TKoma( 8,9,7,1,0,1);
-	koma[ 9] = new TKoma( 9,1,9,2,0,1);
-	koma[10] = new TKoma(10,9,9,2,0,1);
-	koma[11] = new TKoma(11,2,9,3,0,1);
-	koma[12] = new TKoma(12,8,9,3,0,1);
-	koma[13] = new TKoma(13,3,9,4,0,1);
-	koma[14] = new TKoma(14,7,9,4,0,1);
-	koma[15] = new TKoma(15,4,9,5,0,1);
-	koma[16] = new TKoma(16,6,9,5,0,1);
-	koma[17] = new TKoma(17,8,8,6,0,1);
-	koma[18] = new TKoma(18,2,8,7,0,1);
-	koma[19] = new TKoma(19,5,9,8,0,1);
-	koma[20] = new TKoma(20,1,3,1,1,1);
-	koma[21] = new TKoma(21,2,3,1,1,1);
-	koma[22] = new TKoma(22,3,3,1,1,1);
-	koma[23] = new TKoma(23,4,3,1,1,1);
-	koma[24] = new TKoma(24,5,3,1,1,1);
-	koma[25] = new TKoma(25,6,3,1,1,1);
-	koma[26] = new TKoma(26,7,3,1,1,1);
-	koma[27] = new TKoma(27,8,3,1,1,1);
-	koma[28] = new TKoma(28,9,3,1,1,1);
-	koma[29] = new TKoma(29,1,1,2,1,1);
-	koma[30] = new TKoma(30,9,1,2,1,1);
-	koma[31] = new TKoma(31,2,1,3,1,1);
-	koma[32] = new TKoma(32,8,1,3,1,1);
-	koma[33] = new TKoma(33,3,1,4,1,1);
-	koma[34] = new TKoma(34,7,1,4,1,1);
-	koma[35] = new TKoma(35,4,1,5,1,1);
-	koma[36] = new TKoma(36,6,1,5,1,1);
-	koma[37] = new TKoma(37,2,2,6,1,1);
-	koma[38] = new TKoma(38,8,2,7,1,1);
-	koma[39] = new TKoma(39,5,1,8,1,1);
+	gPieces[ 0] = new TKoma( 0,1,7,1,0,1);
+	gPieces[ 1] = new TKoma( 1,2,7,1,0,1);
+	gPieces[ 2] = new TKoma( 2,3,7,1,0,1);
+	gPieces[ 3] = new TKoma( 3,4,7,1,0,1);
+	gPieces[ 4] = new TKoma( 4,5,7,1,0,1);
+	gPieces[ 5] = new TKoma( 5,6,7,1,0,1);
+	gPieces[ 6] = new TKoma( 6,7,7,1,0,1);
+	gPieces[ 7] = new TKoma( 7,8,7,1,0,1);
+	gPieces[ 8] = new TKoma( 8,9,7,1,0,1);
+	gPieces[ 9] = new TKoma( 9,1,9,2,0,1);
+	gPieces[10] = new TKoma(10,9,9,2,0,1);
+	gPieces[11] = new TKoma(11,2,9,3,0,1);
+	gPieces[12] = new TKoma(12,8,9,3,0,1);
+	gPieces[13] = new TKoma(13,3,9,4,0,1);
+	gPieces[14] = new TKoma(14,7,9,4,0,1);
+	gPieces[15] = new TKoma(15,4,9,5,0,1);
+	gPieces[16] = new TKoma(16,6,9,5,0,1);
+	gPieces[17] = new TKoma(17,8,8,6,0,1);
+	gPieces[18] = new TKoma(18,2,8,7,0,1);
+	gPieces[19] = new TKoma(19,5,9,8,0,1);
+	gPieces[20] = new TKoma(20,1,3,1,1,1);
+	gPieces[21] = new TKoma(21,2,3,1,1,1);
+	gPieces[22] = new TKoma(22,3,3,1,1,1);
+	gPieces[23] = new TKoma(23,4,3,1,1,1);
+	gPieces[24] = new TKoma(24,5,3,1,1,1);
+	gPieces[25] = new TKoma(25,6,3,1,1,1);
+	gPieces[26] = new TKoma(26,7,3,1,1,1);
+	gPieces[27] = new TKoma(27,8,3,1,1,1);
+	gPieces[28] = new TKoma(28,9,3,1,1,1);
+	gPieces[29] = new TKoma(29,1,1,2,1,1);
+	gPieces[30] = new TKoma(30,9,1,2,1,1);
+	gPieces[31] = new TKoma(31,2,1,3,1,1);
+	gPieces[32] = new TKoma(32,8,1,3,1,1);
+	gPieces[33] = new TKoma(33,3,1,4,1,1);
+	gPieces[34] = new TKoma(34,7,1,4,1,1);
+	gPieces[35] = new TKoma(35,4,1,5,1,1);
+	gPieces[36] = new TKoma(36,6,1,5,1,1);
+	gPieces[37] = new TKoma(37,2,2,6,1,1);
+	gPieces[38] = new TKoma(38,8,2,7,1,1);
+	gPieces[39] = new TKoma(39,5,1,8,1,1);
 
 	//持ち駒初期化
 	for(var i=0; i<2; i++){
@@ -66,7 +66,7 @@ function komaOtosu(removeNum){
 	removeNum = getValueMinMax(removeNum, 0, orderOtosuIdx.length)|0;
 
 	//落とす。
-	while(removeNum>0){ koma[ orderOtosuIdx[--removeNum] ].isUse = false; }
+	while(removeNum>0){ gPieces[ orderOtosuIdx[--removeNum] ].isUse = false; }
 }
 
 //内部の状態の初期化
@@ -78,10 +78,10 @@ function initialState(){
 		//一度全てを-1にする
 		idBan[i] = -1;
 	}
-	for(i=0; i<koma.length; i++){
+	for(i=0; i<gPieces.length; i++){
 		//使う駒ならidナンバーをふる
-		if(koma[i].isUse){
-			idBan[koma[i].pos] = i;
+		if(gPieces[i].isUse){
+			idBan[gPieces[i].pos] = i;
 		}
 	}
 
@@ -96,13 +96,13 @@ function initialState(){
 			blankBan[i] = 4;//壁
 		}
 	}
-	for(i=0; i<koma.length; i++){
+	for(i=0; i<gPieces.length; i++){
 		//使う駒なら先後を記録
-		if(koma[i].isUse){
-			if(koma[i].sengo==0){//先手
-				blankBan[koma[i].pos] = 1;
+		if(gPieces[i].isUse){
+			if(gPieces[i].sengo==0){//先手
+				blankBan[gPieces[i].pos] = 1;
 			}else{//後手
-				blankBan[koma[i].pos] = 2;
+				blankBan[gPieces[i].pos] = 2;
 			}
 		}
 	}

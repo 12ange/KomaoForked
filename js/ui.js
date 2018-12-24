@@ -184,9 +184,9 @@ function imageBanShow(){
 
 function initialKomaShow(){
 	//とりあえず駒の表示
-	for(var i=0; i<koma.length; i++){
-		if(koma[i].isUse){
-			komaAppend(koma[i]);
+	for(var i=0; i<gPieces.length; i++){
+		if(gPieces[i].isUse){
+			komaAppend(gPieces[i]);
 		}
 	}
 }

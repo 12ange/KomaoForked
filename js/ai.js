@@ -147,31 +147,31 @@ function toriTori(oneTe){
 
 	//ただ取りできるなら
 	if(isTadadori(oneTe)==true){
-		return(komaValue[koma[oneTe.tottaKoma].kind]
-		+ nariValue[ koma[oneTe.tottaKoma].isNari?1:0 ]
+		return(komaValue[gPieces[oneTe.tottaKoma].kind]
+		+ nariValue[ gPieces[oneTe.tottaKoma].isNari?1:0 ]
 		+ nattaValue[ oneTe.isNaru?1:0 ]);
 	}
 
 	//と金と歩は取れるなら取る
 	if(isFuTori(oneTe)==true){
-		return(komaValue[koma[oneTe.tottaKoma].kind]
-		+ nariValue[ koma[oneTe.tottaKoma].isNari?1:0 ]
+		return(komaValue[gPieces[oneTe.tottaKoma].kind]
+		+ nariValue[ gPieces[oneTe.tottaKoma].isNari?1:0 ]
 		+ nattaValue[ oneTe.isNaru?1:0 ]
 		+ fuTori);
 	}
 
 	//取って取り返される
 	if(isTorikaeshi(oneTe)==true){
-		return(komaValue[koma[oneTe.tottaKoma].kind]
-		+ nariValue[ koma[oneTe.tottaKoma].isNari?1:0 ]
-		- komaValue[koma[oneTe.id].kind]
+		return(komaValue[gPieces[oneTe.tottaKoma].kind]
+		+ nariValue[ gPieces[oneTe.tottaKoma].isNari?1:0 ]
+		- komaValue[gPieces[oneTe.id].kind]
 		+ nattaValue[ oneTe.isNaru?1:0 ]
 		+ torikaeshiConst);
 	}
 
 	//動かした駒をタダで取られる
 	if(isTadadorare(oneTe)==true){
-		return(-komaValue[koma[oneTe.id].kind]
+		return(-komaValue[gPieces[oneTe.id].kind]
 		-tadadorareConst);
 	}
 
@@ -221,7 +221,7 @@ function isFuTori(oneTe){
 
 	if(oneTe.isUtsu==0
 	&& oneTe.tottaKoma!=-1
-	&& koma[oneTe.id].kind==1){
+	&& gPieces[oneTe.id].kind==1){
 		return(true);
 	}
 
@@ -276,9 +276,9 @@ function bonusKomaKind(oneTe){
 	var utsuBonusScore = [0,1,1,1,1,1,2,3,0];
 
 	if(oneTe.isUtsu==1){//打つ
-		return(10*utsuBonusScore[koma[oneTe.id].kind]);
+		return(10*utsuBonusScore[gPieces[oneTe.id].kind]);
 	}else{//盤上
-		return(10*moveBonusScore[koma[oneTe.id].kind]);
+		return(10*moveBonusScore[gPieces[oneTe.id].kind]);
 	}
 }
 
@@ -305,22 +305,24 @@ function bonusAtari(oneTe){
 function bonusDistanceToKing(oneTe){
 	//動いた先の先手玉との距離1-8
 
+	//TODO:この関数、処理を楽にできそう
+
 	if(oneTe.isUtsu==1){//打つとき
 		return(
-			8 - Math.max(Math.abs(oneTe.toSuji - Math.floor(koma[19].pos/16)),
-			Math.abs(oneTe.toDan - (koma[19].pos%16)))
+			8 - Math.max(Math.abs(oneTe.toSuji - Math.floor(gPieces[19].pos/16)),
+			Math.abs(oneTe.toDan - (gPieces[19].pos%16)))
 		);
 	}else{//動かすとき
-		if(koma[oneTe.id].kind==1 ||
-		koma[oneTe.id].kind==3 ||
-		koma[oneTe.id].kind==4 ||
-		koma[oneTe.id].kind==5 ||
-		(koma[oneTe.id].kind==2 && koma[oneTe.id].isNari)){//金銀桂歩・成香
+		if(gPieces[oneTe.id].kind==1 ||
+			gPieces[oneTe.id].kind==3 ||
+			gPieces[oneTe.id].kind==4 ||
+			gPieces[oneTe.id].kind==5 ||
+			(gPieces[oneTe.id].kind==2 && gPieces[oneTe.id].isNari)){//金銀桂歩・成香
 			return(
-				Math.max(Math.abs(oneTe.fromSuji - Math.floor(koma[19].pos/16)),
-				Math.abs(oneTe.fromDan - (koma[19].pos%16)))
-				- Math.max(Math.abs(oneTe.toSuji - Math.floor(koma[19].pos/16)),
-				Math.abs(oneTe.toDan - (koma[19].pos%16)))
+				Math.max(Math.abs(oneTe.fromSuji - Math.floor(gPieces[19].pos/16)),
+				Math.abs(oneTe.fromDan - (gPieces[19].pos%16)))
+				- Math.max(Math.abs(oneTe.toSuji - Math.floor(gPieces[19].pos/16)),
+				Math.abs(oneTe.toDan - (gPieces[19].pos%16)))
 			);
 		}else{//その他の駒
 			return(0);
@@ -404,10 +406,10 @@ function scoreNullToruToru(oneTe){
 				kaesuTe[j].toDan==toruTe[i].toDan){//その駒を取り返す
 					torareruId = toruTe[i].tottaKoma;
 					toruId = kaesuTe[j].tottaKoma;
-					eachScore = komaValue[koma[toruId].kind] - komaValue[koma[torareruId].kind];
+					eachScore = komaValue[gPieces[toruId].kind] - komaValue[gPieces[torareruId].kind];
 				}else{
 					torareruId = toruTe[i].tottaKoma;
-					eachScore = -komaValue[koma[torareruId].kind];
+					eachScore = -komaValue[gPieces[torareruId].kind];
 				}
 				if(maxScore<eachScore){maxScore = eachScore;}
 			}

@@ -1,29 +1,27 @@
 
-
-
-function reactForHumanTe(te){
+function reactForHumanTe(_te){
 	//人間の手へのリアクション
 
 	//王手
-	if(isOuteHuman()==true){return;}
+	if(isOuteHuman()){return;}
 
 	//駒を取る
-	if(isKomatoruHuman(te)==true){return;}
+	if(isKomatoruHuman(_te)){return;}
 
 	//格下の駒に当てられる
-	if(isNextKomatoriHuman(te)==true){return;}
+	if(isNextKomatoriHuman(_te)){return;}
 
 	//成る
-	if(isNaruHuman(te)==true){return;}
+	if(isNaruHuman(_te)){return;}
 
 	//と金作りを狙われる
-	if(isTokinHuman(te)==true){return;}
+	if(isTokinHuman(_te)){return;}
 
 	//玉の近くに打たれる
-	if(isKingUtsu(te)==true){return;}
+	if(isKingUtsu(_te)){return;}
 
 	//駒が動いて迫る
-	if(isSemaru(te)==true){return;}
+	if(isSemaru(_te)){return;}
 
 	//何もないとき
 	noHuman();
@@ -38,33 +36,41 @@ function isOuteHuman(){
 	var outeCount = makeCandidateTe(outeTe);
 	for(var i=0; i<outeCount; i++){
 		if(outeTe[i].isOK && outeTe[i].tottaKoma!=-1){
-			if(koma[outeTe[i].tottaKoma].kind==8){//玉が取れるなら
+			if(gPieces[outeTe[i].tottaKoma].kind==8){//玉が取れるなら
 				newText("王手されたにゃっ");
-				return(true);
+				return true;
 			}
 		}
 	}
 
-	return(false);
+	return false;
 }
 
 //駒を取る
-function isKomatoruHuman(te){
-	if(te.isUtsu==0 && te.tottaKoma!=-1){
-		if(koma[te.tottaKoma].kind==1){//歩,と
-			newText(te.tottaNari?"と金を払われたにゃ":"歩ならいくらでもあげるにゃ");
-		}else if(koma[te.tottaKoma].kind==2){//香,杏
-			newText(te.tottaNari?"成香が取られたにゃ　軽く落ち込むにゃ":"香車が取られたにゃ　微妙にショックにゃ");
-		}else if(koma[te.tottaKoma].kind==3){//桂,圭
-			newText(te.tottaNari?"成桂が取られたにゃ　気が滅入るにゃ":"桂馬が取られたにゃ　困るにゃ");
-		}else if(koma[te.tottaKoma].kind==4){//銀,全
-			newText(te.tottaNari?"成銀が取られたにゃ　きびしいにゃ":"銀が取られたにゃ　泣きたいにゃ");
-		}else if(koma[te.tottaKoma].kind==5){//金
-			newText("金が取られたにゃ　まずいにゃ");
-		}else if(koma[te.tottaKoma].kind==6){//角,馬
-			newText(te.tottaNari?"馬が取られたにゃ　もう対局をやめたいにゃ":"角が取られたにゃ　生きた心地がしないにゃ");
-		}else if(koma[te.tottaKoma].kind==7){//飛,竜
-			newText(te.tottaNari?"竜が取られたにゃ　人生おわったにゃ":"飛車が取られたにゃ　もうだめにゃ");
+function isKomatoruHuman(_te){
+	if(_te.isUtsu==0 && _te.tottaKoma!=-1){
+		switch (gPieces[_te.tottaKoma].kind) {
+			case 1://歩,と
+				newText(_te.tottaNari?"と金を払われたにゃ":"歩ならいくらでもあげるにゃ");
+				break;
+			case 2://香,杏
+				newText(_te.tottaNari?"成香が取られたにゃ　軽く落ち込むにゃ":"香車が取られたにゃ　微妙にショックにゃ");
+				break;
+			case 3://桂,圭
+				newText(_te.tottaNari?"成桂が取られたにゃ　気が滅入るにゃ":"桂馬が取られたにゃ　困るにゃ");
+				break;
+			case 4://銀,全
+				newText(_te.tottaNari?"成銀が取られたにゃ　きびしいにゃ":"銀が取られたにゃ　泣きたいにゃ");
+				break;
+			case 5://金
+				newText("金が取られたにゃ　まずいにゃ");
+				break;
+			case 6://角,馬
+				newText(_te.tottaNari?"馬が取られたにゃ　もう対局をやめたいにゃ":"角が取られたにゃ　生きた心地がしないにゃ");
+				break;
+			case 7://飛,竜
+				newText(_te.tottaNari?"竜が取られたにゃ　人生おわったにゃ":"飛車が取られたにゃ　もうだめにゃ");
+				break;
 		}
 		return true;
 	}else{
@@ -73,9 +79,9 @@ function isKomatoruHuman(te){
 }
 
 //成る
-function isNaruHuman(te){
-	if(te.isUtsu==0 && te.isNaru){
-		switch (koma[idBan[te.toSuji*16+te.toDan]].kind) {
+function isNaruHuman(_te){
+	if(_te.isUtsu==0 && _te.isNaru){
+		switch (gPieces[idBan[_te.toSuji*16+_te.toDan]].kind) {
 			case 1://歩
 				newText("と金にゃ　危険にゃ");
 				break;
@@ -99,7 +105,7 @@ function isNaruHuman(te){
 	}
 }
 
-function isNextKomatoriHuman(te){
+function isNextKomatoriHuman(_te){
 	//格下の駒に当てられる
 
 	//人間の手番のまま合法手生成
@@ -110,13 +116,13 @@ function isNextKomatoriHuman(te){
 	for(var i=0; i<toruCount; i++){
 		if(toruTe[i].isOK &&
 		toruTe[i].tottaKoma!=-1 &&
-		toruTe[i].fromSuji==te.toSuji &&
-		toruTe[i].fromDan==te.toDan){//動かした駒だけ
+		toruTe[i].fromSuji==_te.toSuji &&
+		toruTe[i].fromDan==_te.toDan){//動かした駒だけ
 			//格下か同格の駒で取れるか
-			if(koma[toruTe[i].tottaKoma].kind>toruKoma &&
-			koma[toruTe[i].tottaKoma].kind>=koma[idBan[te.toSuji*16+te.toDan]].kind){
-				toruKoma = koma[toruTe[i].tottaKoma].kind;
-				toruNari = koma[toruTe[i].tottaKoma].isNari;
+			if(gPieces[toruTe[i].tottaKoma].kind>toruKoma &&
+				gPieces[toruTe[i].tottaKoma].kind>=gPieces[idBan[_te.toSuji*16+_te.toDan]].kind){
+				toruKoma = gPieces[toruTe[i].tottaKoma].kind;
+				toruNari = gPieces[toruTe[i].tottaKoma].isNari;
 			}
 			//ただでとれるか？
 			forwardState(toruTe[i],teban,-1);//内部で進める
@@ -134,9 +140,9 @@ function isNextKomatoriHuman(te){
 			if(teban==0){teban=1;}else{teban=0;}//手番交代
 			backwardState(toruTe[i],teban,-1);//内部で戻す
 			if(isTorikaesareru==false &&
-			koma[toruTe[i].tottaKoma].kind>toruKoma){//ただで取れるなら
-				toruKoma = koma[toruTe[i].tottaKoma].kind;
-				toruNari = koma[toruTe[i].tottaKoma].isNari;
+			   gPieces[toruTe[i].tottaKoma].kind>toruKoma){//ただで取れるなら
+				toruKoma = gPieces[toruTe[i].tottaKoma].kind;
+				toruNari = gPieces[toruTe[i].tottaKoma].isNari;
 			}
 		}
 	}
@@ -168,12 +174,12 @@ function isNextKomatoriHuman(te){
 	}
 }
 
-function isTokinHuman(te){
+function isTokinHuman(_te){
 	//と金作りを狙われる
 
-	var komaId = idBan[te.toSuji*16+te.toDan];
+	var komaId = idBan[_te.toSuji*16+_te.toDan];
 
-	if(koma[komaId].kind==1 && !koma[komaId].isNari && te.toDan<=4){//歩をあと一歩まで動かしたら
+	if(gPieces[komaId].kind==1 && !gPieces[komaId].isNari && _te.toDan<=4){//歩をあと一歩まで動かしたら
 		//すぐには取られないなら
 		if(teban==0){teban=1;}else{teban=0;}//手番交代
 		var toruTe = Array(GouhouNum);
@@ -189,20 +195,20 @@ function isTokinHuman(te){
 		if(teban==0){teban=1;}else{teban=0;}//手番交代
 		if(isTorareru==false){
 			newText("と金を作られそうにゃ");
-			return(true);
+			return true;
 		}
 	}
 
-	return(false);
+	return false;
 }
 
-function isKingUtsu(te){
+function isKingUtsu(_te){
 	//玉の近くに打たれる
 
-	var komaId = idBan[te.toSuji*16+te.toDan];
-	if(te.isUtsu==1 &&
-	Math.max(Math.abs(Math.floor(koma[39].pos/16) - te.toSuji),
-	Math.abs((koma[39].pos%16) - te.toDan))<=2){//玉の近辺に打たれたら
+	var komaId = idBan[_te.toSuji*16+_te.toDan];
+	if(_te.isUtsu==1 &&
+	Math.max(Math.abs(Math.floor(gPieces[39].pos/16) - _te.toSuji),
+	Math.abs((gPieces[39].pos%16) - _te.toDan))<=2){//玉の近辺に打たれたら
 		//すぐには取られないなら
 		if(teban==0){teban=1;}else{teban=0;}//手番交代
 		var toruTe = Array(GouhouNum);
@@ -218,28 +224,26 @@ function isKingUtsu(te){
 		if(teban==0){teban=1;}else{teban=0;}//手番交代
 		if(isTorareru==false){
 			newText("玉の近くに打たれて怖いにゃ");
-			return(true);
+			return true;
 		}
 	}
 
-	return(false);
+	return false;
 }
 
-function isSemaru(te){
+function isSemaru(_te){
 	//駒が動いて迫る
 
 	//打つなら関係なし
-	if(te.isUtsu==1){
-		return(false);
-	}
+	if(_te.isUtsu==1){ return false; }
 
-	var komaId = idBan[te.toSuji*16+te.toDan];
-	var komaKind = koma[komaId].kind;
+	var komaId = idBan[_te.toSuji*16+_te.toDan];
+	var komaKind = gPieces[komaId].kind;
 
 	//歩なら
-	if(komaKind==1 && !koma[komaId].isNari){
-		var fromDanKyori = Math.abs((koma[39].pos%16) - te.fromDan);
-		var toDanKyori = Math.abs((koma[39].pos%16) - te.toDan);
+	if(komaKind==1 && !gPieces[komaId].isNari){
+		var fromDanKyori = Math.abs((gPieces[39].pos%16) - _te.fromDan);
+		var toDanKyori = Math.abs((gPieces[39].pos%16) - _te.toDan);
 		if(fromDanKyori>toDanKyori){//せまっている
 			if(toDanKyori<=3){
 				newText("敵がせまってきてるにゃ");
@@ -252,29 +256,28 @@ function isSemaru(te){
 	}
 
 	//桂銀金・と金・成香でなければ関係なし
-	if(komaKind>=6 || (komaKind==2 && !koma[komaId].isNari) || (komaKind==1 && !koma[komaId].isNari)){
+	if(komaKind>=6 || (komaKind==2 && !gPieces[komaId].isNari) || (komaKind==1 && !gPieces[komaId].isNari)){
 		return(false);
 	}
 
-	var fromKyori = Math.abs(Math.floor(koma[39].pos/16) - te.fromSuji)
-	+ Math.abs((koma[39].pos%16) - te.fromDan);
-	var toKyori = Math.abs(Math.floor(koma[39].pos/16) - te.toSuji)
-	+ Math.abs((koma[39].pos%16) - te.toDan);
+	var fromKyori = Math.abs(Math.floor(gPieces[39].pos/16) - _te.fromSuji)
+	+ Math.abs((gPieces[39].pos%16) - _te.fromDan);
+	var toKyori = Math.abs(Math.floor(gPieces[39].pos/16) - _te.toSuji)
+	+ Math.abs((gPieces[39].pos%16) - _te.toDan);
 
 	if(fromKyori>toKyori){//せまっている
 		if(toKyori<=3){
 			newText("敵は目前にゃ　怖いにゃ");
-			return(true);
+			return true;
 		}else if(3<toKyori && toKyori<=5){
 			newText("敵がせまってきてるにゃ");
-			return(true);
+			return true;
 		}else if(5<toKyori && toKyori<=8){
 			newText("敵がこちらに向かい始めたにゃ");
-			return(true);
+			return true;
 		}
 	}
-
-	return(false);
+	return false;
 }
 
 function noHuman(){

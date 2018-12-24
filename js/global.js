@@ -3,7 +3,7 @@
 //--------------------------------------
 
 //駒
-var koma = [], mochi = [[],[]];
+var gPieces = [], mochi = [[],[]];
 
 //盤
 var idBan = new Array(256), blankBan = new Array(256);
