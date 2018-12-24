@@ -5,9 +5,6 @@ $(function(){
 	//プレローディング
 	preLoading();
 
-	//外枠のposition:relative化
-	mainDivRelative();
-
 	//盤の表示
 	imageBanShow();
 
@@ -34,84 +31,42 @@ function selectKomaochi(){
 
 	$("<div>")
 	.attr("id","komaochi0")
-	.css("position","absolute")
-	.css("font-size","200%")
-	.css("text-align","center")
-	.css("top","50px")
-	.css("left","300px")
-	.css("background-color","#ffffff")
-	.css("width","330")
-	.css("z-index","50")
+	.attr("class","komaochi")
 	.html("平手")
 	.click(function(){statePrepare(0);})
 	.appendTo("#ban");//index.htmlにあるdivのid
 
 	$("<div>")
 	.attr("id","komaochi2")
-	.css("position","absolute")
-	.css("font-size","200%")
-	.css("text-align","center")
-	.css("top","120px")
-	.css("left","300px")
-	.css("background-color","#ffffff")
-	.css("width","330")
-	.css("z-index","50")
+	.attr("class","komaochi")
 	.html("２枚落ち")
 	.click(function(){statePrepare(2);})
 	.appendTo("#ban");//index.htmlにあるdivのid
 
 	$("<div>")
 	.attr("id","komaochi4")
-	.css("position","absolute")
-	.css("font-size","200%")
-	.css("text-align","center")
-	.css("top","190px")
-	.css("left","300px")
-	.css("background-color","#ffffff")
-	.css("width","330")
-	.css("z-index","50")
+	.attr("class","komaochi")
 	.html("４枚落ち")
 	.click(function(){statePrepare(4);})
 	.appendTo("#ban");//index.htmlにあるdivのid
 
 	$("<div>")
 	.attr("id","komaochi6")
-	.css("position","absolute")
-	.css("font-size","200%")
-	.css("text-align","center")
-	.css("top","260px")
-	.css("left","300px")
-	.css("background-color","#ffffff")
-	.css("width","330")
-	.css("z-index","50")
+	.attr("class","komaochi")
 	.html("６枚落ち")
 	.click(function(){statePrepare(6);})
 	.appendTo("#ban");//index.htmlにあるdivのid
 
 	$("<div>")
 	.attr("id","komaochi8")
-	.css("position","absolute")
-	.css("font-size","200%")
-	.css("text-align","center")
-	.css("top","330px")
-	.css("left","300px")
-	.css("background-color","#ffffff")
-	.css("width","330")
-	.css("z-index","50")
+	.attr("class","komaochi")
 	.html("８枚落ち")
 	.click(function(){statePrepare(8);})
 	.appendTo("#ban");//index.htmlにあるdivのid
 
 	$("<div>")
 	.attr("id","komaochi10")
-	.css("position","absolute")
-	.css("font-size","200%")
-	.css("text-align","center")
-	.css("top","400px")
-	.css("left","300px")
-	.css("background-color","#ffffff")
-	.css("width","330")
-	.css("z-index","50")
+	.attr("class","komaochi")
 	.html("１０枚落ち")
 	.click(function(){statePrepare(10);})
 	.appendTo("#ban");//index.htmlにあるdivのid
@@ -218,19 +173,11 @@ function preLoading(){
 	.attr("src","banImage/ban.png");
 }
 
-function mainDivRelative(){
-	//メインの枠の位置の相対化
-	$("#ban")
-	.css("position","relative");
-}
-
 function imageBanShow(){
 	//盤の表示
 	$("<img>")
 	.attr("src","banImage/ban.png")
 	.attr("id","banImage")
-	.css("position","relative")
-	.css("z-index","0")
 	.click(function(event){banClick(event,$("#ban").offset());})
 	.appendTo("#ban");//index.htmlにあるdivのid
 }
@@ -249,12 +196,11 @@ function komaAppend(appendKoma){
 	$("<img>")
 	.attr("src","komaImage/" + appendKoma.sengo + "0" + appendKoma.kind + ".png")
 	.attr("id","k" + appendKoma.idNum)
-	.css("position","absolute")
+	.attr("class","pieces")
 	//.css("width","40px")
 	//.css("height","40px")
 	.css("top",komaShowPositionTop(appendKoma.pos) + "px")
 	.css("left",komaShowPositionLeft(appendKoma.pos) + "px")
-	.css("z-index","30")
 	.click(function(event){banClick(event,$("#ban").offset());})
 	.appendTo("#ban");//index.htmlにあるdivのid
 }
@@ -280,23 +226,17 @@ function komaShowPositionLeft(pos){
 function initialTextShow(){
 	//最初の文字の表示
 	$("<div>")
-	.attr("id","textField")
-	.css("position","absolute")
-	.css("font-size","140%")
-	.css("top","120px")
-	.css("left","730px")
-	.css("background-color","white")
-	.css("width","200")
-	.css("z-index","20")
+	.attr("id","talkField")
+	.attr("class","fields")
 	.appendTo("#ban");//index.htmlにあるdivのid
 }
 
 function newText(textMessage){
 	//メッセージの表示
 
-	$("#textField")
+	$("#talkField")
 	.fadeOut(FAST,function(){
-		$("#textField")
+		$("#talkField")
 		.html(textMessage)
 		.fadeOut(0)
 		.fadeIn(FAST);
@@ -307,38 +247,18 @@ function questionTextShow(){
 	//最初の文字の表示
 	$("<div>")
 	.attr("id","questionField")
-	.css("position","absolute")
-	.css("font-size","140%")
-	.css("text-align","center")
-	.css("top","280px")
-	.css("left","0px")
-	.css("width","200")
-	.css("z-index","20")
+	.attr("class","fields")
 	.appendTo("#ban");//index.htmlにあるdivのid
 
 	$("<div>")
 	.attr("id","alternativeFirst")
-	.css("position","absolute")
-	.css("font-size","140%")
-	.css("text-align","center")
-	.css("top","350px")
-	.css("left","0px")
-	.css("background-color","#aa88ff")
-	.css("width","200")
-	.css("z-index","20")
+	.attr("class","alternatives")
 	.click(function(){determineIsNaru(true);})
 	.appendTo("#ban");//index.htmlにあるdivのid
 
 	$("<div>")
 	.attr("id","alternativeSecond")
-	.css("position","absolute")
-	.css("font-size","140%")
-	.css("text-align","center")
-	.css("top","400px")
-	.css("left","0px")
-	.css("background-color","#ff88aa")
-	.css("width","200")
-	.css("z-index","20")
+	.attr("class","alternatives")
 	.click(function(){determineIsNaru(false);})
 	.appendTo("#ban");//index.htmlにあるdivのid
 
@@ -387,5 +307,30 @@ function determineIsNaru(isNaru){
 	forwardAndAi();
 }
 
+function restartText(){
+	//もう一度対局するか
 
+	$("<div>")
+	.attr("id","alternativeRestart")
+	.attr("class","alternatives")
+	.html("もう１回？")
+	.click(function(){restartPrepare();})
+	.appendTo("#ban")//index.htmlにあるdivのid
+	.hide()
+	.fadeIn(VERYSLOW);
+}
 
+function restartPrepare(){
+	//もう一度対局する
+
+	//ボタンの削除
+	$("#alternativeRestart").remove();
+
+	//駒とかの削除
+	removeKoma();
+	highlightErase();
+	mochiCountRemove();
+
+	//駒落ちの選択
+	selectKomaochi();
+}

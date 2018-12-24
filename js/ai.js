@@ -76,41 +76,6 @@ function isHumanToryo(){
 	return !hasSashite;
 }
 
-function restartText(){
-	//もう一度対局するか
-
-	$("<div>")
-	.attr("id","restartMessage")
-	.css("position","absolute")
-	.css("font-size","140%")
-	.css("text-align","center")
-	.css("top","450px")
-	.css("left","0px")
-	.css("background-color","#ccccff")
-	.css("width","200")
-	.css("z-index","20")
-	.html("もう１回？")
-	.click(function(){restartPrepare();})
-	.appendTo("#ban")//index.htmlにあるdivのid
-	.hide()
-	.fadeIn(VERYSLOW);
-}
-
-function restartPrepare(){
-	//もう一度対局する
-
-	//ボタンの削除
-	$("#restartMessage").remove();
-
-	//駒とかの削除
-	removeKoma();
-	highlightErase();
-	mochiCountRemove();
-
-	//駒落ちの選択
-	selectKomaochi();
-}
-
 var bUseBonus;
 
 function comThink(){
