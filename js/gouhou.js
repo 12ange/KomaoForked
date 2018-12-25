@@ -50,7 +50,7 @@ function gouhouDrop(gouhouTe,gouhouCount){
 
 	//打つ手を生成
 	for(var k=1; k<=7; k++){
-		if(mochi[teban][k]>0){
+		if(gInHandPc[teban][k]>0){
 			for(var i=0; i<dropNum; i++){
 				gouhouTe[gouhouCount].isUtsu = 1;
 				gouhouTe[gouhouCount].MochiKoma = k;

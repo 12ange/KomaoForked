@@ -155,7 +155,7 @@ function fromInput(suji,dan,errorMessage){
 
 	//駒台からの入力
 	if(teban==0 && (suji==-1 || suji==-2) && (6<=dan && dan<=9)){//先手
-		if(suji==-1 && dan==9 && mochi[teban][1]>0){//歩
+		if(suji==-1 && dan==9 && gInHandPc[teban][1]>0){//歩
 			te.isUtsu = 1;
 			te.fromSuji = suji;
 			te.fromDan = dan;
@@ -167,7 +167,7 @@ function fromInput(suji,dan,errorMessage){
 			//移動先を選ぶフェーズへ
 			controlPhase = 2;
 			return;
-		}else if(suji==-2 && dan==8 && mochi[teban][2]>0){//香
+		}else if(suji==-2 && dan==8 && gInHandPc[teban][2]>0){//香
 			te.isUtsu = 1;
 			te.fromSuji = suji;
 			te.fromDan = dan;
@@ -179,7 +179,7 @@ function fromInput(suji,dan,errorMessage){
 			//移動先を選ぶフェーズへ
 			controlPhase = 2;
 			return;
-		}else if(suji==-1 && dan==8 && mochi[teban][3]>0){//桂
+		}else if(suji==-1 && dan==8 && gInHandPc[teban][3]>0){//桂
 			te.isUtsu = 1;
 			te.fromSuji = suji;
 			te.fromDan = dan;
@@ -191,7 +191,7 @@ function fromInput(suji,dan,errorMessage){
 			//移動先を選ぶフェーズへ
 			controlPhase = 2;
 			return;
-		}else if(suji==-2 && dan==7 && mochi[teban][4]>0){//銀
+		}else if(suji==-2 && dan==7 && gInHandPc[teban][4]>0){//銀
 			te.isUtsu = 1;
 			te.fromSuji = suji;
 			te.fromDan = dan;
@@ -203,7 +203,7 @@ function fromInput(suji,dan,errorMessage){
 			//移動先を選ぶフェーズへ
 			controlPhase = 2;
 			return;
-		}else if(suji==-1 && dan==7 && mochi[teban][5]>0){//金
+		}else if(suji==-1 && dan==7 && gInHandPc[teban][5]>0){//金
 			te.isUtsu = 1;
 			te.fromSuji = suji;
 			te.fromDan = dan;
@@ -215,7 +215,7 @@ function fromInput(suji,dan,errorMessage){
 			//移動先を選ぶフェーズへ
 			controlPhase = 2;
 			return;
-		}else if(suji==-2 && dan==6 && mochi[teban][6]>0){//角
+		}else if(suji==-2 && dan==6 && gInHandPc[teban][6]>0){//角
 			te.isUtsu = 1;
 			te.fromSuji = suji;
 			te.fromDan = dan;
@@ -227,7 +227,7 @@ function fromInput(suji,dan,errorMessage){
 			//移動先を選ぶフェーズへ
 			controlPhase = 2;
 			return;
-		}else if(suji==-1 && dan==6 && mochi[teban][7]>0){//飛
+		}else if(suji==-1 && dan==6 && gInHandPc[teban][7]>0){//飛
 			te.isUtsu = 1;
 			te.fromSuji = suji;
 			te.fromDan = dan;
@@ -241,7 +241,7 @@ function fromInput(suji,dan,errorMessage){
 			return;
 		}
 	}else if(teban==1 && (suji==-1 || suji==-2) && (1<=dan && dan<=4)){//後手
-		if(suji==-1 && dan==1 && mochi[teban][1]>0){//歩
+		if(suji==-1 && dan==1 && gInHandPc[teban][1]>0){//歩
 			te.isUtsu = 1;
 			te.fromSuji = suji;
 			te.fromDan = dan;
@@ -253,7 +253,7 @@ function fromInput(suji,dan,errorMessage){
 			//移動先を選ぶフェーズへ
 			controlPhase = 2;
 			return;
-		}else if(suji==-2 && dan==2 && mochi[teban][2]>0){//香
+		}else if(suji==-2 && dan==2 && gInHandPc[teban][2]>0){//香
 			te.isUtsu = 1;
 			te.fromSuji = suji;
 			te.fromDan = dan;
@@ -265,7 +265,7 @@ function fromInput(suji,dan,errorMessage){
 			//移動先を選ぶフェーズへ
 			controlPhase = 2;
 			return;
-		}else if(suji==-1 && dan==2 && mochi[teban][3]>0){//桂
+		}else if(suji==-1 && dan==2 && gInHandPc[teban][3]>0){//桂
 			te.isUtsu = 1;
 			te.fromSuji = suji;
 			te.fromDan = dan;
@@ -277,7 +277,7 @@ function fromInput(suji,dan,errorMessage){
 			//移動先を選ぶフェーズへ
 			controlPhase = 2;
 			return;
-		}else if(suji==-2 && dan==3 && mochi[teban][4]>0){//銀
+		}else if(suji==-2 && dan==3 && gInHandPc[teban][4]>0){//銀
 			te.isUtsu = 1;
 			te.fromSuji = suji;
 			te.fromDan = dan;
@@ -289,7 +289,7 @@ function fromInput(suji,dan,errorMessage){
 			//移動先を選ぶフェーズへ
 			controlPhase = 2;
 			return;
-		}else if(suji==-1 && dan==3 && mochi[teban][5]>0){//金
+		}else if(suji==-1 && dan==3 && gInHandPc[teban][5]>0){//金
 			te.isUtsu = 1;
 			te.fromSuji = suji;
 			te.fromDan = dan;
@@ -301,7 +301,7 @@ function fromInput(suji,dan,errorMessage){
 			//移動先を選ぶフェーズへ
 			controlPhase = 2;
 			return;
-		}else if(suji==-2 && dan==4 && mochi[teban][6]>0){//角
+		}else if(suji==-2 && dan==4 && gInHandPc[teban][6]>0){//角
 			te.isUtsu = 1;
 			te.fromSuji = suji;
 			te.fromDan = dan;
@@ -313,7 +313,7 @@ function fromInput(suji,dan,errorMessage){
 			//移動先を選ぶフェーズへ
 			controlPhase = 2;
 			return;
-		}else if(suji==-1 && dan==4 && mochi[teban][7]>0){//飛
+		}else if(suji==-1 && dan==4 && gInHandPc[teban][7]>0){//飛
 			te.isUtsu = 1;
 			te.fromSuji = suji;
 			te.fromDan = dan;
@@ -468,7 +468,7 @@ function forwardKoma(te,teban){
 				break;
 			}
 		}
-		mochiCountShow(te.MochiKoma,teban,mochi[teban][te.MochiKoma]-1);
+		mochiCountShow(te.MochiKoma,teban,gInHandPc[teban][te.MochiKoma]-1);
 		$("#k"+komaId)
 		.css("z-index","100")
 		.animate({
@@ -482,7 +482,7 @@ function forwardKoma(te,teban){
 	}else{//盤上の駒を動かす
 		komaId = idBan[te.fromSuji*16+te.fromDan];
 		tottaId = te.tottaKoma;
-		maisuu = te.tottaKoma==-1 ? -1 : mochi[teban][gPieces[te.tottaKoma].kind];
+		maisuu = te.tottaKoma==-1 ? -1 : gInHandPc[teban][gPieces[te.tottaKoma].kind];
 		$("#k"+komaId)
 		.css("z-index","100")
 		.animate({
@@ -532,7 +532,7 @@ function forwardState(te,teban,utsuId){
 		gPieces[utsuId].isNari = false;
 		gPieces[utsuId].isMochi = false;
 		//持ち駒
-		mochi[teban][gPieces[utsuId].kind]--;
+		gInHandPc[teban][gPieces[utsuId].kind]--;
 		//盤
 		idBan[toPos] = utsuId;
 		if(gPieces[utsuId].sengo==0){//先手
@@ -568,7 +568,7 @@ function forwardState(te,teban,utsuId){
 			gPieces[te.tottaKoma].isNari = false;
 			gPieces[te.tottaKoma].isMochi = true;
 			gPieces[te.tottaKoma].sengo = teban;//0:先手, 1:後手
-			mochi[teban][gPieces[te.tottaKoma].kind]++;
+			gInHandPc[teban][gPieces[te.tottaKoma].kind]++;
 			//盤
 			//上の操作ですでに変化している
 		}
@@ -591,7 +591,7 @@ function backwardState(te,teban,utsuId){
 		gPieces[utsuId].isNari = false;
 		gPieces[utsuId].isMochi = true;//盤上から持ち駒に戻すのだから
 		//持ち駒
-		mochi[teban][gPieces[utsuId].kind]++;
+		gInHandPc[teban][gPieces[utsuId].kind]++;
 		//盤
 		idBan[toPos] = -1;
 		blankBan[toPos] = 0;
@@ -622,7 +622,7 @@ function backwardState(te,teban,utsuId){
 			gPieces[te.tottaKoma].isNari = te.tottaNari;
 			gPieces[te.tottaKoma].isMochi = false;//取った駒を盤上に戻すのだから
 			gPieces[te.tottaKoma].sengo = (teban==0 ? 1 : 0);//0:先手, 1:後手
-			mochi[teban][gPieces[te.tottaKoma].kind]--;
+			gInHandPc[teban][gPieces[te.tottaKoma].kind]--;
 			//盤
 			idBan[toPos] = te.tottaKoma;
 			if(teban==0){//手番が先手なら取った駒は後手

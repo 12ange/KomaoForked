@@ -44,7 +44,7 @@ function initialKoma(){
 	//持ち駒初期化
 	for(var i=0; i<2; i++){
 		for(var j=0; j<9; j++){
-			mochi[i][j] = 0;
+			gInHandPc[i][j] = 0;
 		}
 	}
 }

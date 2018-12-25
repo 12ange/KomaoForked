@@ -3,7 +3,7 @@
 //--------------------------------------
 
 //駒
-var gPieces = [], mochi = [[],[]];
+var gPieces = [], gInHandPc = [[],[]];
 
 //盤
 var idBan = new Array(256), blankBan = new Array(256);
