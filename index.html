@@ -2,6 +2,8 @@
 <meta http-equiv="Content-Script-Type" content="text/javascript">
 <meta http-equiv="Content-type" content="text/html; charset=UTF-8">
 <title>こまお (自家修正版)</title>
+
+
 <script type="text/javascript" src="./jquery-1.7.1.min.js"></script>
 
 <script type="text/javascript" src="js/global.js"></script>
@@ -12,34 +14,10 @@
 <script type="text/javascript" src="js/ai.js"></script>
 <script type="text/javascript" src="js/comment.js"></script>
 
-<!-- link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP" rel="stylesheet" -->
+<!-- link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+JP" -->
+<!-- .wf-notosansjapanese { font-family: "Noto Sans JP"; } -->
+<link rel="stylesheet" type="text/css" href="./index.css">
 
-<style type="text/css">
-body{ background-color:#fff; }
-
-.alternatives,.fields,.komaochi,.pieces{ position:absolute; }
-.alternatives,.fields{ font-size:140%; width:200px; z-index:20; }
-.alternatives,.komaochi{ cursor:pointer; }
-.alternatives,.komaochi,#questionField{ text-align:center; }
-.fields,.pieces{ cursor:default; }
-.komaochi{ background-color:#fff; font-size:200%; width:330px; z-index:50; }
-.pieces{ z-index: 30; }
-/* .wf-notosansjapanese { font-family: "Noto Sans JP"; } */
-
-#alternativeFirst{ background-color:#a8f; top:350px; left:0px; }
-#alternativeSecond{ background-color:#f8a; top:400px; left:0px; }
-#alternativeRestart{ background-color:#ccf; top:450px; left:0px; }
-#ban,#banImage { position:relative; }
-#banImage{ z-index:0; }
-#komaochi0{ top:50px; left:300px; }
-#komaochi2{ top:120px; left:300px; }
-#komaochi4{ top:190px; left:300px; }
-#komaochi6{ top:260px; left:300px; }
-#komaochi8{ top:330px; left:300px; }
-#komaochi10{ top:400px; left:300px; }
-#questionField{ top:280px; left:0px; }
-#talkField{ background-color:#fff; top:120px; left:730px; }
-</style>
 </head>
 <body>
 <p>※ このページは、<a href="http://www.geocities.jp/komao81/">Yahoo!ジオシティーズにある「こまお」</a>をベースに勝手ながら改修したものです。
