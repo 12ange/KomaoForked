@@ -2,7 +2,7 @@
 
 # こまおForked
 
-この repository "こまおForked" は、とても弱いコンピュータ将棋ソフトウェア(ウェブページ)[「こまお」][komao] を
+この repository "こまおForked" は、とにかく弱いコンピュータ将棋ソフトウェア(ウェブページ)[「こまお」][komao] を
 
 * Yahoo!ジオシティーズが終了する前に保護しておく
   * [Yahoo!ジオシティーズ サービス終了のお知らせ](https://info-geocities.yahoo.co.jp/close/index.html) - 2019年3月31日に閲覧不能になる
