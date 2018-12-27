@@ -12,17 +12,17 @@ function banClick(event,offset){
 	var movableNum;
 
 	//駒を動かす
-	if(controlPhase==1){
+	if(gCtrlPhase==1){
 		suji = clickSuji(event,offset);
 		dan = clickDan(event,offset);
 		fromInput(suji,dan,"動かせる駒はそこにはないにゃ");
-	}else if(controlPhase==2){
+	}else if(gCtrlPhase==2){
 		suji = clickSuji(event,offset);
 		dan = clickDan(event,offset);
 		toInput(suji,dan);
 		messageMovableOrImpossible = isMovable();
 		if(messageMovableOrImpossible===""){
-			controlPhase = 3;
+			gCtrlPhase = 3;
 			movableNum = numOfCandidateMove();//成る場合はこの内部で代入
 			if(movableNum>=2){
 				dialogOfNaru();//成るか成らないか、そのあとforwardAndAi()
@@ -32,14 +32,14 @@ function banClick(event,offset){
 		}else{
 			highlightErase();//ハイライトを消す
 			newText(messageMovableOrImpossible);//そこは動かせないにゃなど
-			controlPhase = 1;
+			gCtrlPhase = 1;
 		}
 	}
 }
 
 function forwardAndAi(){
 	//駒を進めて、コンピュータが指して、次の候補種を計算する
-	controlPhase = 4;
+	gCtrlPhase = 4;
 	highlightErase();//ハイライトを消す
 	forwardKoma(te,teban);
 	aiMove();//コンピュータの番
@@ -149,7 +149,7 @@ function fromInput(suji,dan,errorMessage){
 		//選択した駒をハイライト
 		selectHighlight(suji,dan,1);
 		//移動先を選ぶフェーズへ
-		controlPhase = 2;
+		gCtrlPhase = 2;
 		return;
 	}
 
@@ -165,7 +165,7 @@ function fromInput(suji,dan,errorMessage){
 			//選択した駒をハイライト
 			selectHighlight(suji,dan,1);
 			//移動先を選ぶフェーズへ
-			controlPhase = 2;
+			gCtrlPhase = 2;
 			return;
 		}else if(suji==-2 && dan==8 && gInHandPc[teban][2]>0){//香
 			te.isUtsu = 1;
@@ -177,7 +177,7 @@ function fromInput(suji,dan,errorMessage){
 			//選択した駒をハイライト
 			selectHighlight(suji,dan,1);
 			//移動先を選ぶフェーズへ
-			controlPhase = 2;
+			gCtrlPhase = 2;
 			return;
 		}else if(suji==-1 && dan==8 && gInHandPc[teban][3]>0){//桂
 			te.isUtsu = 1;
@@ -189,7 +189,7 @@ function fromInput(suji,dan,errorMessage){
 			//選択した駒をハイライト
 			selectHighlight(suji,dan,1);
 			//移動先を選ぶフェーズへ
-			controlPhase = 2;
+			gCtrlPhase = 2;
 			return;
 		}else if(suji==-2 && dan==7 && gInHandPc[teban][4]>0){//銀
 			te.isUtsu = 1;
@@ -201,7 +201,7 @@ function fromInput(suji,dan,errorMessage){
 			//選択した駒をハイライト
 			selectHighlight(suji,dan,1);
 			//移動先を選ぶフェーズへ
-			controlPhase = 2;
+			gCtrlPhase = 2;
 			return;
 		}else if(suji==-1 && dan==7 && gInHandPc[teban][5]>0){//金
 			te.isUtsu = 1;
@@ -213,7 +213,7 @@ function fromInput(suji,dan,errorMessage){
 			//選択した駒をハイライト
 			selectHighlight(suji,dan,1);
 			//移動先を選ぶフェーズへ
-			controlPhase = 2;
+			gCtrlPhase = 2;
 			return;
 		}else if(suji==-2 && dan==6 && gInHandPc[teban][6]>0){//角
 			te.isUtsu = 1;
@@ -225,7 +225,7 @@ function fromInput(suji,dan,errorMessage){
 			//選択した駒をハイライト
 			selectHighlight(suji,dan,1);
 			//移動先を選ぶフェーズへ
-			controlPhase = 2;
+			gCtrlPhase = 2;
 			return;
 		}else if(suji==-1 && dan==6 && gInHandPc[teban][7]>0){//飛
 			te.isUtsu = 1;
@@ -237,7 +237,7 @@ function fromInput(suji,dan,errorMessage){
 			//選択した駒をハイライト
 			selectHighlight(suji,dan,1);
 			//移動先を選ぶフェーズへ
-			controlPhase = 2;
+			gCtrlPhase = 2;
 			return;
 		}
 	}else if(teban==1 && (suji==-1 || suji==-2) && (1<=dan && dan<=4)){//後手
@@ -251,7 +251,7 @@ function fromInput(suji,dan,errorMessage){
 			//選択した駒をハイライト
 			selectHighlight(suji,dan,1);
 			//移動先を選ぶフェーズへ
-			controlPhase = 2;
+			gCtrlPhase = 2;
 			return;
 		}else if(suji==-2 && dan==2 && gInHandPc[teban][2]>0){//香
 			te.isUtsu = 1;
@@ -263,7 +263,7 @@ function fromInput(suji,dan,errorMessage){
 			//選択した駒をハイライト
 			selectHighlight(suji,dan,1);
 			//移動先を選ぶフェーズへ
-			controlPhase = 2;
+			gCtrlPhase = 2;
 			return;
 		}else if(suji==-1 && dan==2 && gInHandPc[teban][3]>0){//桂
 			te.isUtsu = 1;
@@ -275,7 +275,7 @@ function fromInput(suji,dan,errorMessage){
 			//選択した駒をハイライト
 			selectHighlight(suji,dan,1);
 			//移動先を選ぶフェーズへ
-			controlPhase = 2;
+			gCtrlPhase = 2;
 			return;
 		}else if(suji==-2 && dan==3 && gInHandPc[teban][4]>0){//銀
 			te.isUtsu = 1;
@@ -287,7 +287,7 @@ function fromInput(suji,dan,errorMessage){
 			//選択した駒をハイライト
 			selectHighlight(suji,dan,1);
 			//移動先を選ぶフェーズへ
-			controlPhase = 2;
+			gCtrlPhase = 2;
 			return;
 		}else if(suji==-1 && dan==3 && gInHandPc[teban][5]>0){//金
 			te.isUtsu = 1;
@@ -299,7 +299,7 @@ function fromInput(suji,dan,errorMessage){
 			//選択した駒をハイライト
 			selectHighlight(suji,dan,1);
 			//移動先を選ぶフェーズへ
-			controlPhase = 2;
+			gCtrlPhase = 2;
 			return;
 		}else if(suji==-2 && dan==4 && gInHandPc[teban][6]>0){//角
 			te.isUtsu = 1;
@@ -311,7 +311,7 @@ function fromInput(suji,dan,errorMessage){
 			//選択した駒をハイライト
 			selectHighlight(suji,dan,1);
 			//移動先を選ぶフェーズへ
-			controlPhase = 2;
+			gCtrlPhase = 2;
 			return;
 		}else if(suji==-1 && dan==4 && gInHandPc[teban][7]>0){//飛
 			te.isUtsu = 1;
@@ -323,7 +323,7 @@ function fromInput(suji,dan,errorMessage){
 			//選択した駒をハイライト
 			selectHighlight(suji,dan,1);
 			//移動先を選ぶフェーズへ
-			controlPhase = 2;
+			gCtrlPhase = 2;
 			return;
 		}
 	}

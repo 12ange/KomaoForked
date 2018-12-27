@@ -45,13 +45,13 @@ function comSide(){
 	}
 
 	//人間の入力フェーズへ
-	controlPhase = 1;
+	gCtrlPhase = 1;
 }
 
 function comToryo(){
 	//コンピュータが負けたときの処理
 	newText("負けました　きみの勝ちにゃ　ありがとうございました");
-	controlPhase = -1;
+	gCtrlPhase = -1;
 	restartText();
 }
 
@@ -70,7 +70,7 @@ function isHumanToryo(){
 
 	if(!hasSashite){ //指し手が見つからなかった
 		newText("ぼくの勝ちにゃ　ありがとうございました");
-		controlPhase = -1;
+		gCtrlPhase = -1;
 		restartText();
 	}
 	return !hasSashite;

@@ -116,7 +116,7 @@ function startCom(){
 	//コンピュータが先手または上手
 
 	//コンピュータの思考フェーズ
-	controlPhase = 4;
+	gCtrlPhase = 4;
 
 	//コンピュータの手番
 	teban = 1;
@@ -131,14 +131,14 @@ function startCom(){
 function startHuman(){
 	//人間が先手
 
+	//人間の入力待ち
+	gCtrlPhase = 1;
+
 	//人間の手番
 	teban = 0;
 
 	//最初の合法手の計算
 	candidateCount = makeCandidateTe(candidateTe);
-
-	//人間の入力待ち
-	controlPhase = 1;
 
 	//手番の明示
 	newText("おねがいします　きみの番からにゃ");
