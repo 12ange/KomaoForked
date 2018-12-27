@@ -137,7 +137,7 @@ function fromInput(suji,dan,errorMessage){
 
 	//盤上からの入力
 	if(1<=suji && suji<=9 && 1<=dan && dan<=9){
-		blank = blankBan[16*suji+dan];
+		blank = gTblSqDepend[16*suji+dan];
 	}
 	if((blank==1 && teban==0) || (blank==2 && teban==1)){
 		//そこに自分の駒があれば
@@ -341,7 +341,7 @@ function toInput(suji,dan){
 
 	//盤上への入力
 	if(1<=suji && suji<=9 && 1<=dan && dan<=9){
-		blank = blankBan[16*suji+dan];
+		blank = gTblSqDepend[16*suji+dan];
 	}else{//盤外なら
 		te.tottaKoma = -2;//エラーメッセージなし
 		te.toSuji = -1;
@@ -355,7 +355,7 @@ function toInput(suji,dan){
 		te.toSuji = suji;
 		te.toDan = dan;
 	}else if(te.isUtsu==0 && ((teban==0 && blank==2) || (teban==1 && blank==1))){//盤上からの相手の駒なら
-		te.tottaKoma = idBan[16*suji+dan];
+		te.tottaKoma = gTblPcIndex[16*suji+dan];
 		te.tottaNari = gPieces[te.tottaKoma].isNari;
 		te.toSuji = suji;
 		te.toDan = dan;
@@ -480,7 +480,7 @@ function forwardKoma(te,teban){
 		});
 		utsuId = komaId;
 	}else{//盤上の駒を動かす
-		komaId = idBan[te.fromSuji*16+te.fromDan];
+		komaId = gTblPcIndex[te.fromSuji*16+te.fromDan];
 		tottaId = te.tottaKoma;
 		maisuu = te.tottaKoma==-1 ? -1 : gInHandPc[teban][gPieces[te.tottaKoma].kind];
 		$("#k"+komaId)
@@ -534,31 +534,31 @@ function forwardState(te,teban,utsuId){
 		//持ち駒
 		gInHandPc[teban][gPieces[utsuId].kind]--;
 		//盤
-		idBan[toPos] = utsuId;
+		gTblPcIndex[toPos] = utsuId;
 		if(gPieces[utsuId].sengo==0){//先手
-			blankBan[toPos] = 1;
+			gTblSqDepend[toPos] = 1;
 		}else{//後手
-			blankBan[toPos] = 2;
+			gTblSqDepend[toPos] = 2;
 		}
 	}else{//盤上の駒を動かす
 		//位置
 		fromPos = 16 * te.fromSuji + te.fromDan;
 		toPos = 16 * te.toSuji + te.toDan;
 		//駒id
-		komaId = idBan[fromPos];
+		komaId = gTblPcIndex[fromPos];
 		//koma変数
 		gPieces[komaId].pos = toPos;
 		if(te.isNaru){//成るなら
 			gPieces[komaId].isNari = true;
 		}
 		//盤変数（２つ）
-		idBan[fromPos] = -1;
-		idBan[toPos] = komaId;
-		blankBan[fromPos] = 0;
+		gTblPcIndex[fromPos] = -1;
+		gTblPcIndex[toPos] = komaId;
+		gTblSqDepend[fromPos] = 0;
 		if(gPieces[komaId].sengo==0){//先手
-			blankBan[toPos] = 1;
+			gTblSqDepend[toPos] = 1;
 		}else{//後手
-			blankBan[toPos] = 2;
+			gTblSqDepend[toPos] = 2;
 		}
 
 		//取る処理
@@ -593,27 +593,27 @@ function backwardState(te,teban,utsuId){
 		//持ち駒
 		gInHandPc[teban][gPieces[utsuId].kind]++;
 		//盤
-		idBan[toPos] = -1;
-		blankBan[toPos] = 0;
+		gTblPcIndex[toPos] = -1;
+		gTblSqDepend[toPos] = 0;
 	}else{//盤上の駒を動かす
 		//位置
 		fromPos = 16 * te.fromSuji + te.fromDan;
 		toPos = 16 * te.toSuji + te.toDan;
 		//駒id
-		komaId = idBan[toPos];
+		komaId = gTblPcIndex[toPos];
 		//koma変数
 		gPieces[komaId].pos = fromPos;
 		if(te.isNaru){//成るなら成る前の状態に
 			gPieces[komaId].isNari = false;
 		}
 		//盤変数（２つ）
-		idBan[fromPos] = komaId;
-		idBan[toPos] = -1;
-		blankBan[toPos] = 0;
+		gTblPcIndex[fromPos] = komaId;
+		gTblPcIndex[toPos] = -1;
+		gTblSqDepend[toPos] = 0;
 		if(gPieces[komaId].sengo==0){//先手
-			blankBan[fromPos] = 1;
+			gTblSqDepend[fromPos] = 1;
 		}else{//後手
-			blankBan[fromPos] = 2;
+			gTblSqDepend[fromPos] = 2;
 		}
 		//取る処理
 		if(te.tottaKoma!=-1){//駒を取っていれば
@@ -624,11 +624,11 @@ function backwardState(te,teban,utsuId){
 			gPieces[te.tottaKoma].sengo = (teban==0 ? 1 : 0);//0:先手, 1:後手
 			gInHandPc[teban][gPieces[te.tottaKoma].kind]--;
 			//盤
-			idBan[toPos] = te.tottaKoma;
+			gTblPcIndex[toPos] = te.tottaKoma;
 			if(teban==0){//手番が先手なら取った駒は後手
-				blankBan[toPos] = 2;
+				gTblSqDepend[toPos] = 2;
 			}else{//手番が後手なら取った駒は先手
-				blankBan[toPos] = 1;
+				gTblSqDepend[toPos] = 1;
 			}
 		}
 	}

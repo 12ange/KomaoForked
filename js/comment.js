@@ -81,7 +81,7 @@ function isKomatoruHuman(_te){
 //成る
 function isNaruHuman(_te){
 	if(_te.isUtsu==0 && _te.isNaru){
-		switch (gPieces[idBan[_te.toSuji*16+_te.toDan]].kind) {
+		switch (gPieces[gTblPcIndex[_te.toSuji*16+_te.toDan]].kind) {
 			case 1://歩
 				newText("と金にゃ　危険にゃ");
 				break;
@@ -120,7 +120,7 @@ function isNextKomatoriHuman(_te){
 		toruTe[i].fromDan==_te.toDan){//動かした駒だけ
 			//格下か同格の駒で取れるか
 			if(gPieces[toruTe[i].tottaKoma].kind>toruKoma &&
-				gPieces[toruTe[i].tottaKoma].kind>=gPieces[idBan[_te.toSuji*16+_te.toDan]].kind){
+				gPieces[toruTe[i].tottaKoma].kind>=gPieces[gTblPcIndex[_te.toSuji*16+_te.toDan]].kind){
 				toruKoma = gPieces[toruTe[i].tottaKoma].kind;
 				toruNari = gPieces[toruTe[i].tottaKoma].isNari;
 			}
@@ -177,7 +177,7 @@ function isNextKomatoriHuman(_te){
 function isTokinHuman(_te){
 	//と金作りを狙われる
 
-	var komaId = idBan[_te.toSuji*16+_te.toDan];
+	var komaId = gTblPcIndex[_te.toSuji*16+_te.toDan];
 
 	if(gPieces[komaId].kind==1 && !gPieces[komaId].isNari && _te.toDan<=4){//歩をあと一歩まで動かしたら
 		//すぐには取られないなら
@@ -205,7 +205,7 @@ function isTokinHuman(_te){
 function isKingUtsu(_te){
 	//玉の近くに打たれる
 
-	var komaId = idBan[_te.toSuji*16+_te.toDan];
+	var komaId = gTblPcIndex[_te.toSuji*16+_te.toDan];
 	if(_te.isUtsu==1 &&
 	Math.max(Math.abs(Math.floor(gPieces[39].pos/16) - _te.toSuji),
 	Math.abs((gPieces[39].pos%16) - _te.toDan))<=2){//玉の近辺に打たれたら
@@ -237,7 +237,7 @@ function isSemaru(_te){
 	//打つなら関係なし
 	if(_te.isUtsu==1){ return false; }
 
-	var komaId = idBan[_te.toSuji*16+_te.toDan];
+	var komaId = gTblPcIndex[_te.toSuji*16+_te.toDan];
 	var komaKind = gPieces[komaId].kind;
 
 	//歩なら

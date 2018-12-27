@@ -74,35 +74,35 @@ function initialState(){
 	var i,suji,dan;
 
 	//idナンバー
-	for(i=0; i<idBan.length; i++){
+	for(i=0; i<gTblPcIndex.length; i++){
 		//一度全てを-1にする
-		idBan[i] = -1;
+		gTblPcIndex[i] = -1;
 	}
 	for(i=0; i<gPieces.length; i++){
 		//使う駒ならidナンバーをふる
 		if(gPieces[i].isUse){
-			idBan[gPieces[i].pos] = i;
+			gTblPcIndex[gPieces[i].pos] = i;
 		}
 	}
 
 	//0空白・1先手・2後手・4壁
-	for(i=0; i<blankBan.length; i++){
+	for(i=0; i<gTblSqDepend.length; i++){
 		//全てを壁か空白にする
 		suji = i >>> 4;
 		dan = i & 15;
 		if((1<=suji) && (suji<=9) && (1<=dan) && (dan<=9)){
-			blankBan[i] = 0;//空白
+			gTblSqDepend[i] = 0;//空白
 		}else{
-			blankBan[i] = 4;//壁
+			gTblSqDepend[i] = 4;//壁
 		}
 	}
 	for(i=0; i<gPieces.length; i++){
 		//使う駒なら先後を記録
 		if(gPieces[i].isUse){
 			if(gPieces[i].sengo==0){//先手
-				blankBan[gPieces[i].pos] = 1;
+				gTblSqDepend[gPieces[i].pos] = 1;
 			}else{//後手
-				blankBan[gPieces[i].pos] = 2;
+				gTblSqDepend[gPieces[i].pos] = 2;
 			}
 		}
 	}

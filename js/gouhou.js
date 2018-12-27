@@ -41,8 +41,8 @@ function gouhouDrop(gouhouTe,gouhouCount){
 	var dropPos = new Array(81);
 	var dropNum = 0;
 
-	for(var i=0; i<blankBan.length; i++){
-		if(blankBan[i]==0){
+	for(var i=0; i<gTblSqDepend.length; i++){
+		if(gTblSqDepend[i]==0){
 			dropPos[dropNum] = i;
 			dropNum++;
 		}
@@ -156,15 +156,15 @@ function gouhouMove(gouhouTe,gouhouCount){
 			//一つずつ
 			for(var d=0; d<OneStep[komaKind].length; d++){
 				forwardPos = gPieces[id].pos + OneStep[komaKind][d];//進む位置
-				if((blankBan[forwardPos]==0)
-				|| (blankBan[forwardPos]==1 && teban==1)
-				|| (blankBan[forwardPos]==2 && teban==0)){//敵の駒か空白なら
+				if((gTblSqDepend[forwardPos]==0)
+				|| (gTblSqDepend[forwardPos]==1 && teban==1)
+				|| (gTblSqDepend[forwardPos]==2 && teban==0)){//敵の駒か空白なら
 
 					gouhouTe[gouhouCount].isUtsu = 0;
 					gouhouTe[gouhouCount].fromSuji = Math.floor(gPieces[id].pos / 16);
 					gouhouTe[gouhouCount].fromDan = gPieces[id].pos % 16;
-					gouhouTe[gouhouCount].tottaKoma = idBan[forwardPos];
-					gouhouTe[gouhouCount].tottaNari = idBan[forwardPos]==-1 ? -1 : (gPieces[idBan[forwardPos]].isNari?1:0);
+					gouhouTe[gouhouCount].tottaKoma = gTblPcIndex[forwardPos];
+					gouhouTe[gouhouCount].tottaNari = gTblPcIndex[forwardPos]==-1 ? -1 : (gPieces[gTblPcIndex[forwardPos]].isNari?1:0);
 					gouhouTe[gouhouCount].toSuji = Math.floor(forwardPos / 16);
 					gouhouTe[gouhouCount].toDan = forwardPos % 16;
 					gouhouTe[gouhouCount].isNaru = false;
@@ -178,8 +178,8 @@ function gouhouMove(gouhouTe,gouhouCount){
 						gouhouTe[gouhouCount].isUtsu = 0;
 						gouhouTe[gouhouCount].fromSuji = Math.floor(gPieces[id].pos / 16);
 						gouhouTe[gouhouCount].fromDan = gPieces[id].pos % 16;
-						gouhouTe[gouhouCount].tottaKoma = idBan[forwardPos];
-						gouhouTe[gouhouCount].tottaNari = idBan[forwardPos]==-1 ? -1 : (gPieces[idBan[forwardPos]].isNari?1:0);
+						gouhouTe[gouhouCount].tottaKoma = gTblPcIndex[forwardPos];
+						gouhouTe[gouhouCount].tottaNari = gTblPcIndex[forwardPos]==-1 ? -1 : (gPieces[gTblPcIndex[forwardPos]].isNari?1:0);
 						gouhouTe[gouhouCount].toSuji = Math.floor(forwardPos / 16);
 						gouhouTe[gouhouCount].toDan = forwardPos % 16;
 						gouhouTe[gouhouCount].isNaru = true;
@@ -195,12 +195,12 @@ function gouhouMove(gouhouTe,gouhouCount){
 				isJumpable = true;
 				while(isJumpable){
 					forwardPos += Jump[komaKind][d];//進む位置
-					if(blankBan[forwardPos]==0){//空白なら
+					if(gTblSqDepend[forwardPos]==0){//空白なら
 						gouhouTe[gouhouCount].isUtsu = 0;
 						gouhouTe[gouhouCount].fromSuji = Math.floor(gPieces[id].pos / 16);
 						gouhouTe[gouhouCount].fromDan = gPieces[id].pos % 16;
-						gouhouTe[gouhouCount].tottaKoma = idBan[forwardPos];
-						gouhouTe[gouhouCount].tottaNari = idBan[forwardPos]==-1 ? -1 : (gPieces[idBan[forwardPos]].isNari?1:0);
+						gouhouTe[gouhouCount].tottaKoma = gTblPcIndex[forwardPos];
+						gouhouTe[gouhouCount].tottaNari = gTblPcIndex[forwardPos]==-1 ? -1 : (gPieces[gTblPcIndex[forwardPos]].isNari?1:0);
 						gouhouTe[gouhouCount].toSuji = Math.floor(forwardPos / 16);
 						gouhouTe[gouhouCount].toDan = forwardPos % 16;
 						gouhouTe[gouhouCount].isNaru = false;
@@ -214,8 +214,8 @@ function gouhouMove(gouhouTe,gouhouCount){
 							gouhouTe[gouhouCount].isUtsu = 0;
 							gouhouTe[gouhouCount].fromSuji = Math.floor(gPieces[id].pos / 16);
 							gouhouTe[gouhouCount].fromDan = gPieces[id].pos % 16;
-							gouhouTe[gouhouCount].tottaKoma = idBan[forwardPos];
-							gouhouTe[gouhouCount].tottaNari = idBan[forwardPos]==-1 ? -1 : (gPieces[idBan[forwardPos]].isNari?1:0);
+							gouhouTe[gouhouCount].tottaKoma = gTblPcIndex[forwardPos];
+							gouhouTe[gouhouCount].tottaNari = gTblPcIndex[forwardPos]==-1 ? -1 : (gPieces[gTblPcIndex[forwardPos]].isNari?1:0);
 							gouhouTe[gouhouCount].toSuji = Math.floor(forwardPos / 16);
 							gouhouTe[gouhouCount].toDan = forwardPos % 16;
 							gouhouTe[gouhouCount].isNaru = true;
@@ -223,13 +223,13 @@ function gouhouMove(gouhouTe,gouhouCount){
 							gouhouTe[gouhouCount].isOK = true;
 							gouhouCount++;
 						}
-					}else if((blankBan[forwardPos]==1 && teban==1)
-					|| (blankBan[forwardPos]==2 && teban==0)){//敵の駒なら
+					}else if((gTblSqDepend[forwardPos]==1 && teban==1)
+					|| (gTblSqDepend[forwardPos]==2 && teban==0)){//敵の駒なら
 						gouhouTe[gouhouCount].isUtsu = 0;
 						gouhouTe[gouhouCount].fromSuji = Math.floor(gPieces[id].pos / 16);
 						gouhouTe[gouhouCount].fromDan = gPieces[id].pos % 16;
-						gouhouTe[gouhouCount].tottaKoma = idBan[forwardPos];
-						gouhouTe[gouhouCount].tottaNari = idBan[forwardPos]==-1 ? -1 : (gPieces[idBan[forwardPos]].isNari?1:0);
+						gouhouTe[gouhouCount].tottaKoma = gTblPcIndex[forwardPos];
+						gouhouTe[gouhouCount].tottaNari = gTblPcIndex[forwardPos]==-1 ? -1 : (gPieces[gTblPcIndex[forwardPos]].isNari?1:0);
 						gouhouTe[gouhouCount].toSuji = Math.floor(forwardPos / 16);
 						gouhouTe[gouhouCount].toDan = forwardPos % 16;
 						gouhouTe[gouhouCount].isNaru = false;
@@ -243,8 +243,8 @@ function gouhouMove(gouhouTe,gouhouCount){
 							gouhouTe[gouhouCount].isUtsu = 0;
 							gouhouTe[gouhouCount].fromSuji = Math.floor(gPieces[id].pos / 16);
 							gouhouTe[gouhouCount].fromDan = gPieces[id].pos % 16;
-							gouhouTe[gouhouCount].tottaKoma = idBan[forwardPos];
-							gouhouTe[gouhouCount].tottaNari = idBan[forwardPos]==-1 ? -1 : (gPieces[idBan[forwardPos]].isNari?1:0);
+							gouhouTe[gouhouCount].tottaKoma = gTblPcIndex[forwardPos];
+							gouhouTe[gouhouCount].tottaNari = gTblPcIndex[forwardPos]==-1 ? -1 : (gPieces[gTblPcIndex[forwardPos]].isNari?1:0);
 							gouhouTe[gouhouCount].toSuji = Math.floor(forwardPos / 16);
 							gouhouTe[gouhouCount].toDan = forwardPos % 16;
 							gouhouTe[gouhouCount].isNaru = true;
