@@ -50,7 +50,7 @@ function gouhouDrop(gouhouTe,gouhouCount){
 
 	//打つ手を生成
 	for(var k=1; k<=7; k++){
-		if(gInHandPc[teban][k]>0){
+		if(gInHandPc[gWhichMoves][k]>0){
 			for(var i=0; i<dropNum; i++){
 				gouhouTe[gouhouCount].isUtsu = 1;
 				gouhouTe[gouhouCount].MochiKoma = k;
@@ -151,14 +151,14 @@ function gouhouMove(gouhouTe,gouhouCount){
 	var forwardPos;
 
 	for(var id=0; id<40; id++){
-		if(!gPieces[id].isMochi && gPieces[id].sengo==teban && gPieces[id].isUse){
+		if(!gPieces[id].isMochi && gPieces[id].sengo==gWhichMoves && gPieces[id].isUse){
 			komaKind = gPieces[id].kind + (gPieces[id].isNari?8:0) + 16 * gPieces[id].sengo;
 			//一つずつ
 			for(var d=0; d<OneStep[komaKind].length; d++){
 				forwardPos = gPieces[id].pos + OneStep[komaKind][d];//進む位置
 				if((gTblSqDepend[forwardPos]==0)
-				|| (gTblSqDepend[forwardPos]==1 && teban==1)
-				|| (gTblSqDepend[forwardPos]==2 && teban==0)){//敵の駒か空白なら
+				|| (gTblSqDepend[forwardPos]==1 && gWhichMoves==1)
+				|| (gTblSqDepend[forwardPos]==2 && gWhichMoves==0)){//敵の駒か空白なら
 
 					gouhouTe[gouhouCount].isUtsu = 0;
 					gouhouTe[gouhouCount].fromSuji = Math.floor(gPieces[id].pos / 16);
@@ -173,8 +173,8 @@ function gouhouMove(gouhouTe,gouhouCount){
 					gouhouCount++;
 					//成れるか？
 					if(!gPieces[id].isNari &&
-					((forwardPos%16<=3 && teban==0) || (gPieces[id].pos%16<=3 && teban==0)//先手番
-					|| (forwardPos%16>=7 && teban==1) || (gPieces[id].pos%16>=7 && teban==1))){//後手番
+					((forwardPos%16<=3 && gWhichMoves==0) || (gPieces[id].pos%16<=3 && gWhichMoves==0)//先手番
+					|| (forwardPos%16>=7 && gWhichMoves==1) || (gPieces[id].pos%16>=7 && gWhichMoves==1))){//後手番
 						gouhouTe[gouhouCount].isUtsu = 0;
 						gouhouTe[gouhouCount].fromSuji = Math.floor(gPieces[id].pos / 16);
 						gouhouTe[gouhouCount].fromDan = gPieces[id].pos % 16;
@@ -209,8 +209,8 @@ function gouhouMove(gouhouTe,gouhouCount){
 						gouhouCount++;
 						//成れるか？
 						if(!gPieces[id].isNari &&
-						((forwardPos%16<=3 && teban==0) || (gPieces[id].pos%16<=3 && teban==0)//先手番
-						|| (forwardPos%16>=7 && teban==1) || (gPieces[id].pos%16>=7 && teban==1))){//後手番
+						((forwardPos%16<=3 && gWhichMoves==0) || (gPieces[id].pos%16<=3 && gWhichMoves==0)//先手番
+						|| (forwardPos%16>=7 && gWhichMoves==1) || (gPieces[id].pos%16>=7 && gWhichMoves==1))){//後手番
 							gouhouTe[gouhouCount].isUtsu = 0;
 							gouhouTe[gouhouCount].fromSuji = Math.floor(gPieces[id].pos / 16);
 							gouhouTe[gouhouCount].fromDan = gPieces[id].pos % 16;
@@ -223,8 +223,8 @@ function gouhouMove(gouhouTe,gouhouCount){
 							gouhouTe[gouhouCount].isOK = true;
 							gouhouCount++;
 						}
-					}else if((gTblSqDepend[forwardPos]==1 && teban==1)
-					|| (gTblSqDepend[forwardPos]==2 && teban==0)){//敵の駒なら
+					}else if((gTblSqDepend[forwardPos]==1 && gWhichMoves==1)
+					|| (gTblSqDepend[forwardPos]==2 && gWhichMoves==0)){//敵の駒なら
 						gouhouTe[gouhouCount].isUtsu = 0;
 						gouhouTe[gouhouCount].fromSuji = Math.floor(gPieces[id].pos / 16);
 						gouhouTe[gouhouCount].fromDan = gPieces[id].pos % 16;
@@ -238,8 +238,8 @@ function gouhouMove(gouhouTe,gouhouCount){
 						gouhouCount++;
 						//成れるか？
 						if(!gPieces[id].isNari &&
-						((forwardPos%16<=3 && teban==0) || (gPieces[id].pos%16<=3 && teban==0)//先手番
-						|| (forwardPos%16>=7 && teban==1) || (gPieces[id].pos%16>=7 && teban==1))){//後手番
+						((forwardPos%16<=3 && gWhichMoves==0) || (gPieces[id].pos%16<=3 && gWhichMoves==0)//先手番
+						|| (forwardPos%16>=7 && gWhichMoves==1) || (gPieces[id].pos%16>=7 && gWhichMoves==1))){//後手番
 							gouhouTe[gouhouCount].isUtsu = 0;
 							gouhouTe[gouhouCount].fromSuji = Math.floor(gPieces[id].pos / 16);
 							gouhouTe[gouhouCount].fromDan = gPieces[id].pos % 16;
@@ -278,8 +278,8 @@ function removeIllegalMove(gouhouTe,gouhouCount){
 	var disCount = 0; //TODO:この未使用変数は何のために？
 	for(var i=0; i<gouhouCount; i++){
 		utsuId = findUtsuID(gouhouTe[i]);
-		forwardState(gouhouTe[i],teban,utsuId);//内部で進める
-		if(teban==0){teban=1;}else{teban=0;}//手番交代
+		forwardState(gouhouTe[i],gWhichMoves,utsuId);//内部で進める
+		switchTeban();//手番交代
 		gouhouForOuteCount = makeMoveTe(gouhouForOuteTe);
 		for(var j=0; j<gouhouForOuteCount; j++){
 			if(gouhouForOuteTe[j].tottaKoma!=-1){
@@ -291,8 +291,8 @@ function removeIllegalMove(gouhouTe,gouhouCount){
 				}
 			}
 		}
-		if(teban==0){teban=1;}else{teban=0;}//手番交代
-		backwardState(gouhouTe[i],teban,utsuId);//内部で戻す
+		switchTeban();//手番交代
+		backwardState(gouhouTe[i],gWhichMoves,utsuId);//内部で戻す
 	}
 
 	//行き所のない駒
@@ -301,42 +301,42 @@ function removeIllegalMove(gouhouTe,gouhouCount){
 		if(gouhouTe[i].isOK){
 			komaId = gouhouTe[i].id;
 			komaKind = gPieces[komaId].kind;
-			if(teban==0 && komaKind==1 &&
+			if(gWhichMoves==0 && komaKind==1 &&
 			((!gPieces[komaId].isNari && !gouhouTe[i].isNaru) || gouhouTe[i].isUtsu==1)){//先手・歩
 				if(gouhouTe[i].toDan==1){
 					gouhouTe[i].isOK = false;
 					gouhouTe[i].strWhyNoGood = "どこにも行けない駒になってしまうにゃ";
 					disCount++;
 				}
-			}else if(teban==1 && komaKind==1 &&
+			}else if(gWhichMoves==1 && komaKind==1 &&
 			((!gPieces[komaId].isNari && !gouhouTe[i].isNaru) || gouhouTe[i].isUtsu==1)){//後手・歩
 				if(gouhouTe[i].toDan==9){
 					gouhouTe[i].isOK = false;
 					gouhouTe[i].strWhyNoGood = "どこにも行けない駒になってしまうにゃ";
 					disCount++;
 				}
-			}else if(teban==0 && komaKind==2 &&
+			}else if(gWhichMoves==0 && komaKind==2 &&
 			((!gPieces[komaId].isNari && !gouhouTe[i].isNaru) || gouhouTe[i].isUtsu==1)){//先手・香
 				if(gouhouTe[i].toDan==1){
 					gouhouTe[i].isOK = false;
 					gouhouTe[i].strWhyNoGood = "どこにも行けない駒になってしまうにゃ";
 					disCount++;
 				}
-			}else if(teban==1 && komaKind==2 &&
+			}else if(gWhichMoves==1 && komaKind==2 &&
 			((!gPieces[komaId].isNari && !gouhouTe[i].isNaru) || gouhouTe[i].isUtsu==1)){//後手・香
 				if(gouhouTe[i].toDan==9){
 					gouhouTe[i].isOK = false;
 					gouhouTe[i].strWhyNoGood = "どこにも行けない駒になってしまうにゃ";
 					disCount++;
 				}
-			}else if(teban==0 && komaKind==3 &&
+			}else if(gWhichMoves==0 && komaKind==3 &&
 			((!gPieces[komaId].isNari && !gouhouTe[i].isNaru) || gouhouTe[i].isUtsu==1)){//先手・桂
 				if(gouhouTe[i].toDan<=2){
 					gouhouTe[i].isOK = false;
 					gouhouTe[i].strWhyNoGood = "どこにも行けない駒になってしまうにゃ";
 					disCount++;
 				}
-			}else if(teban==1 && komaKind==3 &&
+			}else if(gWhichMoves==1 && komaKind==3 &&
 			((!gPieces[komaId].isNari && !gouhouTe[i].isNaru) || gouhouTe[i].isUtsu==1)){//後手・桂
 				if(gouhouTe[i].toDan>=8){
 					gouhouTe[i].isOK = false;
@@ -354,7 +354,7 @@ function removeIllegalMove(gouhouTe,gouhouCount){
 			if(gouhouTe[i].isUtsu==1 && gouhouTe[i].MochiKoma==1){
 				for(var j=0; j<40; j++){
 					if(gPieces[j].isUse
-					&& teban==gPieces[j].sengo
+					&& gWhichMoves==gPieces[j].sengo
 					&& gPieces[j].kind==1
 					&& !gPieces[j].isNari
 					&& !gPieces[j].isMochi
@@ -380,18 +380,18 @@ function removeIllegalMove(gouhouTe,gouhouCount){
 	for(var i=0; i<gouhouCount; i++){
 		if(gouhouTe[i].isOK){
 			if(gouhouTe[i].isUtsu==1 && gouhouTe[i].MochiKoma==1){
-				if((teban==0 && (gPieces[39].pos+1)==(gouhouTe[i].toSuji*16+gouhouTe[i].toDan))//先手の歩
-				|| (teban==1 && (gPieces[19].pos-1)==(gouhouTe[i].toSuji*16+gouhouTe[i].toDan))){//後手の歩
+				if((gWhichMoves==0 && (gPieces[39].pos+1)==(gouhouTe[i].toSuji*16+gouhouTe[i].toDan))//先手の歩
+				|| (gWhichMoves==1 && (gPieces[19].pos-1)==(gouhouTe[i].toSuji*16+gouhouTe[i].toDan))){//後手の歩
 
 					escapable = false;//逃げられないかもしれない
 					utsuId = findUtsuID(gouhouTe[i]);
-					forwardState(gouhouTe[i],teban,utsuId);//内部で進める//とりあえず歩を打つ
-					if(teban==0){teban=1;}else{teban=0;}//手番交代
+					forwardState(gouhouTe[i],gWhichMoves,utsuId);//内部で進める//とりあえず歩を打つ
+					switchTeban();//手番交代
 					gouhouForOuteCount = makeMoveTe(gouhouForOuteTe);
 					for(var j=0; j<gouhouForOuteCount; j++){//相手が何か動かす
 						catchable = false;//取れないかもしれない
-						forwardState(gouhouForOuteTe[j],teban,-1);//内部で進める
-						if(teban==0){teban=1;}else{teban=0;}//手番交代
+						forwardState(gouhouForOuteTe[j],gWhichMoves,-1);//内部で進める
+						switchTeban();//手番交代
 						gouhouForTodomeCount = makeMoveTe(gouhouForTodomeTe);
 						for(var k=0; k<gouhouForTodomeCount; k++){//玉がとれるかどうか
 							if(gouhouForTodomeTe[k].tottaKoma!=-1){
@@ -401,12 +401,12 @@ function removeIllegalMove(gouhouTe,gouhouCount){
 								}
 							}
 						}
-						if(teban==0){teban=1;}else{teban=0;}//手番交代
-						backwardState(gouhouForOuteTe[j],teban,-1);//内部で戻す
+						switchTeban();//手番交代
+						backwardState(gouhouForOuteTe[j],gWhichMoves,-1);//内部で戻す
 						if(catchable==false){escapable = true; break;}//取れなかった
 					}
-					if(teban==0){teban=1;}else{teban=0;}//手番交代
-					backwardState(gouhouTe[i],teban,utsuId);//内部で戻す
+					switchTeban();//手番交代
+					backwardState(gouhouTe[i],gWhichMoves,utsuId);//内部で戻す
 					if(escapable==false){
 						gouhouTe[i].isOK = false;
 						gouhouTe[i].strWhyNoGood = "歩を打って詰ましてはだめにゃ";
@@ -442,7 +442,7 @@ function findUtsuID(oneTe){
 			if(gPieces[id].kind==oneTe.MochiKoma
 			&& gPieces[id].isUse
 			&& gPieces[id].isMochi
-			&& gPieces[id].sengo==teban){
+			&& gPieces[id].sengo==gWhichMoves){
 
 				return id;
 			}
@@ -452,7 +452,3 @@ function findUtsuID(oneTe){
 	//打たない
 	return -1;
 }
-
-
-
-

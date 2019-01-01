@@ -125,8 +125,8 @@ function isNextKomatoriHuman(_te){
 				toruNari = gPieces[toruTe[i].tottaKoma].isNari;
 			}
 			//ただでとれるか？
-			forwardState(toruTe[i],teban,-1);//内部で進める
-			if(teban==0){teban=1;}else{teban=0;}//手番交代
+			forwardState(toruTe[i],gWhichMoves,-1);//内部で進める
+			switchTeban();//手番交代
 			var torikaesuTe = Array(GouhouNum);
 			for(var j=0; j<torikaesuTe.length; j++){torikaesuTe[j] = new TSashite();}
 			var torikaesuCount = makeMoveTe(torikaesuTe);
@@ -137,8 +137,8 @@ function isNextKomatoriHuman(_te){
 					isTorikaesareru = true;
 				}
 			}
-			if(teban==0){teban=1;}else{teban=0;}//手番交代
-			backwardState(toruTe[i],teban,-1);//内部で戻す
+			switchTeban();//手番交代
+			backwardState(toruTe[i],gWhichMoves,-1);//内部で戻す
 			if(isTorikaesareru==false &&
 			   gPieces[toruTe[i].tottaKoma].kind>toruKoma){//ただで取れるなら
 				toruKoma = gPieces[toruTe[i].tottaKoma].kind;
@@ -181,7 +181,7 @@ function isTokinHuman(_te){
 
 	if(gPieces[komaId].kind==1 && !gPieces[komaId].isNari && _te.toDan<=4){//歩をあと一歩まで動かしたら
 		//すぐには取られないなら
-		if(teban==0){teban=1;}else{teban=0;}//手番交代
+		switchTeban();//手番交代
 		var toruTe = Array(GouhouNum);
 		for(var i=0; i<toruTe.length; i++){toruTe[i] = new TSashite();}
 		var toruCount = makeCandidateTe(toruTe);
@@ -192,7 +192,7 @@ function isTokinHuman(_te){
 				break;
 			}
 		}
-		if(teban==0){teban=1;}else{teban=0;}//手番交代
+		switchTeban();//手番交代
 		if(isTorareru==false){
 			newText("と金を作られそうにゃ");
 			return true;
@@ -210,7 +210,7 @@ function isKingUtsu(_te){
 	Math.max(Math.abs(Math.floor(gPieces[39].pos/16) - _te.toSuji),
 	Math.abs((gPieces[39].pos%16) - _te.toDan))<=2){//玉の近辺に打たれたら
 		//すぐには取られないなら
-		if(teban==0){teban=1;}else{teban=0;}//手番交代
+		switchTeban();//手番交代
 		var toruTe = Array(GouhouNum);
 		for(var i=0; i<toruTe.length; i++){toruTe[i] = new TSashite();}
 		var toruCount = makeCandidateTe(toruTe);
@@ -221,7 +221,7 @@ function isKingUtsu(_te){
 				break;
 			}
 		}
-		if(teban==0){teban=1;}else{teban=0;}//手番交代
+		switchTeban();//手番交代
 		if(isTorareru==false){
 			newText("玉の近くに打たれて怖いにゃ");
 			return true;

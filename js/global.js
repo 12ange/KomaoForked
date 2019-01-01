@@ -8,16 +8,16 @@ var gPieces   = [],      //将棋に使われる全駒(TKoma型)
 //盤
 	gTblPcIndex = new Array(256), //位置から駒ID(gPiecesのindex)への逆引き
 	gTblSqDepend = new Array(256), //0空白,1先手駒,2後手駒,4壁
+	//TODO:1=PLR駒,2=COM駒かも？ 要追跡
 //フェーズ
 	gCtrlPhase = 0;
 //-1=リセット待ち,0=メニュー選択待ち,1=from入力待ち,2=to入力待ち,3=isNaru入力待ち,4=アニメ→思考→アニメ間
 
 //手番
-var teban = 0;
-//0=プレイヤー,1=コンピュータ
+var gWhichMoves = 0; //0=プレイヤー,1=コンピュータ
 
 //手の選択
-var te;
+var gTheMove;
 
 //人間の合法手
 var GouhouNum = 1024, candidateTe = new Array(GouhouNum), candidateCount;
@@ -58,4 +58,13 @@ var TSashite = function TSashite(){
 	this.id = -1;
 	this.isOK = true;       //合法手生成時に使用
 	this.strWhyNoGood = ""; //合法手生成時に使用
+}
+
+//--------------------------------------
+//複数ファイル利用サブルーチン
+//--------------------------------------
+
+//手番交代
+function switchTeban(){
+	gWhichMoves = (gWhichMoves==0)? 1 : 0;
 }

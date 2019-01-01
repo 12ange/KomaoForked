@@ -119,7 +119,7 @@ function startCom(){
 	gCtrlPhase = 4;
 
 	//コンピュータの手番
-	teban = 1;
+	gWhichMoves = 1;
 
 	//手番の明示
 	newText("おねがいします　ぼくの番からにゃ");
@@ -135,7 +135,7 @@ function startHuman(){
 	gCtrlPhase = 1;
 
 	//人間の手番
-	teban = 0;
+	gWhichMoves = 0;
 
 	//最初の合法手の計算
 	candidateCount = makeCandidateTe(candidateTe);
@@ -275,7 +275,7 @@ function dialogOfNaru(){
 	//成るか成らないかのダイアログの表示
 
 	//その前に移動先のハイライト
-	selectHighlight(te.toSuji,te.toDan,0);
+	selectHighlight(gTheMove.toSuji,gTheMove.toDan,0);
 
 	//ダイアログ
 	$("#questionField")
@@ -291,9 +291,9 @@ function dialogOfNaru(){
 	.fadeIn(FAST);
 }
 
-function determineIsNaru(isNaru){
+function determineIsNaru(_isNaru){
 	//成るか成らないか
-	te.isNaru = isNaru;
+	gTheMove.isNaru = _isNaru;
 
 	//ダイアログを消す
 	$("#questionField")

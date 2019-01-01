@@ -1,7 +1,7 @@
 
 function initialMove(){
 	//指し手の構造体の領域を確保
-	te = new TSashite();
+	gTheMove = new TSashite();
 }
 
 function banClick(event,offset){
@@ -41,7 +41,7 @@ function forwardAndAi(){
 	//駒を進めて、コンピュータが指して、次の候補種を計算する
 	gCtrlPhase = 4;
 	highlightErase();//ハイライトを消す
-	forwardKoma(te,teban);
+	forwardKoma(gTheMove,gWhichMoves);
 	aiMove();//コンピュータの番
 }
 
@@ -112,13 +112,13 @@ function selectShowPositionLeft(suji){
 	//駒の移動先の座標・筋
 	if(1<=suji && suji<=9){
 		return(- suji * 50 + 690);
-	}else if(teban==0 && suji==-1){//先手
+	}else if(gWhichMoves==0 && suji==-1){//先手
 		return(760);
-	}else if(teban==0 && suji==-2){//先手
+	}else if(gWhichMoves==0 && suji==-2){//先手
 		return(840);
-	}else if(teban==1 && suji==-1){//後手
+	}else if(gWhichMoves==1 && suji==-1){//後手
 		return(110);
-	}else if(teban==1 && suji==-2){//後手
+	}else if(gWhichMoves==1 && suji==-2){//後手
 		return(30);
 	}
 }
@@ -139,11 +139,11 @@ function fromInput(suji,dan,errorMessage){
 	if(1<=suji && suji<=9 && 1<=dan && dan<=9){
 		blank = gTblSqDepend[16*suji+dan];
 	}
-	if((blank==1 && teban==0) || (blank==2 && teban==1)){
+	if((blank==1 && gWhichMoves==0) || (blank==2 && gWhichMoves==1)){
 		//そこに自分の駒があれば
-		te.isUtsu = 0;
-		te.fromSuji = suji;
-		te.fromDan = dan;
+		gTheMove.isUtsu = 0;
+		gTheMove.fromSuji = suji;
+		gTheMove.fromDan = dan;
 		//選んだ駒の確認
 		newText("どこへ動かすにゃ？")
 		//選択した駒をハイライト
@@ -154,12 +154,12 @@ function fromInput(suji,dan,errorMessage){
 	}
 
 	//駒台からの入力
-	if(teban==0 && (suji==-1 || suji==-2) && (6<=dan && dan<=9)){//先手
-		if(suji==-1 && dan==9 && gInHandPc[teban][1]>0){//歩
-			te.isUtsu = 1;
-			te.fromSuji = suji;
-			te.fromDan = dan;
-			te.MochiKoma = 1;
+	if(gWhichMoves==0 && (suji==-1 || suji==-2) && (6<=dan && dan<=9)){//先手
+		if(suji==-1 && dan==9 && gInHandPc[gWhichMoves][1]>0){//歩
+			gTheMove.isUtsu = 1;
+			gTheMove.fromSuji = suji;
+			gTheMove.fromDan = dan;
+			gTheMove.MochiKoma = 1;
 			//選んだ駒の確認
 			newText("どこへ打つにゃ？")
 			//選択した駒をハイライト
@@ -167,11 +167,11 @@ function fromInput(suji,dan,errorMessage){
 			//移動先を選ぶフェーズへ
 			gCtrlPhase = 2;
 			return;
-		}else if(suji==-2 && dan==8 && gInHandPc[teban][2]>0){//香
-			te.isUtsu = 1;
-			te.fromSuji = suji;
-			te.fromDan = dan;
-			te.MochiKoma = 2;
+		}else if(suji==-2 && dan==8 && gInHandPc[gWhichMoves][2]>0){//香
+			gTheMove.isUtsu = 1;
+			gTheMove.fromSuji = suji;
+			gTheMove.fromDan = dan;
+			gTheMove.MochiKoma = 2;
 			//選んだ駒の確認
 			newText("どこへ打つにゃ？")
 			//選択した駒をハイライト
@@ -179,11 +179,11 @@ function fromInput(suji,dan,errorMessage){
 			//移動先を選ぶフェーズへ
 			gCtrlPhase = 2;
 			return;
-		}else if(suji==-1 && dan==8 && gInHandPc[teban][3]>0){//桂
-			te.isUtsu = 1;
-			te.fromSuji = suji;
-			te.fromDan = dan;
-			te.MochiKoma = 3;
+		}else if(suji==-1 && dan==8 && gInHandPc[gWhichMoves][3]>0){//桂
+			gTheMove.isUtsu = 1;
+			gTheMove.fromSuji = suji;
+			gTheMove.fromDan = dan;
+			gTheMove.MochiKoma = 3;
 			//選んだ駒の確認
 			newText("どこへ打つにゃ？")
 			//選択した駒をハイライト
@@ -191,11 +191,11 @@ function fromInput(suji,dan,errorMessage){
 			//移動先を選ぶフェーズへ
 			gCtrlPhase = 2;
 			return;
-		}else if(suji==-2 && dan==7 && gInHandPc[teban][4]>0){//銀
-			te.isUtsu = 1;
-			te.fromSuji = suji;
-			te.fromDan = dan;
-			te.MochiKoma = 4;
+		}else if(suji==-2 && dan==7 && gInHandPc[gWhichMoves][4]>0){//銀
+			gTheMove.isUtsu = 1;
+			gTheMove.fromSuji = suji;
+			gTheMove.fromDan = dan;
+			gTheMove.MochiKoma = 4;
 			//選んだ駒の確認
 			newText("どこへ打つにゃ？")
 			//選択した駒をハイライト
@@ -203,11 +203,11 @@ function fromInput(suji,dan,errorMessage){
 			//移動先を選ぶフェーズへ
 			gCtrlPhase = 2;
 			return;
-		}else if(suji==-1 && dan==7 && gInHandPc[teban][5]>0){//金
-			te.isUtsu = 1;
-			te.fromSuji = suji;
-			te.fromDan = dan;
-			te.MochiKoma = 5;
+		}else if(suji==-1 && dan==7 && gInHandPc[gWhichMoves][5]>0){//金
+			gTheMove.isUtsu = 1;
+			gTheMove.fromSuji = suji;
+			gTheMove.fromDan = dan;
+			gTheMove.MochiKoma = 5;
 			//選んだ駒の確認
 			newText("どこへ打つにゃ？")
 			//選択した駒をハイライト
@@ -215,11 +215,11 @@ function fromInput(suji,dan,errorMessage){
 			//移動先を選ぶフェーズへ
 			gCtrlPhase = 2;
 			return;
-		}else if(suji==-2 && dan==6 && gInHandPc[teban][6]>0){//角
-			te.isUtsu = 1;
-			te.fromSuji = suji;
-			te.fromDan = dan;
-			te.MochiKoma = 6;
+		}else if(suji==-2 && dan==6 && gInHandPc[gWhichMoves][6]>0){//角
+			gTheMove.isUtsu = 1;
+			gTheMove.fromSuji = suji;
+			gTheMove.fromDan = dan;
+			gTheMove.MochiKoma = 6;
 			//選んだ駒の確認
 			newText("どこへ打つにゃ？")
 			//選択した駒をハイライト
@@ -227,11 +227,11 @@ function fromInput(suji,dan,errorMessage){
 			//移動先を選ぶフェーズへ
 			gCtrlPhase = 2;
 			return;
-		}else if(suji==-1 && dan==6 && gInHandPc[teban][7]>0){//飛
-			te.isUtsu = 1;
-			te.fromSuji = suji;
-			te.fromDan = dan;
-			te.MochiKoma = 7;
+		}else if(suji==-1 && dan==6 && gInHandPc[gWhichMoves][7]>0){//飛
+			gTheMove.isUtsu = 1;
+			gTheMove.fromSuji = suji;
+			gTheMove.fromDan = dan;
+			gTheMove.MochiKoma = 7;
 			//選んだ駒の確認
 			newText("どこへ打つにゃ？")
 			//選択した駒をハイライト
@@ -240,12 +240,12 @@ function fromInput(suji,dan,errorMessage){
 			gCtrlPhase = 2;
 			return;
 		}
-	}else if(teban==1 && (suji==-1 || suji==-2) && (1<=dan && dan<=4)){//後手
-		if(suji==-1 && dan==1 && gInHandPc[teban][1]>0){//歩
-			te.isUtsu = 1;
-			te.fromSuji = suji;
-			te.fromDan = dan;
-			te.MochiKoma = 1;
+	}else if(gWhichMoves==1 && (suji==-1 || suji==-2) && (1<=dan && dan<=4)){//後手
+		if(suji==-1 && dan==1 && gInHandPc[gWhichMoves][1]>0){//歩
+			gTheMove.isUtsu = 1;
+			gTheMove.fromSuji = suji;
+			gTheMove.fromDan = dan;
+			gTheMove.MochiKoma = 1;
 			//選んだ駒の確認
 			newText("どこへ打つにゃ？")
 			//選択した駒をハイライト
@@ -253,11 +253,11 @@ function fromInput(suji,dan,errorMessage){
 			//移動先を選ぶフェーズへ
 			gCtrlPhase = 2;
 			return;
-		}else if(suji==-2 && dan==2 && gInHandPc[teban][2]>0){//香
-			te.isUtsu = 1;
-			te.fromSuji = suji;
-			te.fromDan = dan;
-			te.MochiKoma = 2;
+		}else if(suji==-2 && dan==2 && gInHandPc[gWhichMoves][2]>0){//香
+			gTheMove.isUtsu = 1;
+			gTheMove.fromSuji = suji;
+			gTheMove.fromDan = dan;
+			gTheMove.MochiKoma = 2;
 			//選んだ駒の確認
 			newText("どこへ打つにゃ？")
 			//選択した駒をハイライト
@@ -265,11 +265,11 @@ function fromInput(suji,dan,errorMessage){
 			//移動先を選ぶフェーズへ
 			gCtrlPhase = 2;
 			return;
-		}else if(suji==-1 && dan==2 && gInHandPc[teban][3]>0){//桂
-			te.isUtsu = 1;
-			te.fromSuji = suji;
-			te.fromDan = dan;
-			te.MochiKoma = 3;
+		}else if(suji==-1 && dan==2 && gInHandPc[gWhichMoves][3]>0){//桂
+			gTheMove.isUtsu = 1;
+			gTheMove.fromSuji = suji;
+			gTheMove.fromDan = dan;
+			gTheMove.MochiKoma = 3;
 			//選んだ駒の確認
 			newText("どこへ打つにゃ？")
 			//選択した駒をハイライト
@@ -277,11 +277,11 @@ function fromInput(suji,dan,errorMessage){
 			//移動先を選ぶフェーズへ
 			gCtrlPhase = 2;
 			return;
-		}else if(suji==-2 && dan==3 && gInHandPc[teban][4]>0){//銀
-			te.isUtsu = 1;
-			te.fromSuji = suji;
-			te.fromDan = dan;
-			te.MochiKoma = 4;
+		}else if(suji==-2 && dan==3 && gInHandPc[gWhichMoves][4]>0){//銀
+			gTheMove.isUtsu = 1;
+			gTheMove.fromSuji = suji;
+			gTheMove.fromDan = dan;
+			gTheMove.MochiKoma = 4;
 			//選んだ駒の確認
 			newText("どこへ打つにゃ？")
 			//選択した駒をハイライト
@@ -289,11 +289,11 @@ function fromInput(suji,dan,errorMessage){
 			//移動先を選ぶフェーズへ
 			gCtrlPhase = 2;
 			return;
-		}else if(suji==-1 && dan==3 && gInHandPc[teban][5]>0){//金
-			te.isUtsu = 1;
-			te.fromSuji = suji;
-			te.fromDan = dan;
-			te.MochiKoma = 5;
+		}else if(suji==-1 && dan==3 && gInHandPc[gWhichMoves][5]>0){//金
+			gTheMove.isUtsu = 1;
+			gTheMove.fromSuji = suji;
+			gTheMove.fromDan = dan;
+			gTheMove.MochiKoma = 5;
 			//選んだ駒の確認
 			newText("どこへ打つにゃ？")
 			//選択した駒をハイライト
@@ -301,11 +301,11 @@ function fromInput(suji,dan,errorMessage){
 			//移動先を選ぶフェーズへ
 			gCtrlPhase = 2;
 			return;
-		}else if(suji==-2 && dan==4 && gInHandPc[teban][6]>0){//角
-			te.isUtsu = 1;
-			te.fromSuji = suji;
-			te.fromDan = dan;
-			te.MochiKoma = 6;
+		}else if(suji==-2 && dan==4 && gInHandPc[gWhichMoves][6]>0){//角
+			gTheMove.isUtsu = 1;
+			gTheMove.fromSuji = suji;
+			gTheMove.fromDan = dan;
+			gTheMove.MochiKoma = 6;
 			//選んだ駒の確認
 			newText("どこへ打つにゃ？")
 			//選択した駒をハイライト
@@ -313,11 +313,11 @@ function fromInput(suji,dan,errorMessage){
 			//移動先を選ぶフェーズへ
 			gCtrlPhase = 2;
 			return;
-		}else if(suji==-1 && dan==4 && gInHandPc[teban][7]>0){//飛
-			te.isUtsu = 1;
-			te.fromSuji = suji;
-			te.fromDan = dan;
-			te.MochiKoma = 7;
+		}else if(suji==-1 && dan==4 && gInHandPc[gWhichMoves][7]>0){//飛
+			gTheMove.isUtsu = 1;
+			gTheMove.fromSuji = suji;
+			gTheMove.fromDan = dan;
+			gTheMove.MochiKoma = 7;
 			//選んだ駒の確認
 			newText("どこへ打つにゃ？")
 			//選択した駒をハイライト
@@ -343,30 +343,30 @@ function toInput(suji,dan){
 	if(1<=suji && suji<=9 && 1<=dan && dan<=9){
 		blank = gTblSqDepend[16*suji+dan];
 	}else{//盤外なら
-		te.tottaKoma = -2;//エラーメッセージなし
-		te.toSuji = -1;
-		te.toDan = -1;
+		gTheMove.tottaKoma = -2;//エラーメッセージなし
+		gTheMove.toSuji = -1;
+		gTheMove.toDan = -1;
 		return;
 	}
 
 	if(blank==0){//そこが空白なら
-		te.tottaKoma = -1;
-		te.tottaNari = false;
-		te.toSuji = suji;
-		te.toDan = dan;
-	}else if(te.isUtsu==0 && ((teban==0 && blank==2) || (teban==1 && blank==1))){//盤上からの相手の駒なら
-		te.tottaKoma = gTblPcIndex[16*suji+dan];
-		te.tottaNari = gPieces[te.tottaKoma].isNari;
-		te.toSuji = suji;
-		te.toDan = dan;
-	}else if(te.isUtsu==0 && dan==te.fromDan && suji==te.fromSuji){//選択した駒なら
-		te.tottaKoma = -2;//エラーメッセージなし
-		te.toSuji = -1;
-		te.toDan = -1;
+		gTheMove.tottaKoma = -1;
+		gTheMove.tottaNari = false;
+		gTheMove.toSuji = suji;
+		gTheMove.toDan = dan;
+	}else if(gTheMove.isUtsu==0 && ((gWhichMoves==0 && blank==2) || (gWhichMoves==1 && blank==1))){//盤上からの相手の駒なら
+		gTheMove.tottaKoma = gTblPcIndex[16*suji+dan];
+		gTheMove.tottaNari = gPieces[gTheMove.tottaKoma].isNari;
+		gTheMove.toSuji = suji;
+		gTheMove.toDan = dan;
+	}else if(gTheMove.isUtsu==0 && dan==gTheMove.fromDan && suji==gTheMove.fromSuji){//選択した駒なら
+		gTheMove.tottaKoma = -2;//エラーメッセージなし
+		gTheMove.toSuji = -1;
+		gTheMove.toDan = -1;
 	}else{//動けないところなら
-		te.tottaKoma = -1;
-		te.toSuji = -1;
-		te.toDan = -1;
+		gTheMove.tottaKoma = -1;
+		gTheMove.toSuji = -1;
+		gTheMove.toDan = -1;
 	}
 }
 
@@ -377,27 +377,27 @@ function isMovable(){
 	var messageMovableOrImpossible;
 
 	//盤外と選択した駒
-	if(te.tottaKoma==-2){
+	if(gTheMove.tottaKoma==-2){
 		return "別のにするのにゃ？"; //無害なメッセージ。エラーではないものの動くわけではないので
 	}
 
 	//動けるか
-	if(te.toSuji<1 || 9<te.toSuji || te.toDan<1 || 9<te.toDan){//盤上の自分の駒
-		if(te.isUtsu==1){
+	if(gTheMove.toSuji<1 || 9<gTheMove.toSuji || gTheMove.toDan<1 || 9<gTheMove.toDan){//盤上の自分の駒
+		if(gTheMove.isUtsu==1){
 			messageMovableOrImpossible = "そこには打てないにゃ";
 		}else{
 			messageMovableOrImpossible = "そこには指せないにゃ";
 		}
 	}else{//盤上の空白と相手の駒
 		//デフォルトメッセージ
-		if(te.isUtsu==1){
+		if(gTheMove.isUtsu==1){
 			messageMovableOrImpossible = "そこには打てないにゃ";
 		}else{
 			messageMovableOrImpossible = "そこには指せないにゃ";
 		}
 		//候補手との照らし合わせ
 		for(var i=0; i<candidateCount; i++){
-			if( isSameTe(te,candidateTe[i]) ){//成不成で二つある場合がある
+			if( isSameTe(gTheMove,candidateTe[i]) ){//成不成で二つある場合がある
 				if(candidateTe[i].isOK){
 					messageMovableOrImpossible = "";
 					break;
@@ -420,10 +420,10 @@ function numOfCandidateMove(){
 
 	//候補手との照らし合わせ
 	for(var i=0; i<candidateCount; i++){
-		if(isSameTe(te,candidateTe[i])){//成不成で二つある場合がある
+		if(isSameTe(gTheMove,candidateTe[i])){//成不成で二つある場合がある
 			if(candidateTe[i].isOK){//どちらかが反則の場合もある
 				numCand++;
-				te.isNaru = candidateTe[i].isNaru;//一つだけのときのために写しておく
+				gTheMove.isNaru = candidateTe[i].isNaru;//一つだけのときのために写しておく
 			}
 		}
 	}
@@ -455,84 +455,84 @@ function isSameTe(actualTe,candTe){
 	return(false);
 }
 
-function forwardKoma(te,teban){
+function forwardKoma(_te,_teban){
 	//駒の画像を動かす
 
 	var utsuId = -1;
 	var komaId,tottaId,maisuu;
 
-	if(te.isUtsu){//打つ
+	if(_te.isUtsu){//打つ
 		for(var i=0; i<gPieces.length; i++){
-			if(gPieces[i].isUse && gPieces[i].sengo==teban && gPieces[i].isMochi && gPieces[i].kind==te.MochiKoma){
+			if(gPieces[i].isUse && gPieces[i].sengo==_teban && gPieces[i].isMochi && gPieces[i].kind==_te.MochiKoma){
 				komaId = i;
 				break;
 			}
 		}
-		mochiCountShow(te.MochiKoma,teban,gInHandPc[teban][te.MochiKoma]-1);
+		mochiCountShow(_te.MochiKoma,_teban,gInHandPc[_teban][_te.MochiKoma]-1);
 		$("#k"+komaId)
 		.css("z-index","100")
 		.animate({
-			left: komaShowPositionLeft(te.toSuji*16) + "px",
-			top: komaShowPositionTop(te.toDan) + "px"
+			left: komaShowPositionLeft(_te.toSuji*16) + "px",
+			top: komaShowPositionTop(_te.toDan) + "px"
 		},SLOW,"swing",function(){
 			$("#k"+komaId)
 			.css("z-index","30");
 		});
 		utsuId = komaId;
 	}else{//盤上の駒を動かす
-		komaId = gTblPcIndex[te.fromSuji*16+te.fromDan];
-		tottaId = te.tottaKoma;
-		maisuu = te.tottaKoma==-1 ? -1 : gInHandPc[teban][gPieces[te.tottaKoma].kind];
+		komaId = gTblPcIndex[_te.fromSuji*16+_te.fromDan];
+		tottaId = _te.tottaKoma;
+		maisuu = _te.tottaKoma==-1 ? -1 : gInHandPc[_teban][gPieces[_te.tottaKoma].kind];
 		$("#k"+komaId)
 		.css("z-index","100")
 		.animate({
-			left: komaShowPositionLeft(te.toSuji*16) + "px",
-			top: komaShowPositionTop(te.toDan) + "px"
+			left: komaShowPositionLeft(_te.toSuji*16) + "px",
+			top: komaShowPositionTop(_te.toDan) + "px"
 		},SLOW,"swing",function(){
 			$("#k"+komaId)
 			.css("z-index","30");
 			//成りの考慮
-			if(te.isNaru){
+			if(_te.isNaru){
 				$("#k"+komaId)
-				.attr("src","komaImage/" + teban + 1 + gPieces[komaId].kind + ".png");
+				.attr("src","komaImage/" + _teban + 1 + gPieces[komaId].kind + ".png");
 			}
 			//取る処理
-			if(te.tottaKoma!=-1){//駒を取っていれば
+			if(_te.tottaKoma!=-1){//駒を取っていれば
 				$("#k"+tottaId)
 				.css("z-index","90")
 				.animate({
-					left: mochiKomaPositionLeft(gPieces[tottaId].kind,teban) + "px",
-					top: mochiKomaPositionTop(gPieces[tottaId].kind,teban) + "px"
+					left: mochiKomaPositionLeft(gPieces[tottaId].kind,_teban) + "px",
+					top: mochiKomaPositionTop(gPieces[tottaId].kind,_teban) + "px"
 				},SLOW,"swing",function(){
 					$("#k"+tottaId)
-					.attr("src","komaImage/" + teban + "0" + gPieces[tottaId].kind + ".png")
+					.attr("src","komaImage/" + _teban + "0" + gPieces[tottaId].kind + ".png")
 					.css("z-index","30");
-					mochiCountShow(gPieces[tottaId].kind,teban,maisuu+1);
+					mochiCountShow(gPieces[tottaId].kind,_teban,maisuu+1);
 				});
 			}
 		});
 	}
 
 	//内部変数を動かす
-	forwardState(te,teban,utsuId);
+	forwardState(_te,_teban,utsuId);
 }
 
-function forwardState(te,teban,utsuId){
+function forwardState(_te,_teban,utsuId){
 	//駒の内部変数や盤の内部変数を動かす
 
 	var toPos;
 	var fromPos;
 	var komaId;
 
-	if(te.isUtsu){//打つ
+	if(_te.isUtsu){//打つ
 		//移動先
-		toPos = 16 * te.toSuji + te.toDan;
+		toPos = 16 * _te.toSuji + _te.toDan;
 		//駒
 		gPieces[utsuId].pos = toPos;//位置//持ち駒は-1
 		gPieces[utsuId].isNari = false;
 		gPieces[utsuId].isMochi = false;
 		//持ち駒
-		gInHandPc[teban][gPieces[utsuId].kind]--;
+		gInHandPc[_teban][gPieces[utsuId].kind]--;
 		//盤
 		gTblPcIndex[toPos] = utsuId;
 		if(gPieces[utsuId].sengo==0){//先手
@@ -542,13 +542,13 @@ function forwardState(te,teban,utsuId){
 		}
 	}else{//盤上の駒を動かす
 		//位置
-		fromPos = 16 * te.fromSuji + te.fromDan;
-		toPos = 16 * te.toSuji + te.toDan;
+		fromPos = 16 * _te.fromSuji + _te.fromDan;
+		toPos = 16 * _te.toSuji + _te.toDan;
 		//駒id
 		komaId = gTblPcIndex[fromPos];
 		//koma変数
 		gPieces[komaId].pos = toPos;
-		if(te.isNaru){//成るなら
+		if(_te.isNaru){//成るなら
 			gPieces[komaId].isNari = true;
 		}
 		//盤変数（２つ）
@@ -562,13 +562,13 @@ function forwardState(te,teban,utsuId){
 		}
 
 		//取る処理
-		if(te.tottaKoma!=-1){//駒を取っていれば
+		if(_te.tottaKoma!=-1){//駒を取っていれば
 			//駒
-			gPieces[te.tottaKoma].pos = -1;
-			gPieces[te.tottaKoma].isNari = false;
-			gPieces[te.tottaKoma].isMochi = true;
-			gPieces[te.tottaKoma].sengo = teban;//0:先手, 1:後手
-			gInHandPc[teban][gPieces[te.tottaKoma].kind]++;
+			gPieces[_te.tottaKoma].pos = -1;
+			gPieces[_te.tottaKoma].isNari = false;
+			gPieces[_te.tottaKoma].isMochi = true;
+			gPieces[_te.tottaKoma].sengo = _teban;//0:先手, 1:後手
+			gInHandPc[_teban][gPieces[_te.tottaKoma].kind]++;
 			//盤
 			//上の操作ですでに変化している
 		}
@@ -576,34 +576,34 @@ function forwardState(te,teban,utsuId){
 
 }
 
-function backwardState(te,teban,utsuId){
+function backwardState(_te,_teban,utsuId){
 	//駒の内部変数や盤の内部変数を戻す
 
 	var toPos;
 	var fromPos;
 	var komaId;
 
-	if(te.isUtsu){//打つ
+	if(_te.isUtsu){//打つ
 		//移動先
-		toPos = 16 * te.toSuji + te.toDan;
+		toPos = 16 * _te.toSuji + _te.toDan;
 		//駒
 		gPieces[utsuId].pos = -1;//位置//持ち駒は-1
 		gPieces[utsuId].isNari = false;
 		gPieces[utsuId].isMochi = true;//盤上から持ち駒に戻すのだから
 		//持ち駒
-		gInHandPc[teban][gPieces[utsuId].kind]++;
+		gInHandPc[_teban][gPieces[utsuId].kind]++;
 		//盤
 		gTblPcIndex[toPos] = -1;
 		gTblSqDepend[toPos] = 0;
 	}else{//盤上の駒を動かす
 		//位置
-		fromPos = 16 * te.fromSuji + te.fromDan;
-		toPos = 16 * te.toSuji + te.toDan;
+		fromPos = 16 * _te.fromSuji + _te.fromDan;
+		toPos = 16 * _te.toSuji + _te.toDan;
 		//駒id
 		komaId = gTblPcIndex[toPos];
 		//koma変数
 		gPieces[komaId].pos = fromPos;
-		if(te.isNaru){//成るなら成る前の状態に
+		if(_te.isNaru){//成るなら成る前の状態に
 			gPieces[komaId].isNari = false;
 		}
 		//盤変数（２つ）
@@ -616,16 +616,16 @@ function backwardState(te,teban,utsuId){
 			gTblSqDepend[fromPos] = 2;
 		}
 		//取る処理
-		if(te.tottaKoma!=-1){//駒を取っていれば
+		if(_te.tottaKoma!=-1){//駒を取っていれば
 			//駒
-			gPieces[te.tottaKoma].pos = toPos;
-			gPieces[te.tottaKoma].isNari = te.tottaNari;
-			gPieces[te.tottaKoma].isMochi = false;//取った駒を盤上に戻すのだから
-			gPieces[te.tottaKoma].sengo = (teban==0 ? 1 : 0);//0:先手, 1:後手
-			gInHandPc[teban][gPieces[te.tottaKoma].kind]--;
+			gPieces[_te.tottaKoma].pos = toPos;
+			gPieces[_te.tottaKoma].isNari = _te.tottaNari;
+			gPieces[_te.tottaKoma].isMochi = false;//取った駒を盤上に戻すのだから
+			gPieces[_te.tottaKoma].sengo = (_teban==0 ? 1 : 0);//0:先手, 1:後手
+			gInHandPc[_teban][gPieces[_te.tottaKoma].kind]--;
 			//盤
-			gTblPcIndex[toPos] = te.tottaKoma;
-			if(teban==0){//手番が先手なら取った駒は後手
+			gTblPcIndex[toPos] = _te.tottaKoma;
+			if(_teban==0){//手番が先手なら取った駒は後手
 				gTblSqDepend[toPos] = 2;
 			}else{//手番が後手なら取った駒は先手
 				gTblSqDepend[toPos] = 1;
@@ -635,70 +635,65 @@ function backwardState(te,teban,utsuId){
 
 }
 
-function mochiKomaPositionLeft(kind,teban){
+function mochiKomaPositionLeft(kind,_teban){
 	//持ち駒に移動するときの座標
-	if(teban==0 && (kind==7 || kind==5 || kind==3 || kind==1)){
+	if(_teban==0 && (kind==7 || kind==5 || kind==3 || kind==1)){
 		return(765);
-	}else if(teban==0 && (kind==6 || kind==4 || kind==2 || kind==8)){
+	}else if(_teban==0 && (kind==6 || kind==4 || kind==2 || kind==8)){
 		return(845);
-	}else if(teban==1 && (kind==7 || kind==5 || kind==3 || kind==1)){
+	}else if(_teban==1 && (kind==7 || kind==5 || kind==3 || kind==1)){
 		return(115);
-	}else if(teban==1 && (kind==6 || kind==4 || kind==2 || kind==8)){
+	}else if(_teban==1 && (kind==6 || kind==4 || kind==2 || kind==8)){
 		return(35);
 	}
 }
 
-function mochiKomaPositionTop(kind,teban){
+function mochiKomaPositionTop(kind,_teban){
 	//持ち駒に移動するときの座標
-	if(teban==0 && (kind==7 || kind==6 )){
+	if(_teban==0 && (kind==7 || kind==6 )){
 		return(komaShowPositionTop(6));
-	}else if(teban==0 && (kind==5 || kind==4 )){
+	}else if(_teban==0 && (kind==5 || kind==4 )){
 		return(komaShowPositionTop(7));
-	}else if(teban==0 && (kind==3 || kind==2 )){
+	}else if(_teban==0 && (kind==3 || kind==2 )){
 		return(komaShowPositionTop(8));
-	}else if(teban==0 && (kind==1 || kind==8 )){
+	}else if(_teban==0 && (kind==1 || kind==8 )){
 		return(komaShowPositionTop(9));
-	}else if(teban==1 && (kind==7 || kind==6 )){
+	}else if(_teban==1 && (kind==7 || kind==6 )){
 		return(komaShowPositionTop(4));
-	}else if(teban==1 && (kind==5 || kind==4 )){
+	}else if(_teban==1 && (kind==5 || kind==4 )){
 		return(komaShowPositionTop(3));
-	}else if(teban==1 && (kind==3 || kind==2 )){
+	}else if(_teban==1 && (kind==3 || kind==2 )){
 		return(komaShowPositionTop(2));
-	}else if(teban==1 && (kind==1 || kind==8 )){
+	}else if(_teban==1 && (kind==1 || kind==8 )){
 		return(komaShowPositionTop(1));
 	}
 }
 
-function mochiCountShow(kind,teban,maisuu){
+function mochiCountShow(_kind,_teban,_maisuu){
 	//持ち駒の枚数の表示
 
-	$("#m" + teban + kind)
+	$("#m" + _teban + _kind)
 	.remove();//まずは消す
 
 	$("<div>")
-	.attr("id","m" + teban + kind)
+	.attr("id","m" + _teban + _kind)
 	.css("position","absolute")
 	.css("font-size","140%")
-	.css("top",(20+mochiKomaPositionTop(kind,teban)) + "px")
-	.css("left",(45+mochiKomaPositionLeft(kind,teban)) +"px")
+	.css("top",(20+mochiKomaPositionTop(_kind,_teban)) + "px")
+	.css("left",(45+mochiKomaPositionLeft(_kind,_teban)) +"px")
 	.css("z-index","20")
 	.appendTo("#ban");//index.htmlにあるdivのid
 
-	if(maisuu>1){//表示する
-		$("#m" + teban + kind)
-		.html(""+(maisuu));
+	if(_maisuu>=2){//2枚以上なら枚数を横に表示
+		$("#m" + _teban + _kind).html(""+_maisuu);
 	}
 }
 
 function mochiCountRemove(){
 	//持ち駒の枚数表示の削除
 
-	for(var teban=0; teban<2; teban++){
-		for(var kind=1; kind<=8; kind++){
-			$("#m" + teban + kind)
-			.remove();
-		}
+	for(var k=1; k<=8; k++){ //k is kind
+		$("#m0" + k).remove();
+		$("#m1" + k).remove();
 	}
 }
-
-
