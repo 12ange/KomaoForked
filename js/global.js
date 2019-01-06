@@ -65,3 +65,10 @@ var TSashite = function TSashite(){
 function switchTeban(){
 	gWhichMoves = (gWhichMoves==0)? 1 : 0;
 }
+
+//指し手バッファ生成(可読短縮化済)
+function createSashiteArray(){
+	var i=0,z=gcCandidateSize,a=new Array(z);
+	while(i<z)a[i++]=new TSashite();
+	return a;
+}
