@@ -71,8 +71,6 @@ function isHumanToryo(){
 	return !hasSashite;
 }
 
-var bUseBonus;
-
 function comThink(){
 	//思考ルーチン
 
@@ -86,10 +84,10 @@ function comThink(){
 	}
 
 	//手のスコアリング
-	bUseBonus = Math.random()<BonusRate;
+	var bUseBonus = Math.random()<BonusRate;
 	var teScore = new Array(gcCandidateSize);
 	for(i=0; i<aiCount; i++){
-		teScore[i] = moveScoring(aiTe[i]);
+		teScore[i] = evalMove(aiTe[i],bUseBonus);
 	}
 
 	//手を選ぶ
@@ -106,7 +104,6 @@ function comThink(){
 		}
 	}
 	return(aiTe[maxIndex[Math.floor(Math.random() * maxIndex.length)]]);
-
 }
 
 var NOT_OK = -60000;
@@ -117,24 +114,23 @@ var fuTori = 70;
 var torikaeshiConst = 75;
 var tadadorareConst = 40000;
 
-function moveScoring(oneTe){
-	//指し手に対するスコアリング
-	if(!oneTe.isOK){
-		return(NOT_OK);
+//指し手に対するスコアリング
+function evalMove(_sashite,_flagBonus){
+	var score;
+
+	if(_sashite.isOK){ //合法手
+		score = toriTori(_sashite)+bonusNaru(_sashite)+//成るボーナス
+			(_flagBonus?
+				bonusDistanceToKing(_sashite)+ //動いた先の先手玉との距離1-8
+				bonusUtsu(_sashite)+ //打つボーナス
+				bonusAtari(_sashite)+ //当てるボーナス
+				bonusKomaKind(_sashite): //動かした駒の種類のボーナス
+			0);
+	}else{ //違法手
+		score = NOT_OK;
 	}
 
-	var score = toriTori(oneTe);
-
-	score += bonusNaru(oneTe);//成るボーナス
-
-	if(bUseBonus){
-		score += bonusDistanceToKing(oneTe);//動いた先の先手玉との距離1-8
-		score += bonusUtsu(oneTe);//打つボーナス
-		score += bonusAtari(oneTe);//当てるボーナス
-		score += bonusKomaKind(oneTe);//動かした駒の種類のボーナス
-	}
-
-	return(score);
+	return score;
 }
 
 function toriTori(oneTe){
