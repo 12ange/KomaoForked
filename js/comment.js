@@ -31,7 +31,7 @@ function isOuteHuman(){
 	//王手されているか
 
 	//人間の手番のまま合法手生成
-	var outeTe = Array(GouhouNum);
+	var outeTe = new Array(gcCandidateSize);
 	for(var i=0; i<outeTe.length; i++){outeTe[i] = new TSashite();}
 	var outeCount = makeCandidateTe(outeTe);
 	for(var i=0; i<outeCount; i++){
@@ -110,7 +110,7 @@ function isNextKomatoriHuman(_te){
 
 	//人間の手番のまま合法手生成
 	var toruKoma = -1, toruNari;
-	var toruTe = Array(GouhouNum);
+	var toruTe = new Array(gcCandidateSize);
 	for(var i=0; i<toruTe.length; i++){toruTe[i] = new TSashite();}
 	var toruCount = makeCandidateTe(toruTe);
 	for(var i=0; i<toruCount; i++){
@@ -127,7 +127,7 @@ function isNextKomatoriHuman(_te){
 			//ただでとれるか？
 			forwardState(toruTe[i],gWhichMoves,-1);//内部で進める
 			switchTeban();//手番交代
-			var torikaesuTe = Array(GouhouNum);
+			var torikaesuTe = new Array(gcCandidateSize);
 			for(var j=0; j<torikaesuTe.length; j++){torikaesuTe[j] = new TSashite();}
 			var torikaesuCount = makeMoveTe(torikaesuTe);
 			var isTorikaesareru = false;
@@ -182,7 +182,7 @@ function isTokinHuman(_te){
 	if(gPieces[komaId].kind==1 && !gPieces[komaId].isNari && _te.toDan<=4){//歩をあと一歩まで動かしたら
 		//すぐには取られないなら
 		switchTeban();//手番交代
-		var toruTe = Array(GouhouNum);
+		var toruTe = new Array(gcCandidateSize);
 		for(var i=0; i<toruTe.length; i++){toruTe[i] = new TSashite();}
 		var toruCount = makeCandidateTe(toruTe);
 		var isTorareru = false;
@@ -211,7 +211,7 @@ function isKingUtsu(_te){
 	Math.abs((gPieces[39].pos%16) - _te.toDan))<=2){//玉の近辺に打たれたら
 		//すぐには取られないなら
 		switchTeban();//手番交代
-		var toruTe = Array(GouhouNum);
+		var toruTe = new Array(gcCandidateSize);
 		for(var i=0; i<toruTe.length; i++){toruTe[i] = new TSashite();}
 		var toruCount = makeCandidateTe(toruTe);
 		var isTorareru = false;

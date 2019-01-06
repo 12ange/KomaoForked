@@ -396,14 +396,14 @@ function isMovable(){
 			messageMovableOrImpossible = "そこには指せないにゃ";
 		}
 		//候補手との照らし合わせ
-		for(var i=0; i<candidateCount; i++){
-			if( isSameTe(gTheMove,candidateTe[i]) ){//成不成で二つある場合がある
-				if(candidateTe[i].isOK){
+		for(var i=0; i<gCandidateCount; i++){
+			if( isSameTe(gTheMove,gCandidateMove[i]) ){//成不成で二つある場合がある
+				if(gCandidateMove[i].isOK){
 					messageMovableOrImpossible = "";
 					break;
 				}else{
 					//エラーメッセージを取り出す
-					messageMovableOrImpossible = candidateTe[i].strWhyNoGood;
+					messageMovableOrImpossible = gCandidateMove[i].strWhyNoGood;
 				}
 			}
 		}
@@ -419,11 +419,11 @@ function numOfCandidateMove(){
 	var numCand = 0;
 
 	//候補手との照らし合わせ
-	for(var i=0; i<candidateCount; i++){
-		if(isSameTe(gTheMove,candidateTe[i])){//成不成で二つある場合がある
-			if(candidateTe[i].isOK){//どちらかが反則の場合もある
+	for(var i=0; i<gCandidateCount; i++){
+		if(isSameTe(gTheMove,gCandidateMove[i])){//成不成で二つある場合がある
+			if(gCandidateMove[i].isOK){//どちらかが反則の場合もある
 				numCand++;
-				gTheMove.isNaru = candidateTe[i].isNaru;//一つだけのときのために写しておく
+				gTheMove.isNaru = gCandidateMove[i].isNaru;//一つだけのときのために写しておく
 			}
 		}
 	}

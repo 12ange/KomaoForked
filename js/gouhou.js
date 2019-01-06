@@ -1,10 +1,11 @@
 
-function initialGouhou(){
+function initCandidMove(){
 	//合法手に関する初期化
 
 	//人間の指し手のグローバル変数
-	for(var i=0; i<candidateTe.length; i++){
-		candidateTe[i] = new TSashite();
+	gCandidateMove = new Array(gcCandidateSize);
+	for(var i=0; i<gCandidateMove.length; i++){
+		gCandidateMove[i] = new TSashite();
 	}
 }
 
@@ -271,7 +272,7 @@ function removeIllegalMove(gouhouTe,gouhouCount){
 	//王手放置
 	var utsuId;
 	var gouhouForOuteCount;
-	var gouhouForOuteTe = Array(GouhouNum);
+	var gouhouForOuteTe = new Array(gcCandidateSize);
 	for(var i=0; i<gouhouForOuteTe.length; i++){
 		gouhouForOuteTe[i] = new TSashite();
 	}
@@ -373,7 +374,7 @@ function removeIllegalMove(gouhouTe,gouhouCount){
 	//うち歩づめ
 	var escapable,catchable;
 	var gouhouForTodomeCount;
-	var gouhouForTodomeTe = Array(GouhouNum);
+	var gouhouForTodomeTe = new Array(gcCandidateSize);
 	for(var i=0; i<gouhouForTodomeTe.length; i++){
 		gouhouForTodomeTe[i] = new TSashite();
 	}

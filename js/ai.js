@@ -32,7 +32,7 @@ function comSide(){
 	switchTeban();
 
 	//人間の候補手
-	candidateCount = makeCandidateTe(candidateTe);
+	gCandidateCount = makeCandidateTe(gCandidateMove);
 
 	//人間の指し手はあるか？
 	if(isHumanToryo()){
@@ -61,7 +61,7 @@ function hasLegalSashite(_arrSashite, _cntSashite){
 
 function isHumanToryo(){
 	//人間の指し手はあるか？
-	var hasSashite = hasLegalSashite(candidateTe, candidateCount);
+	var hasSashite = hasLegalSashite(gCandidateMove, gCandidateCount);
 
 	if(!hasSashite){ //指し手が見つからなかった
 		newText("ぼくの勝ちにゃ　ありがとうございました");
@@ -76,7 +76,7 @@ var bUseBonus;
 function comThink(){
 	//思考ルーチン
 
-	var i, aiTe = Array(GouhouNum);
+	var i, aiTe = new Array(gcCandidateSize);
 	for(i=0; i<aiTe.length; i++){aiTe[i] = new TSashite();}
 	var aiCount = makeCandidateTe(aiTe);
 
@@ -87,13 +87,13 @@ function comThink(){
 
 	//手のスコアリング
 	bUseBonus = Math.random()<BonusRate;
-	var teScore = Array(GouhouNum);
+	var teScore = new Array(gcCandidateSize);
 	for(i=0; i<aiCount; i++){
 		teScore[i] = moveScoring(aiTe[i]);
 	}
 
 	//手を選ぶ
-	var maxIndex = Array();
+	var maxIndex = new Array();
 	var maxScore = teScore[0];
 	for(i=0; i<aiCount; i++){
 		if(maxScore<teScore[i] && aiTe[i].isOK){
@@ -185,7 +185,7 @@ function isTadadori(oneTe){
 	if(oneTe.isUtsu==0 && oneTe.tottaKoma!=-1){//駒を取れるか？
 
 		//取り返されないかの確認（ほかの駒を取られる可能性は考えない）
-		var torareruTe = Array(GouhouNum);
+		var torareruTe = new Array(gcCandidateSize);
 		for(var i=0; i<torareruTe.length; i++){torareruTe[i] = new TSashite();}
 		forwardState(oneTe,gWhichMoves,-1);//内部で進める
 		switchTeban();//手番交代
@@ -229,7 +229,7 @@ function isTorikaeshi(oneTe){
 	if(oneTe.isUtsu==0 && oneTe.tottaKoma!=-1){//駒を取れるか？
 
 		//何で取り返されるかの確認（ほかの駒を取られる可能性は考えない）
-		var torareruTe = Array(GouhouNum);
+		var torareruTe = new Array(gcCandidateSize);
 		for(var i=0; i<torareruTe.length; i++){torareruTe[i] = new TSashite();}
 		forwardState(oneTe,gWhichMoves,-1);//内部で進める
 		switchTeban();//手番交代
@@ -282,7 +282,7 @@ function bonusAtari(oneTe){
 
 	//TODO:forwardStateとbackwardStateが１対１ではないのがキモチワルイ
 
-	var toruTe = Array(GouhouNum);
+	var toruTe = new Array(gcCandidateSize);
 	for(var i=0; i<toruTe.length; i++){toruTe[i] = new TSashite();}
 	var utsuId = findUtsuID(oneTe);
 	forwardState(oneTe,gWhichMoves,utsuId);//内部で進める
@@ -332,7 +332,7 @@ function isTadadorare(oneTe){
 	var utsuId = findUtsuID(oneTe);
 	forwardState(oneTe,gWhichMoves,utsuId);//内部で進める
 	switchTeban();//手番交代
-	var toruTe = Array(GouhouNum);
+	var toruTe = new Array(gcCandidateSize);
 	for(var i=0; i<toruTe.length; i++){toruTe[i] = new TSashite();}
 	var toruCount = makeCandidateTe(toruTe);
 	var isTorareru = false;
@@ -342,7 +342,7 @@ function isTadadorare(oneTe){
 		toruTe[i].tottaKoma==oneTe.id){//動かした駒を取られる
 			forwardState(toruTe[i],gWhichMoves,-1);//内部で進める
 			switchTeban();//手番交代
-			var kikiTe = Array(GouhouNum);
+			var kikiTe = new Array(gcCandidateSize);
 			for(var j=0; j<kikiTe.length; j++){kikiTe[j] = new TSashite();}
 			var kikiCount = makeCandidateTe(kikiTe);
 			var kikiExist = false;
@@ -381,7 +381,7 @@ function scoreNullToruToru(oneTe){
 	var utsuId = findUtsuID(oneTe);
 	forwardState(oneTe,gWhichMoves,utsuId);//内部で進める
 	switchTeban();//手番交代
-	var toruTe = Array(GouhouNum);
+	var toruTe = new Array(gcCandidateSize);
 	for(var i=0; i<toruTe.length; i++){toruTe[i] = new TSashite();}
 	var toruCount = makeCandidateTe(toruTe);
 	var isTorareru = false;
@@ -392,7 +392,7 @@ function scoreNullToruToru(oneTe){
 			isTorareru = true;
 			forwardState(toruTe[i],gWhichMoves,-1);//内部で進める
 			switchTeban();//手番交代
-			var kaesuTe = Array(GouhouNum);
+			var kaesuTe = new Array(gcCandidateSize);
 			for(var j=0; j<kaesuTe.length; j++){kaesuTe[j] = new TSashite();}
 			var kaesuCount = makeCandidateTe(kaesuTe);
 			var maxScore = -INF;

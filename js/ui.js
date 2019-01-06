@@ -15,7 +15,7 @@ $(function(){
 	initialTextShow();
 
 	//人間の合法手の領域を確保
-	initialGouhou();
+	initCandidMove();
 
 	//質問の表示
 	questionTextShow();
@@ -138,7 +138,7 @@ function startHuman(){
 	gWhichMoves = 0;
 
 	//最初の合法手の計算
-	candidateCount = makeCandidateTe(candidateTe);
+	gCandidateCount = makeCandidateTe(gCandidateMove);
 
 	//手番の明示
 	newText("おねがいします　きみの番からにゃ");

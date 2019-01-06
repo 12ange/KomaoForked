@@ -10,17 +10,14 @@ var gPieces   = [],      //将棋に使われる全駒(TKoma型)
 	gTblSqDepend = new Array(256), //0空白,1先手駒,2後手駒,4壁
 	//TODO:1=PLR駒,2=COM駒かも？ 要追跡
 //フェーズ
-	gCtrlPhase = 0;
-//-1=リセット待ち,0=メニュー選択待ち,1=from入力待ち,2=to入力待ち,3=isNaru入力待ち,4=アニメ→思考→アニメ間
-
+	gCtrlPhase = 0,
+	//-1=リセット待ち,0=メニュー選択待ち,1=from入力待ち,2=to入力待ち,3=isNaru入力待ち,4=アニメ→思考→アニメ間
 //手番
-var gWhichMoves = 0; //0=プレイヤー,1=コンピュータ
-
+	gWhichMoves = 0, //0=プレイヤー,1=コンピュータ
 //手の選択
-var gTheMove;
-
-//人間の合法手
-var GouhouNum = 1024, candidateTe = new Array(GouhouNum), candidateCount;
+	gTheMove,
+//人間の候補手関連
+	gcCandidateSize = 1024, gCandidateMove, gCandidateCount;
 
 //速さ
 var VERYSLOW = 800, SLOW = 600, FAST = 200;
@@ -29,7 +26,7 @@ var VERYSLOW = 800, SLOW = 600, FAST = 200;
 var BonusRate = 0.5;
 
 //--------------------------------------
-//コンストラクタ(グローバル)
+// コンストラクタ(グローバル)
 //--------------------------------------
 
 //駒
@@ -61,7 +58,7 @@ var TSashite = function TSashite(){
 }
 
 //--------------------------------------
-//複数ファイル利用サブルーチン
+// 複数ファイル利用サブルーチン
 //--------------------------------------
 
 //手番交代
