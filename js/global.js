@@ -17,13 +17,9 @@ var gPieces   = [],      //将棋に使われる全駒(TKoma型)
 //手の選択
 	gTheMove,
 //人間の候補手関連
-	gcCandidateSize = 1024, gCandidateMove, gCandidateCount;
-
+	gcCandidateSize = 1024, gCandidateMove, gCandidateCount,
 //速さ
-var VERYSLOW = 800, SLOW = 600, FAST = 200;
-
-//指し手のボーナスを計算する割合
-var BonusRate = 0.5;
+	VERYSLOW = 800, SLOW = 600, FAST = 200;
 
 //--------------------------------------
 // コンストラクタ(グローバル)

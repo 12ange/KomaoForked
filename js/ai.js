@@ -1,3 +1,13 @@
+//思考用設定値
+var gcProbabilityBonus = 0.5; //指し手のボーナスを計算する割合(0-1)
+var NOT_OK = -60000;
+var komaValue = [0,100,500,500,600,600,1300,1400,3000];//[0,10,50,50,60,60,130,140,300]
+var nariValue = [0,300];//[0,30]
+var nattaValue = [0,1];
+var fuTori = 70;
+var torikaeshiConst = 75;
+var tadadorareConst = 40000;
+var INF = 30000;
 
 //コンピュータの番
 function aiMove(){
@@ -83,7 +93,7 @@ function comThink(){
 	}
 
 	//手のスコアリング
-	var bUseBonus = Math.random()<BonusRate;
+	var bUseBonus = Math.random()<gcProbabilityBonus;
 	var teScore = new Array(aiTe.length);
 	for(i=0; i<aiCount; i++){
 		teScore[i] = evalMove(aiTe[i],bUseBonus);
@@ -104,14 +114,6 @@ function comThink(){
 	}
 	return(aiTe[maxIndex[Math.floor(Math.random() * maxIndex.length)]]);
 }
-
-var NOT_OK = -60000;
-var komaValue = [0,100,500,500,600,600,1300,1400,3000];//[0,10,50,50,60,60,130,140,300]
-var nariValue = [0,300];//[0,30]
-var nattaValue = [0,1];
-var fuTori = 70;
-var torikaeshiConst = 75;
-var tadadorareConst = 40000;
 
 //指し手に対するスコアリング
 function evalMove(_sashite,_flagBonus){
@@ -357,8 +359,6 @@ function isTadadorare(oneTe){
 
 	return(isTorareru);
 }
-
-var INF = 30000;
 
 function scoreNullToruToru(oneTe){
 	//取られて取り返す
