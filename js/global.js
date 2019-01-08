@@ -21,6 +21,13 @@ var gPieces   = [],      //将棋に使われる全駒(TKoma型)
 //速さ
 	VERYSLOW = 800, SLOW = 600, FAST = 200;
 
+//反則手の理由(注釈文)
+var WHYNG_KING_INTO_CHECK = "王様が取られてしまうにゃ",
+	WHYNG_NO_MORE_MOVE = "どこにも行けない駒になってしまうにゃ",
+	WHYNG_TWO_PAWNS = "歩がある筋に歩は打てないにゃ",
+	WHYNG_DROP_PAWN_MATE = "歩を打って詰ましてはだめにゃ",
+	WHYNG_UNPROMOTABLE = "裏返せないにゃ";
+
 //--------------------------------------
 // コンストラクタ(グローバル)
 //--------------------------------------
@@ -48,7 +55,7 @@ var TSashite = function TSashite(){
 	this.toSuji = 0;
 	this.toDan = 0;
 	this.isNaru = false;
-	this.id = -1;
+	this.id = -1; //駒ID
 	this.isOK = true;       //合法手生成時に使用
 	this.strWhyNoGood = ""; //合法手生成時に使用
 }
