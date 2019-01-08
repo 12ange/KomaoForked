@@ -12,6 +12,8 @@ var INF = 30000;
 //コンピュータの番
 function aiMove(){
 
+	//TODO:棋譜を記録するタイミング(人間が着手完了した直後、gTheMoveがその動き)
+
 	//人間の手へのリアクション
 	reactForHumanTe(gTheMove);
 
@@ -35,6 +37,8 @@ function comSide(){
 	//コンピュータの手を動かす
 	forwardKoma(comTe,gWhichMoves);
 
+	//TODO:棋譜を記録するタイミング(COMが着手完了した直後、comTeがその動き)
+	
 	//コンピュータの手の感想
 	//explainComTe(comTe,gTheMove);////////////////////////////////////////////////////
 
@@ -69,50 +73,45 @@ function hasLegalSashite(_arrSashite, _cntSashite){
 	return bOkay;
 }
 
+//人間の指し手はあるか？
 function isHumanToryo(){
-	//人間の指し手はあるか？
-	var hasSashite = hasLegalSashite(gCandidateMove, gCandidateCount);
+	var bMatedHuman = ! hasLegalSashite(gCandidateMove, gCandidateCount);
 
-	if(!hasSashite){ //指し手が見つからなかった
+	if(bMatedHuman){
 		newText("ぼくの勝ちにゃ　ありがとうございました");
 		gCtrlPhase = -1;
 		restartText();
 	}
-	return !hasSashite;
+	return bMatedHuman;
 }
 
+//思考ルーチン
 function comThink(){
-	//思考ルーチン
-
 	var i, aiTe = createSashiteArray(),
 		aiCount = makeCandidateTe(aiTe);
 
 	//指す手はあるか？ なければ投了
 	if(!hasLegalSashite(aiTe,aiCount)){
-		return aiTe[0];
-	}
+		i=0;
+	}else{
+		//手のスコアリング
+		var bUseBonus = Math.random()<gcProbabilityBonus;
+		var s, hiscore = NOT_OK, aIndexesHiscore; //合法手index配列
 
-	//手のスコアリング
-	var bUseBonus = Math.random()<gcProbabilityBonus;
-	var teScore = new Array(aiTe.length);
-	for(i=0; i<aiCount; i++){
-		teScore[i] = evalMove(aiTe[i],bUseBonus);
-	}
-
-	//手を選ぶ
-	var maxIndex = new Array();
-	var maxScore = teScore[0];
-	for(i=0; i<aiCount; i++){
-		if(maxScore<teScore[i] && aiTe[i].isOK){
-			maxScore = teScore[i];
+		for(i=0; i<aiCount; i++){
+			if( aiTe[i].isOK ){ //合法手のみ評価する
+				s = evalMove(aiTe[i],bUseBonus);
+				if( s === hiscore ){ //同点
+					aIndexesHiscore.push(i); //indexを追記
+				}else if( s > hiscore ){ //新記録
+					hiscore = s;
+					aIndexesHiscore = [i]; //新しく配列を始める
+				}
+			}
 		}
+		i = aIndexesHiscore[ (Math.random()*aIndexesHiscore.length)|0 ];
 	}
-	for(i=0; i<aiCount; i++){
-		if(maxScore==teScore[i] && aiTe[i].isOK){
-			maxIndex.push(i);
-		}
-	}
-	return(aiTe[maxIndex[Math.floor(Math.random() * maxIndex.length)]]);
+	return aiTe[i];
 }
 
 //指し手に対するスコアリング
@@ -207,16 +206,9 @@ function isTadadori(_sashite){
 	return(false);//ただ取りできない
 }
 
+//と金と歩で取れるなら取る
 function isFuTori(_sashite){
-	//と金と歩で取れるなら取る
-
-	if(_sashite.isUtsu==0
-	&& _sashite.tottaKoma!=-1
-	&& gPieces[_sashite.id].kind==1){
-		return(true);
-	}
-
-	return(false);//取れない
+	return (_sashite.isUtsu==0 && _sashite.tottaKoma!=-1 && gPieces[_sashite.id].kind==1);
 }
 
 function isTorikaeshi(_sashite){
@@ -274,8 +266,6 @@ function bonusKomaKind(_sashite){
 
 //当てるボーナス3
 function bonusAtari(_sashite){
-	//TODO:forwardStateとbackwardStateが１対１ではないのがキモチワルイ
-
 	var i, toruTe, toruCount, utsuId = findUtsuID(_sashite);
 
 	forwardState(_sashite,gWhichMoves,utsuId);//内部で進める
@@ -283,12 +273,11 @@ function bonusAtari(_sashite){
 	toruCount = makeCandidateTe( toruTe = createSashiteArray() );
 	for(i=0; i<toruCount; i++){
 		if(_sashite.id==toruTe[i].id && toruTe[i].isOK && toruTe[i].isUtsu==0 && toruTe[i].tottaKoma!=-1){
-			backwardState(_sashite,gWhichMoves,utsuId);//内部で戻す
-			return(3);
+			break; //さらに同じ駒を、合法で、打つ手ではなく動かせれば、何らかの駒が取れる状態である
 		}
 	}
 	backwardState(_sashite,gWhichMoves,utsuId);//内部で戻す
-	return(0);//進めても当たっていない
+	return (i<toruCount)? 3 : 0;
 }
 
 function bonusDistanceToKing(_sashite){
