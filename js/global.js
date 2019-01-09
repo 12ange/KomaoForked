@@ -35,7 +35,7 @@ var WHYNG_KING_INTO_CHECK = "王様が取られてしまうにゃ",
 //駒
 var TKoma = function TKoma(idNum,suji,dan,kind,sengo,use){
 	this.idNum = idNum;         //駒のid番号
-	this.pos = 16 * suji + dan; //位置・持ち駒は-1
+	this.pos = (suji<<4)|dan; //位置・持ち駒になると-1
 	this.kind = kind;           //[1..8]=[歩,香,桂,銀,金,角,飛,玉]
 	this.sengo = sengo;         //0:先手, 1:後手
 	this.isUse = !!use;         //この駒を使うかどうか
@@ -46,6 +46,7 @@ var TKoma = function TKoma(idNum,suji,dan,kind,sengo,use){
 
 //指し手
 var TSashite = function TSashite(){
+	//TODO: .isUtsu をboolean化
 	this.isUtsu = 0;
 	this.fromSuji = 0;
 	this.fromDan = 0;
@@ -59,6 +60,9 @@ var TSashite = function TSashite(){
 	this.isOK = true;       //合法手生成時に使用
 	this.strWhyNoGood = ""; //合法手生成時に使用
 }
+
+//TODO:TKomaは位置情報をposで持ち、TSashiteは位置情報をsuji,danで持つ。
+//     どちらか一方に統一出来ないのか。
 
 //--------------------------------------
 // 複数ファイル利用サブルーチン
@@ -74,4 +78,9 @@ function createSashiteArray(){
 	var i=0,z=gcCandidateSize,a=new Array(z);
 	while(i<z)a[i++]=new TSashite();
 	return a;
+}
+
+//駒同士のチェビシェフ距離
+function distanceChebyshev(_sujA,_danA,_sujB,_danB){
+	return Math.max( Math.abs(_sujA-_sujB), Math.abs(_danA-_danB) );
 }
