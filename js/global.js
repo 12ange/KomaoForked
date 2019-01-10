@@ -63,6 +63,9 @@ var TSashite = function TSashite(){
 
 //TODO:TKomaは位置情報をposで持ち、TSashiteは位置情報をsuji,danで持つ。
 //     どちらか一方に統一出来ないのか。
+//     gTblPcIndex[]の要素番号はposに等しいのでposが有利、か？
+//      << そもそもgTblPcIndex[]はどれくらい読み取られているのか。
+//     距離計算するときはsuji,danと分かれてたほうが若干処理が楽になる
 
 //--------------------------------------
 // 複数ファイル利用サブルーチン

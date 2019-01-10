@@ -322,6 +322,7 @@ function restartText(){
 
 function restartPrepare(){
 	//もう一度対局する
+	//TODO:PLが降参(リセット)したときにも使える
 
 	//ボタンの削除
 	$("#alternativeRestart").remove();

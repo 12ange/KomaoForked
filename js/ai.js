@@ -213,7 +213,7 @@ function isTorikaeshi(_sashite){
 		var torareruTe = createSashiteArray();
 		var torareruCount = makeCandidateTe(torareruTe);
 		var i=0, isRecaptured = false;
-		while( i<torareruCount ){
+		while( !isRecaptured && i<torareruCount ){
 			isRecaptured = (
 				torareruTe[i].isOK &&
 				torareruTe[i].toSuji==_sashite.toSuji &&

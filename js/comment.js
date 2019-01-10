@@ -203,26 +203,25 @@ function isKingUtsu(_te){
 
 	var komaId = gTblPcIndex[_te.toSuji*16+_te.toDan];
 	if(_te.isUtsu==1 &&
-	Math.max(Math.abs(Math.floor(gPieces[39].pos/16) - _te.toSuji),
-	Math.abs((gPieces[39].pos%16) - _te.toDan))<=2){//玉の近辺に打たれたら
+		2>=distanceChebyshev(gPieces[39].pos>>>4, gPieces[39].pos&15, _te.toSuji, _te.toDan)
+	){//玉の近辺に打たれたら
 		//すぐには取られないなら
 		switchTeban();//手番交代
 		var toruTe = createSashiteArray();
 		var toruCount = makeCandidateTe(toruTe);
-		var isTorareru = false;
-		for(var i=0; i<toruCount; i++){
+		var i=0, isTorareru = false;
+		for(; i<toruCount; i++){
 			if(toruTe[i].isOK && toruTe[i].tottaKoma==komaId){//取り返される
 				isTorareru = true;
 				break;
 			}
 		}
 		switchTeban();//手番交代
-		if(isTorareru==false){
+		if(!isTorareru){
 			newText("玉の近くに打たれて怖いにゃ");
 			return true;
 		}
 	}
-
 	return false;
 }
 

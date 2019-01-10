@@ -38,7 +38,7 @@ function banClick(event,offset){
 }
 
 function forwardAndAi(){
-	//駒を進めて、コンピュータが指して、次の候補種を計算する
+	//駒を進めて、コンピュータが指して、次の候補手を計算する
 	gCtrlPhase = 4;
 	highlightErase();//ハイライトを消す
 	forwardKoma(gTheMove,gWhichMoves);
@@ -92,12 +92,12 @@ function selectHighlight(suji,dan,isErase){
 	.css("top",selectShowPositionTop(dan) + "px")
 	.css("left",selectShowPositionLeft(suji) + "px")
 	.css("z-index","40")
-    // IE6.0, IE7.0  
+    // IE6.0, IE7.0
     .css("filter","alpha(opacity=50)") 
-    // Firefox, Netscape  
+    // Firefox, Netscape
     .css("MozOpacity","0.5")
-    // Chrome, Safari, Opera  
-    .css("opacity","0.5")  
+    // Chrome, Safari, Opera
+    .css("opacity","0.5")
 	.click(function(event){banClick(event,$("#ban").offset());})
 	.appendTo("#ban");//index.htmlにあるdivのid
 }
