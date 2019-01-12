@@ -1,16 +1,13 @@
 //思考用設定値
 var gcProbabilityBonus = 0.5; //指し手のボーナスを計算する割合(0-1)
+var gcValueHugeNega = -60000; //とてつもなく負の評価値 …… TODO:何故6万なのか
 //TODO:rename below
-var NOT_OK = -60000;
-//TODO:rename NOT_OK gcValueNegaInf
 var komaValue = [0,100,500,500,600,600,1300,1400,3000];//[0,10,50,50,60,60,130,140,300]
 var nariValue = [0,300];//[0,30]
 var nattaValue = [0,1];
 var fuTori = 70;
 var torikaeshiConst = 75;
 var tadadorareConst = 40000;
-var INF = 30000;
-//TODO:rename INF gcValuePosiInf
 
 //コンピュータの番
 function aiMove(){
@@ -93,13 +90,13 @@ function comThink(){
 	var i, aiTe = createSashiteArray(),
 		aiCount = makeCandidateTe(aiTe);
 
-	//指す手はあるか？ なければ投了
+	//指す手はあるか？ なければ投了(無効な手を返すことで)
 	if(!hasLegalSashite(aiTe,aiCount)){
 		i=0;
 	}else{
 		//手のスコアリング
 		var bUseBonus = Math.random()<gcProbabilityBonus;
-		var s, hiscore = NOT_OK, aIndexesHiscore; //合法手index配列
+		var s, hiscore = gcValueHugeNega, aIndexesHiscore; //合法手index配列
 
 		for(i=0; i<aiCount; i++){
 			if( aiTe[i].isOK ){ //合法手のみ評価する
@@ -119,7 +116,7 @@ function comThink(){
 
 //指し手に対するスコアリング
 function evalMove(_sashite,_flagBonus){
-	return !_sashite.isOK ? NOT_OK : //違法手
+	return !_sashite.isOK ? gcValueHugeNega : //違法手
 		( //合法手
 			toriTori(_sashite)+bonusNaru(_sashite)+//成るボーナス
 			(_flagBonus?
@@ -326,49 +323,42 @@ function isTadadorare(_sashite){
 
 //取られて取り返す - 返り値はスコアか0
 function scoreNullToruToru(_sashite){
+	var BIGINT = komaValue[8]<<1, minScoreNx = BIGINT, maxScoreNxnx,
+		utsuId = findUtsuID(_sashite);
 
-	//TODO:何やってるのかいまいちわからんので後日
-
-	var toruId = -1;
-	var torareruId = -1;
-	var minScore = INF;
-
-	var utsuId = findUtsuID(_sashite);
 	forwardState(_sashite,gWhichMoves,utsuId);//内部で進める
 	switchTeban();//手番交代
-	var toruTe = createSashiteArray();
+	var toruTe = createSashiteArray(); //toruTeは相手番
 	var toruCount = makeCandidateTe(toruTe);
-	var isTorareru = false;
-	for(var i=0; i<toruCount; i++){
-		if(toruTe[i].isOK &&
-		toruTe[i].isUtsu==0 &&
-		toruTe[i].tottaKoma!=-1){//何か取られる
+	var i=0, j, isTorareru = false;
+
+	for(; i<toruCount; i++){
+		if(toruTe[i].isOK && toruTe[i].isUtsu==0 && toruTe[i].tottaKoma!=-1){
+			//何か取られる
 			isTorareru = true;
+			maxScoreNxnx = -BIGINT;
+			var valueTaken = komaValue[ gPieces[ toruTe[i].tottaKoma ].kind ]; //取られる駒の価値
+
 			forwardState(toruTe[i],gWhichMoves,-1);//内部で進める
 			switchTeban();//手番交代
-			var kaesuTe = createSashiteArray();
+			var kaesuTe = createSashiteArray(); //kaesuTeは自手番
 			var kaesuCount = makeCandidateTe(kaesuTe);
-			var maxScore = -INF;
-			for(var j=0; j<kaesuCount; j++){
-				if(kaesuTe[j].isOK &&
-				kaesuTe[j].toSuji==toruTe[i].toSuji &&
-				kaesuTe[j].toDan==toruTe[i].toDan){//その駒を取り返す
-					torareruId = toruTe[i].tottaKoma;
-					toruId = kaesuTe[j].tottaKoma;
-					eachScore = komaValue[gPieces[toruId].kind] - komaValue[gPieces[torareruId].kind];
-				}else{
-					torareruId = toruTe[i].tottaKoma;
-					eachScore = -komaValue[gPieces[torareruId].kind];
-				}
-				if(maxScore<eachScore){maxScore = eachScore;}
+			for(j=0; j<kaesuCount; j++){
+				var bGetBack = kaesuTe[j].isOK && kaesuTe[j].toSuji==toruTe[i].toSuji && kaesuTe[j].toDan==toruTe[i].toDan;
+				var valueGot = bGetBack ? komaValue[ gPieces[ kaesuTe[j].tottaKoma ].kind ] : 0;
+					//取ってきた駒を取り返せるなら、その駒の価値。もしくは０。
+				var score = valueGot - valueTaken;
+				if(maxScoreNxnx<score){maxScoreNxnx = score;}
+				//maxScore~は、(１手先)相手側候補手の２手先駒価値収支
 			}
 			switchTeban();//手番交代
 			backwardState(toruTe[i],gWhichMoves,-1);//内部で戻す
+			if(minScoreNx>maxScoreNxnx){minScoreNx = maxScoreNxnx;}
+			//イメージ：１手先の相手が指す手は、取り返されるのを見越して２手先駒価値収支が極力小さくなるよう選ばれるだろう。
 		}
-		if(minScore>maxScore){minScore = maxScore;}
 	}
 	switchTeban();//手番交代
 	backwardState(_sashite,gWhichMoves,utsuId);//内部で戻す
 
-	return isTorareru ? minScore : 0;
+	return isTorareru ? minScoreNx : 0;
 }
