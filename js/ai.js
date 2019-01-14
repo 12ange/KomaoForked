@@ -1,13 +1,12 @@
 //思考用設定値
 var gcProbabilityBonus = 0.5; //指し手のボーナスを計算する割合(0-1)
 var gcValueHugeNega = -60000; //とてつもなく負の評価値 …… TODO:何故6万なのか
-//TODO:rename below
-var komaValue = [0,100,500,500,600,600,1300,1400,3000];//[0,10,50,50,60,60,130,140,300]
-var nariValue = [0,300];//[0,30]
-var nattaValue = [0,1];
-var fuTori = 70;
-var torikaeshiConst = 75;
-var tadadorareConst = 40000;
+var gcaValuePKind = [0,100,500,500,600,600,1300,1400,3000]; //駒種別既定評価値
+var gcValueBeenPromoted = 300; //成駒の評価加算値
+var gcValueDoPromote = 1; //駒を成った時の評価加算値 …… 成駒の評価加算値に比べて著しく低いのは何故？
+var gcValueCptrByPawn = 70; //歩で駒を取った時の評価加算値
+var gcValueRecaptured = 75; //取って取り返される時の評価加算値
+var gcValueTakenFree = 40000; //タダ取りされる時の評価**減算**値
 
 //コンピュータの番
 function aiMove(){
@@ -133,32 +132,32 @@ function toriTori(_sashite){
 
 	//1.ただ取りできる
 	if(isTadadori(_sashite)){
-		return(komaValue[gPieces[_sashite.tottaKoma].kind]
-		+ nariValue[ gPieces[_sashite.tottaKoma].isNari?1:0 ]
-		+ nattaValue[ _sashite.isNaru?1:0 ]);
+		return (gcaValuePKind[gPieces[_sashite.tottaKoma].kind]
+		+ (gPieces[_sashite.tottaKoma].isNari ? gcValueBeenPromoted : 0)
+		+ (_sashite.isNaru ? gcValueDoPromote : 0));
 	}
 
 	//2.と金と歩は取れるなら取る
 	if(isFuTori(_sashite)){
-		return(komaValue[gPieces[_sashite.tottaKoma].kind]
-		+ nariValue[ gPieces[_sashite.tottaKoma].isNari?1:0 ]
-		+ nattaValue[ _sashite.isNaru?1:0 ]
-		+ fuTori);
+		return (gcaValuePKind[gPieces[_sashite.tottaKoma].kind]
+		+ (gPieces[_sashite.tottaKoma].isNari ? gcValueBeenPromoted : 0)
+		+ (_sashite.isNaru ? gcValueDoPromote : 0)
+		+ gcValueCptrByPawn);
 	}
 
 	//3.取って取り返される
 	if(isTorikaeshi(_sashite)){
-		return(komaValue[gPieces[_sashite.tottaKoma].kind]
-		+ nariValue[ gPieces[_sashite.tottaKoma].isNari?1:0 ]
-		- komaValue[gPieces[_sashite.id].kind]
-		+ nattaValue[ _sashite.isNaru?1:0 ]
-		+ torikaeshiConst);
+		return (gcaValuePKind[gPieces[_sashite.tottaKoma].kind]
+		+ (gPieces[_sashite.tottaKoma].isNari ? gcValueBeenPromoted : 0)
+		- gcaValuePKind[gPieces[_sashite.id].kind]
+		+ (_sashite.isNaru ? gcValueDoPromote : 0)
+		+ gcValueRecaptured);
 	}
 
 	//4.動かした駒をタダで取られる
 	if(isTadadorare(_sashite)){
-		return(-komaValue[gPieces[_sashite.id].kind]
-		-tadadorareConst);
+		return -(gcaValuePKind[gPieces[_sashite.id].kind]
+		+gcValueTakenFree);
 	}
 
 	//5.取られても取り返す（または取り返せない）ボーナス
@@ -323,7 +322,7 @@ function isTadadorare(_sashite){
 
 //取られて取り返す - 返り値はスコアか0
 function scoreNullToruToru(_sashite){
-	var BIGINT = komaValue[8]<<1, minScoreNx = BIGINT, maxScoreNxnx,
+	var BIGINT = gcaValuePKind[8]<<1, minScoreNx = BIGINT, maxScoreNxnx,
 		utsuId = findUtsuID(_sashite);
 
 	forwardState(_sashite,gWhichMoves,utsuId);//内部で進める
@@ -337,7 +336,7 @@ function scoreNullToruToru(_sashite){
 			//何か取られる
 			isTorareru = true;
 			maxScoreNxnx = -BIGINT;
-			var valueTaken = komaValue[ gPieces[ toruTe[i].tottaKoma ].kind ]; //取られる駒の価値
+			var valueTaken = gcaValuePKind[ gPieces[ toruTe[i].tottaKoma ].kind ]; //取られる駒の価値
 
 			forwardState(toruTe[i],gWhichMoves,-1);//内部で進める
 			switchTeban();//手番交代
@@ -345,7 +344,7 @@ function scoreNullToruToru(_sashite){
 			var kaesuCount = makeCandidateTe(kaesuTe);
 			for(j=0; j<kaesuCount; j++){
 				var bGetBack = kaesuTe[j].isOK && kaesuTe[j].toSuji==toruTe[i].toSuji && kaesuTe[j].toDan==toruTe[i].toDan;
-				var valueGot = bGetBack ? komaValue[ gPieces[ kaesuTe[j].tottaKoma ].kind ] : 0;
+				var valueGot = bGetBack ? gcaValuePKind[ gPieces[ kaesuTe[j].tottaKoma ].kind ] : 0;
 					//取ってきた駒を取り返せるなら、その駒の価値。もしくは０。
 				var score = valueGot - valueTaken;
 				if(maxScoreNxnx<score){maxScoreNxnx = score;}
