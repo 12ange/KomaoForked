@@ -46,10 +46,10 @@ var TKoma = function TKoma(idNum,suji,dan,kind,sengo,use){
 
 //指し手
 var TSashite = function TSashite(){
-	//TODO: .isUtsu をboolean化
-	this.isUtsu = 0;
+	this.isUtsu = false;
 	this.fromSuji = 0;
 	this.fromDan = 0;
+	//TODO: .MochiKoma がどう使われているか
 	this.MochiKoma = 0;
 	this.tottaKoma = 0; //駒IDが入る？
 	this.tottaNari = false; //TKoma.isNariのコピー。.tottaKomaが有効なIDなら参照される

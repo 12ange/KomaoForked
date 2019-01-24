@@ -141,7 +141,7 @@ function fromInput(suji,dan,errorMessage){
 	}
 	if((blank==1 && gWhichMoves==0) || (blank==2 && gWhichMoves==1)){
 		//そこに自分の駒があれば
-		gTheMove.isUtsu = 0;
+		gTheMove.isUtsu = false;
 		gTheMove.fromSuji = suji;
 		gTheMove.fromDan = dan;
 		//選んだ駒の確認
@@ -156,7 +156,7 @@ function fromInput(suji,dan,errorMessage){
 	//駒台からの入力
 	if(gWhichMoves==0 && (suji==-1 || suji==-2) && (6<=dan && dan<=9)){//先手
 		if(suji==-1 && dan==9 && gInHandPc[gWhichMoves][1]>0){//歩
-			gTheMove.isUtsu = 1;
+			gTheMove.isUtsu = true;
 			gTheMove.fromSuji = suji;
 			gTheMove.fromDan = dan;
 			gTheMove.MochiKoma = 1;
@@ -168,7 +168,7 @@ function fromInput(suji,dan,errorMessage){
 			gCtrlPhase = 2;
 			return;
 		}else if(suji==-2 && dan==8 && gInHandPc[gWhichMoves][2]>0){//香
-			gTheMove.isUtsu = 1;
+			gTheMove.isUtsu = true;
 			gTheMove.fromSuji = suji;
 			gTheMove.fromDan = dan;
 			gTheMove.MochiKoma = 2;
@@ -180,7 +180,7 @@ function fromInput(suji,dan,errorMessage){
 			gCtrlPhase = 2;
 			return;
 		}else if(suji==-1 && dan==8 && gInHandPc[gWhichMoves][3]>0){//桂
-			gTheMove.isUtsu = 1;
+			gTheMove.isUtsu = true;
 			gTheMove.fromSuji = suji;
 			gTheMove.fromDan = dan;
 			gTheMove.MochiKoma = 3;
@@ -192,7 +192,7 @@ function fromInput(suji,dan,errorMessage){
 			gCtrlPhase = 2;
 			return;
 		}else if(suji==-2 && dan==7 && gInHandPc[gWhichMoves][4]>0){//銀
-			gTheMove.isUtsu = 1;
+			gTheMove.isUtsu = true;
 			gTheMove.fromSuji = suji;
 			gTheMove.fromDan = dan;
 			gTheMove.MochiKoma = 4;
@@ -204,7 +204,7 @@ function fromInput(suji,dan,errorMessage){
 			gCtrlPhase = 2;
 			return;
 		}else if(suji==-1 && dan==7 && gInHandPc[gWhichMoves][5]>0){//金
-			gTheMove.isUtsu = 1;
+			gTheMove.isUtsu = true;
 			gTheMove.fromSuji = suji;
 			gTheMove.fromDan = dan;
 			gTheMove.MochiKoma = 5;
@@ -216,7 +216,7 @@ function fromInput(suji,dan,errorMessage){
 			gCtrlPhase = 2;
 			return;
 		}else if(suji==-2 && dan==6 && gInHandPc[gWhichMoves][6]>0){//角
-			gTheMove.isUtsu = 1;
+			gTheMove.isUtsu = true;
 			gTheMove.fromSuji = suji;
 			gTheMove.fromDan = dan;
 			gTheMove.MochiKoma = 6;
@@ -228,7 +228,7 @@ function fromInput(suji,dan,errorMessage){
 			gCtrlPhase = 2;
 			return;
 		}else if(suji==-1 && dan==6 && gInHandPc[gWhichMoves][7]>0){//飛
-			gTheMove.isUtsu = 1;
+			gTheMove.isUtsu = true;
 			gTheMove.fromSuji = suji;
 			gTheMove.fromDan = dan;
 			gTheMove.MochiKoma = 7;
@@ -242,7 +242,7 @@ function fromInput(suji,dan,errorMessage){
 		}
 	}else if(gWhichMoves==1 && (suji==-1 || suji==-2) && (1<=dan && dan<=4)){//後手
 		if(suji==-1 && dan==1 && gInHandPc[gWhichMoves][1]>0){//歩
-			gTheMove.isUtsu = 1;
+			gTheMove.isUtsu = true;
 			gTheMove.fromSuji = suji;
 			gTheMove.fromDan = dan;
 			gTheMove.MochiKoma = 1;
@@ -254,7 +254,7 @@ function fromInput(suji,dan,errorMessage){
 			gCtrlPhase = 2;
 			return;
 		}else if(suji==-2 && dan==2 && gInHandPc[gWhichMoves][2]>0){//香
-			gTheMove.isUtsu = 1;
+			gTheMove.isUtsu = true;
 			gTheMove.fromSuji = suji;
 			gTheMove.fromDan = dan;
 			gTheMove.MochiKoma = 2;
@@ -266,7 +266,7 @@ function fromInput(suji,dan,errorMessage){
 			gCtrlPhase = 2;
 			return;
 		}else if(suji==-1 && dan==2 && gInHandPc[gWhichMoves][3]>0){//桂
-			gTheMove.isUtsu = 1;
+			gTheMove.isUtsu = true;
 			gTheMove.fromSuji = suji;
 			gTheMove.fromDan = dan;
 			gTheMove.MochiKoma = 3;
@@ -278,7 +278,7 @@ function fromInput(suji,dan,errorMessage){
 			gCtrlPhase = 2;
 			return;
 		}else if(suji==-2 && dan==3 && gInHandPc[gWhichMoves][4]>0){//銀
-			gTheMove.isUtsu = 1;
+			gTheMove.isUtsu = true;
 			gTheMove.fromSuji = suji;
 			gTheMove.fromDan = dan;
 			gTheMove.MochiKoma = 4;
@@ -290,7 +290,7 @@ function fromInput(suji,dan,errorMessage){
 			gCtrlPhase = 2;
 			return;
 		}else if(suji==-1 && dan==3 && gInHandPc[gWhichMoves][5]>0){//金
-			gTheMove.isUtsu = 1;
+			gTheMove.isUtsu = true;
 			gTheMove.fromSuji = suji;
 			gTheMove.fromDan = dan;
 			gTheMove.MochiKoma = 5;
@@ -302,7 +302,7 @@ function fromInput(suji,dan,errorMessage){
 			gCtrlPhase = 2;
 			return;
 		}else if(suji==-2 && dan==4 && gInHandPc[gWhichMoves][6]>0){//角
-			gTheMove.isUtsu = 1;
+			gTheMove.isUtsu = true;
 			gTheMove.fromSuji = suji;
 			gTheMove.fromDan = dan;
 			gTheMove.MochiKoma = 6;
@@ -314,7 +314,7 @@ function fromInput(suji,dan,errorMessage){
 			gCtrlPhase = 2;
 			return;
 		}else if(suji==-1 && dan==4 && gInHandPc[gWhichMoves][7]>0){//飛
-			gTheMove.isUtsu = 1;
+			gTheMove.isUtsu = true;
 			gTheMove.fromSuji = suji;
 			gTheMove.fromDan = dan;
 			gTheMove.MochiKoma = 7;
@@ -354,12 +354,12 @@ function toInput(suji,dan){
 		gTheMove.tottaNari = false;
 		gTheMove.toSuji = suji;
 		gTheMove.toDan = dan;
-	}else if(gTheMove.isUtsu==0 && ((gWhichMoves==0 && blank==2) || (gWhichMoves==1 && blank==1))){//盤上からの相手の駒なら
+	}else if(!gTheMove.isUtsu && ((gWhichMoves==0 && blank==2) || (gWhichMoves==1 && blank==1))){//盤上からの相手の駒なら
 		gTheMove.tottaKoma = gTblPcIndex[16*suji+dan];
 		gTheMove.tottaNari = gPieces[gTheMove.tottaKoma].isNari;
 		gTheMove.toSuji = suji;
 		gTheMove.toDan = dan;
-	}else if(gTheMove.isUtsu==0 && dan==gTheMove.fromDan && suji==gTheMove.fromSuji){//選択した駒なら
+	}else if(!gTheMove.isUtsu && dan==gTheMove.fromDan && suji==gTheMove.fromSuji){//選択した駒なら
 		gTheMove.tottaKoma = -2;//エラーメッセージなし
 		gTheMove.toSuji = -1;
 		gTheMove.toDan = -1;
@@ -374,27 +374,17 @@ function isMovable(){
 	//そこに動けるか、動けないとしたらなぜか
 	//動けるときには空文字列を返す
 	//動けないときにはメッセージを返す
-	var messageMovableOrImpossible;
 
 	//盤外と選択した駒
 	if(gTheMove.tottaKoma==-2){
 		return "別のにするのにゃ？"; //無害なメッセージ。エラーではないものの動くわけではないので
 	}
 
+	var messageMovableOrImpossible =
+		gTheMove.isUtsu ? "そこには打てないにゃ" : "そこには指せないにゃ"; //デフォルトメッセージ
+
 	//動けるか
-	if(gTheMove.toSuji<1 || 9<gTheMove.toSuji || gTheMove.toDan<1 || 9<gTheMove.toDan){//盤上の自分の駒
-		if(gTheMove.isUtsu==1){
-			messageMovableOrImpossible = "そこには打てないにゃ";
-		}else{
-			messageMovableOrImpossible = "そこには指せないにゃ";
-		}
-	}else{//盤上の空白と相手の駒
-		//デフォルトメッセージ
-		if(gTheMove.isUtsu==1){
-			messageMovableOrImpossible = "そこには打てないにゃ";
-		}else{
-			messageMovableOrImpossible = "そこには指せないにゃ";
-		}
+	if( 1<=gTheMove.toSuji && gTheMove.toSuji<=9 && 1<=gTheMove.toDan && gTheMove.toDan<=9 ){
 		//候補手との照らし合わせ
 		for(var i=0; i<gCandidateCount; i++){
 			if( isSameTe(gTheMove,gCandidateMove[i]) ){//成不成で二つある場合がある
@@ -408,7 +398,6 @@ function isMovable(){
 			}
 		}
 	}
-
 	return messageMovableOrImpossible;
 }
 
@@ -431,28 +420,18 @@ function numOfCandidateMove(){
 	return(numCand);
 }
 
-function isSameTe(actualTe,candTe){
-	//成不成を除いて同一の手かどうか
-	if(actualTe.isUtsu==1){//打つなら
-		if(candTe.isUtsu==1
-		&& actualTe.MochiKoma==candTe.MochiKoma
-		&& actualTe.toSuji==candTe.toSuji
-		&& actualTe.toDan==candTe.toDan){
-
-			return(true);
-		}
-	}else{//盤上から動かすなら
-		if(candTe.isUtsu==0
-		&& actualTe.fromSuji==candTe.fromSuji
-		&& actualTe.fromDan==candTe.fromDan
-		&& actualTe.toSuji==candTe.toSuji
-		&& actualTe.toDan==candTe.toDan){
-
-			return(true);
-		}
-	}
-
-	return(false);
+//成不成を除いて同一の手かどうか
+function isSameTe(_teA,_teB){
+	return (
+		(
+			//打つ
+			_teA.isUtsu && _teB.isUtsu && _teA.MochiKoma==_teB.MochiKoma
+		)||(
+			//盤上から指す
+			!_teA.isUtsu && !_teB.isUtsu &&
+			_teA.fromSuji==_teB.fromSuji && _teA.fromDan==_teB.fromDan
+		)
+	) && _teA.toSuji==_teB.toSuji && _teA.toDan==_teB.toDan;
 }
 
 function forwardKoma(_te,_teban){

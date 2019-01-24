@@ -173,7 +173,7 @@ function toriTori(_sashite){
 
 //成るボーナス
 function bonusNaru(_sashite){
-	return (_sashite.isUtsu==0 && _sashite.isNaru)? gcBonusPromote : 0;
+	return (!_sashite.isUtsu && _sashite.isNaru)? gcBonusPromote : 0;
 }
 
 //動いた先の先手玉との距離1-8
@@ -181,7 +181,7 @@ function bonusDistanceToKing(_sashite){
 	var sujiKing = gPieces[19].pos>>>4, danKing = gPieces[19].pos&15;
 	var sashitaKoma = gPieces[_sashite.id];
 
-	if(_sashite.isUtsu==1){//打つとき
+	if( _sashite.isUtsu ){//打つとき
 		return 8 - distanceChebyshev(_sashite.toSuji, _sashite.toDan, sujiKing, danKing);
 	}else if( //動かすとき
 			1<=sashitaKoma.kind && sashitaKoma.kind<=5 &&
@@ -199,7 +199,7 @@ function bonusDistanceToKing(_sashite){
 
 //打つボーナス
 function bonusUtsu(_sashite){
-	return (_sashite.isUtsu==1)? gcBonusDrop : 0;
+	return _sashite.isUtsu ? gcBonusDrop : 0;
 }
 
 //当てるボーナス
@@ -220,14 +220,14 @@ function bonusAtari(_sashite){
 
 //動かした駒の種類のボーナス
 function bonusKomaKind(_sashite){
-	return (_sashite.isUtsu==1 ? gcaBonusDropPKind : gcaBonusMovePKind)[gPieces[_sashite.id].kind];
+	return (_sashite.isUtsu ? gcaBonusDropPKind : gcaBonusMovePKind)[gPieces[_sashite.id].kind];
 }
 
 //---- toritori()内 ----
 
 //駒を取る手？
 function isSashiteCapture(_sashite){
-	return _sashite.isOK && _sashite.isUtsu==0 && _sashite.tottaKoma!=-1;
+	return _sashite.isOK && !_sashite.isUtsu && _sashite.tottaKoma!=-1;
 }
 
 //ただ取りできるか？
@@ -300,8 +300,7 @@ function isTadadorare(_sashite){
 	var toruCount = makeCandidateTe(toruTe);
 	var isTorareru = false;
 	for(var i=0; !isTorareru && i<toruCount; i++){
-		if(toruTe[i].isOK &&
-		toruTe[i].isUtsu==0 &&
+		if(toruTe[i].isOK && !toruTe[i].isUtsu &&
 		toruTe[i].tottaKoma==_sashite.id){//動かした駒を取られる
 			forwardState(toruTe[i],gWhichMoves,-1);//内部で進める
 			switchTeban();//手番交代
@@ -338,7 +337,7 @@ function scoreNullToruToru(_sashite){
 	var i=0, j, isTorareru = false;
 
 	for(; i<toruCount; i++){
-		if(toruTe[i].isOK && toruTe[i].isUtsu==0 && toruTe[i].tottaKoma!=-1){
+		if(toruTe[i].isOK && !toruTe[i].isUtsu && toruTe[i].tottaKoma!=-1){
 			//何か取られる
 			isTorareru = true;
 			maxScoreNxnx = -BIGINT;

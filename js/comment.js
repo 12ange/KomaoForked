@@ -47,7 +47,7 @@ function isOuteHuman(){
 
 //駒を取る
 function isKomatoruHuman(_te){
-	if(_te.isUtsu==0 && _te.tottaKoma!=-1){
+	if(!_te.isUtsu && _te.tottaKoma!=-1){
 		switch (gPieces[_te.tottaKoma].kind) {
 			case 1://歩,と
 				newText(_te.tottaNari?"と金を払われたにゃ":"歩ならいくらでもあげるにゃ");
@@ -79,7 +79,7 @@ function isKomatoruHuman(_te){
 
 //成る
 function isNaruHuman(_te){
-	if(_te.isUtsu==0 && _te.isNaru){
+	if(!_te.isUtsu && _te.isNaru){
 		switch (gPieces[gTblPcIndex[_te.toSuji*16+_te.toDan]].kind) {
 			case 1://歩
 				newText("と金にゃ　危険にゃ");
@@ -202,10 +202,11 @@ function isKingUtsu(_te){
 	//玉の近くに打たれる
 
 	var komaId = gTblPcIndex[_te.toSuji*16+_te.toDan];
-	if(_te.isUtsu==1 &&
-		2>=distanceChebyshev(gPieces[39].pos>>>4, gPieces[39].pos&15, _te.toSuji, _te.toDan)
-	){//玉の近辺に打たれたら
-		//すぐには取られないなら
+	var kingpos = gPieces[39].pos;
+	if(_te.isUtsu && 2 >= distanceChebyshev(kingpos>>>4, kingpos&15, _te.toSuji, _te.toDan) ){
+		//玉の近辺に打たれたら
+
+		//すぐには取られない？
 		switchTeban();//手番交代
 		var toruTe = createSashiteArray();
 		var toruCount = makeCandidateTe(toruTe);
@@ -225,11 +226,10 @@ function isKingUtsu(_te){
 	return false;
 }
 
+//駒が動いて迫る
 function isSemaru(_te){
-	//駒が動いて迫る
 
-	//打つなら関係なし
-	if(_te.isUtsu==1){ return false; }
+	if( _te.isUtsu ){ return false; } //打つなら関係なし
 
 	var komaId = gTblPcIndex[_te.toSuji*16+_te.toDan];
 	var komaKind = gPieces[komaId].kind;
@@ -241,10 +241,10 @@ function isSemaru(_te){
 		if(fromDanKyori>toDanKyori){//せまっている
 			if(toDanKyori<=3){
 				newText("敵がせまってきてるにゃ");
-				return(true);
+				return true;
 			}else if(3<toDanKyori && toDanKyori<=4){
 				newText("敵がこちらに向かい始めたにゃ");
-				return(true);
+				return true;
 			}
 		}
 	}
