@@ -7,6 +7,11 @@ var gcValueDoPromote = 1; //駒を成った時の評価加算値 …… 成駒�
 var gcValueCptrByPawn = 70; //歩で駒を取った時の評価加算値
 var gcValueRecaptured = 75; //取って取り返される時の評価加算値
 var gcValueTakenFree = 40000; //タダ取りされる時の評価**減算**値
+var gcBonusPromote = 15; //成るボーナス(加算)値
+var gcBonusDrop = 13; //打つボーナス(加算)値
+var gcBonusPrecapt = 3; //当てるボーナス(加算)値
+var gcaBonusMovePKind = [0,20, 0,10,20,20, 0, 0,0]; //指した駒種ボーナス(加算)値
+var gcaBonusDropPKind = [0,10,10,10,10,10,20,30,0]; //打った駒種ボーナス(加算)値
 
 //コンピュータの番
 function aiMove(){
@@ -166,9 +171,9 @@ function toriTori(_sashite){
 	return scoreNullToruToru(_sashite);
 }
 
-//成るボーナス15
+//成るボーナス
 function bonusNaru(_sashite){
-	return (_sashite.isUtsu==0 && _sashite.isNaru)? 15 : 0;
+	return (_sashite.isUtsu==0 && _sashite.isNaru)? gcBonusPromote : 0;
 }
 
 //動いた先の先手玉との距離1-8
@@ -192,12 +197,12 @@ function bonusDistanceToKing(_sashite){
 	}
 }
 
-//打つボーナス13
+//打つボーナス
 function bonusUtsu(_sashite){
-	return (_sashite.isUtsu==1)? 13 : 0;
+	return (_sashite.isUtsu==1)? gcBonusDrop : 0;
 }
 
-//当てるボーナス3
+//当てるボーナス
 function bonusAtari(_sashite){
 	var i, toruTe, toruCount, utsuId = findUtsuID(_sashite);
 
@@ -205,38 +210,30 @@ function bonusAtari(_sashite){
 	//手番を交代しない
 	toruCount = makeCandidateTe( toruTe = createSashiteArray() );
 	for(i=0; i<toruCount; i++){
-		if(_sashite.id==toruTe[i].id && toruTe[i].isOK && toruTe[i].isUtsu==0 && toruTe[i].tottaKoma!=-1){
-			break; //さらに同じ駒を、合法で、打つ手ではなく動かせれば、何らかの駒が取れる状態である
+		if(_sashite.id==toruTe[i].id && isSashiteCapture(toruTe[i]) ){
+			break; //さらに同じ駒を(合法手で)動かせば、何らかの駒が取れる状態である
 		}
 	}
 	backwardState(_sashite,gWhichMoves,utsuId);//内部で戻す
-	return (i<toruCount)? 3 : 0;
+	return i<toruCount ? gcBonusPrecapt : 0;
 }
 
 //動かした駒の種類のボーナス
 function bonusKomaKind(_sashite){
-
-	var moveBonusScore = [0,2,0,1,2,2,0,0,0];
-	var utsuBonusScore = [0,1,1,1,1,1,2,3,0];
-
-	if(_sashite.isUtsu==1){//打つ
-		return(10*utsuBonusScore[gPieces[_sashite.id].kind]);
-	}else{//盤上
-		return(10*moveBonusScore[gPieces[_sashite.id].kind]);
-	}
+	return (_sashite.isUtsu==1 ? gcaBonusDropPKind : gcaBonusMovePKind)[gPieces[_sashite.id].kind];
 }
 
 //---- toritori()内 ----
 
 //駒を取る手？
-function isSashiteCaputure(_sashite){
-	return _sashite.isUtsu==0 && _sashite.tottaKoma!=-1;
+function isSashiteCapture(_sashite){
+	return _sashite.isOK && _sashite.isUtsu==0 && _sashite.tottaKoma!=-1;
 }
 
 //ただ取りできるか？
 function isTadadori(_sashite){
 
-	if( isSashiteCaputure(_sashite) ){//駒を取れるか？
+	if( isSashiteCapture(_sashite) ){//駒を取れるか？
 
 		//取り返されないかの確認（ほかの駒を取られる可能性は考えない）
 		forwardState(_sashite,gWhichMoves,-1);//内部で進める
@@ -262,7 +259,7 @@ function isTadadori(_sashite){
 
 //と金と歩で取れるなら取る
 function isFuTori(_sashite){
-	return isSashiteCaputure(_sashite) && gPieces[_sashite.id].kind==1;
+	return isSashiteCapture(_sashite) && gPieces[_sashite.id].kind==1;
 }
 
 //取っても取り返される？
@@ -270,7 +267,7 @@ function isTorikaeshi(_sashite){
 
 	//TODO:isTadadori()とほぼ同じ。if内のreturnが反転している。共通化できないか？
 
-	if( isSashiteCaputure(_sashite) ){//駒を取れるか？
+	if( isSashiteCapture(_sashite) ){//駒を取れるか？
 
 		//何で取り返されるかの確認（ほかの駒を取られる可能性は考えない）
 		forwardState(_sashite,gWhichMoves,-1);//内部で進める
