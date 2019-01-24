@@ -127,6 +127,8 @@ function evalMove(_sashite,_flagBonus){
 		);
 }
 
+//---- evalMove()内 ----
+
 //スコアリング-取ったり取られたり
 function toriTori(_sashite){
 
@@ -164,10 +166,77 @@ function toriTori(_sashite){
 	return scoreNullToruToru(_sashite);
 }
 
+//成るボーナス15
+function bonusNaru(_sashite){
+	return (_sashite.isUtsu==0 && _sashite.isNaru)? 15 : 0;
+}
+
+//動いた先の先手玉との距離1-8
+function bonusDistanceToKing(_sashite){
+	var sujiKing = gPieces[19].pos>>>4, danKing = gPieces[19].pos&15;
+	var sashitaKoma = gPieces[_sashite.id];
+
+	if(_sashite.isUtsu==1){//打つとき
+		return 8 - distanceChebyshev(_sashite.toSuji, _sashite.toDan, sujiKing, danKing);
+	}else if( //動かすとき
+			1<=sashitaKoma.kind && sashitaKoma.kind<=5 &&
+			!(sashitaKoma.kind==2 && !sashitaKoma.isNari)
+		){ //金銀桂歩・成香 => 歩香桂銀金から生香を除く
+			return distanceChebyshev(
+				_sashite.fromSuji, _sashite.fromDan, sujiKing, danKing
+			) - distanceChebyshev(
+				_sashite.toSuji, _sashite.toDan, sujiKing, danKing
+			);
+	}else{//その他の駒
+		return 0;
+	}
+}
+
+//打つボーナス13
+function bonusUtsu(_sashite){
+	return (_sashite.isUtsu==1)? 13 : 0;
+}
+
+//当てるボーナス3
+function bonusAtari(_sashite){
+	var i, toruTe, toruCount, utsuId = findUtsuID(_sashite);
+
+	forwardState(_sashite,gWhichMoves,utsuId);//内部で進める
+	//手番を交代しない
+	toruCount = makeCandidateTe( toruTe = createSashiteArray() );
+	for(i=0; i<toruCount; i++){
+		if(_sashite.id==toruTe[i].id && toruTe[i].isOK && toruTe[i].isUtsu==0 && toruTe[i].tottaKoma!=-1){
+			break; //さらに同じ駒を、合法で、打つ手ではなく動かせれば、何らかの駒が取れる状態である
+		}
+	}
+	backwardState(_sashite,gWhichMoves,utsuId);//内部で戻す
+	return (i<toruCount)? 3 : 0;
+}
+
+//動かした駒の種類のボーナス
+function bonusKomaKind(_sashite){
+
+	var moveBonusScore = [0,2,0,1,2,2,0,0,0];
+	var utsuBonusScore = [0,1,1,1,1,1,2,3,0];
+
+	if(_sashite.isUtsu==1){//打つ
+		return(10*utsuBonusScore[gPieces[_sashite.id].kind]);
+	}else{//盤上
+		return(10*moveBonusScore[gPieces[_sashite.id].kind]);
+	}
+}
+
+//---- toritori()内 ----
+
+//駒を取る手？
+function isSashiteCaputure(_sashite){
+	return _sashite.isUtsu==0 && _sashite.tottaKoma!=-1;
+}
+
 //ただ取りできるか？
 function isTadadori(_sashite){
 
-	if(_sashite.isUtsu==0 && _sashite.tottaKoma!=-1){//駒を取れるか？
+	if( isSashiteCaputure(_sashite) ){//駒を取れるか？
 
 		//取り返されないかの確認（ほかの駒を取られる可能性は考えない）
 		forwardState(_sashite,gWhichMoves,-1);//内部で進める
@@ -193,7 +262,7 @@ function isTadadori(_sashite){
 
 //と金と歩で取れるなら取る
 function isFuTori(_sashite){
-	return _sashite.isUtsu==0 && gPieces[_sashite.id].kind==1 && _sashite.tottaKoma!=-1;
+	return isSashiteCaputure(_sashite) && gPieces[_sashite.id].kind==1;
 }
 
 //取っても取り返される？
@@ -201,7 +270,7 @@ function isTorikaeshi(_sashite){
 
 	//TODO:isTadadori()とほぼ同じ。if内のreturnが反転している。共通化できないか？
 
-	if(_sashite.isUtsu==0 && _sashite.tottaKoma!=-1){//駒を取れるか？
+	if( isSashiteCaputure(_sashite) ){//駒を取れるか？
 
 		//何で取り返されるかの確認（ほかの駒を取られる可能性は考えない）
 		forwardState(_sashite,gWhichMoves,-1);//内部で進める
@@ -222,66 +291,6 @@ function isTorikaeshi(_sashite){
 		return isRecaptured;
 	}
 	return false; //そもそも駒を取れない
-}
-
-//成るボーナス15
-function bonusNaru(_sashite){
-	return (_sashite.isUtsu==0 && _sashite.isNaru)? 15 : 0;
-}
-
-//打つボーナス13
-function bonusUtsu(_sashite){
-	return (_sashite.isUtsu==1)? 13 : 0;
-}
-
-//動かした駒の種類のボーナス
-function bonusKomaKind(_sashite){
-
-	var moveBonusScore = [0,2,0,1,2,2,0,0,0];
-	var utsuBonusScore = [0,1,1,1,1,1,2,3,0];
-
-	if(_sashite.isUtsu==1){//打つ
-		return(10*utsuBonusScore[gPieces[_sashite.id].kind]);
-	}else{//盤上
-		return(10*moveBonusScore[gPieces[_sashite.id].kind]);
-	}
-}
-
-//当てるボーナス3
-function bonusAtari(_sashite){
-	var i, toruTe, toruCount, utsuId = findUtsuID(_sashite);
-
-	forwardState(_sashite,gWhichMoves,utsuId);//内部で進める
-	//手番を交代しない
-	toruCount = makeCandidateTe( toruTe = createSashiteArray() );
-	for(i=0; i<toruCount; i++){
-		if(_sashite.id==toruTe[i].id && toruTe[i].isOK && toruTe[i].isUtsu==0 && toruTe[i].tottaKoma!=-1){
-			break; //さらに同じ駒を、合法で、打つ手ではなく動かせれば、何らかの駒が取れる状態である
-		}
-	}
-	backwardState(_sashite,gWhichMoves,utsuId);//内部で戻す
-	return (i<toruCount)? 3 : 0;
-}
-
-//動いた先の先手玉との距離1-8
-function bonusDistanceToKing(_sashite){
-	var sujiKing = gPieces[19].pos>>>4, danKing = gPieces[19].pos&15;
-	var sashitaKoma = gPieces[_sashite.id];
-
-	if(_sashite.isUtsu==1){//打つとき
-		return 8 - distanceChebyshev(_sashite.toSuji, _sashite.toDan, sujiKing, danKing);
-	}else if( //動かすとき
-			1<=sashitaKoma.kind && sashitaKoma.kind<=5 &&
-			!(sashitaKoma.kind==2 && !sashitaKoma.isNari)
-		){ //金銀桂歩・成香 => 歩香桂銀金から生香を除く
-			return distanceChebyshev(
-				_sashite.fromSuji, _sashite.fromDan, sujiKing, danKing
-			) - distanceChebyshev(
-				_sashite.toSuji, _sashite.toDan, sujiKing, danKing
-			);
-	}else{//その他の駒
-		return 0;
-	}
 }
 
 //動かした駒をただで取られる
