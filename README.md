@@ -38,7 +38,7 @@ basisVersion を基準に
 
 を施したものです。
 
-### ※RESERVED※ homeAppended - 自家機能拡張版
+### homeAppended - 自家機能拡張版
 
 homePatched から更に見た目の変更を伴う機能の追加拡張を施したものです。
 (前述の棋譜出力機能はこのタイミングで行います)

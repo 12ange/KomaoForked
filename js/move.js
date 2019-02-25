@@ -434,8 +434,8 @@ function isSameTe(_teA,_teB){
 	) && _teA.toSuji==_teB.toSuji && _teA.toDan==_teB.toDan;
 }
 
+//駒の画像を動かす(と共に着手確定)
 function forwardKoma(_te,_teban){
-	//駒の画像を動かす
 
 	var utsuId = -1;
 	var komaId,tottaId,maisuu;
@@ -494,6 +494,8 @@ function forwardKoma(_te,_teban){
 
 	//内部変数を動かす
 	forwardState(_te,_teban,utsuId);
+
+	//TODO:棋譜を記録するタイミング
 }
 
 function forwardState(_te,_teban,utsuId){

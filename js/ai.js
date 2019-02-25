@@ -16,8 +16,6 @@ var gcaBonusDropPKind = [0,10,10,10,10,10,20,30,0]; //打った駒種ボーナ�
 //コンピュータの番
 function aiMove(){
 
-	//TODO:棋譜を記録するタイミング(人間が着手完了した直後、gTheMoveがその動き)
-
 	//人間の手へのリアクション
 	reactForHumanTe(gTheMove);
 
@@ -41,8 +39,6 @@ function comSide(){
 	//コンピュータの手を動かす
 	forwardKoma(comTe,gWhichMoves);
 
-	//TODO:棋譜を記録するタイミング(COMが着手完了した直後、comTeがその動き)
-	
 	//コンピュータの手の感想
 	//explainComTe(comTe,gTheMove);////////////////////////////////////////////////////
 
