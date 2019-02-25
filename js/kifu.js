@@ -1,0 +1,65 @@
+const gcKifu = {
+	pieceStr : [
+		"FU","KY","KE","GI","KI","KA","HI","OU",
+		"TO","NY","NK","NG","@@","UM","RY","@@",
+	],
+	isFinished : false,
+	flagTenchi : false,
+	arrLog : [],
+
+	generateTimeStr : function(){
+		let d = new Date();
+		const pad = n=>(n>9?"":"0")+n;
+		return d.getFullYear() +"/"+ pad(d.getMonth()+1) +"/"+ pad(d.getDate()) +" "+
+			pad(d.getHours()) +":"+ pad(d.getMinutes()) +":"+ pad(d.getSeconds());
+	},
+	log : function(...s){
+		gcKifu.arrLog.push(...s)
+	},
+	start : function( _bComPlaysFirst ){
+		//駒落ちチェック
+		let otosuStr = ["PI"];
+		for( let k of gPieces ){
+			if(!k.isUse){
+				otosuStr.push(`${k.pos>>>4}${k.pos&15}${gcKifu.pieceStr[k.kind-1]}`);
+			}
+		}
+		//平手戦かつ_bComPlaysFirstの時は記録する駒位置を反転するフラグを立てる
+		gcKifu.flagTenchi = otosuStr.length===1 && _bComPlaysFirst;
+
+		gcKifu.arrLog.length=0;
+		gcKifu.log(
+			"V2.2",
+			`N${gcKifu.flagTenchi?"-":"+"}PLAYER`,
+			`N${gcKifu.flagTenchi?"+":"-"}KOMAO`,
+			`$START_TIME:${gcKifu.generateTimeStr()}`,
+			otosuStr.join("")
+		);
+
+		gcKifu.isFinished = false;
+	},
+	move : function(_te,_teban,_komaId){
+
+		const t = v=>""+(gcKifu.flagTenchi?10-v:v);
+		let thisPiece = gPieces[_komaId],
+			strFrom = _teban^gcKifu.flagTenchi?"-":"+",
+			strPKind;
+
+		if(_te.isUtsu){
+			strPKind = gcKifu.pieceStr[thisPiece.kind-1];
+			strFrom += "00";
+		}else{
+			strPKind = gcKifu.pieceStr[ thisPiece.kind+( thisPiece.isNari ? 7:-1 )];
+			strFrom += t(_te.fromSuji)+t(_te.fromDan);
+		}
+
+		gcKifu.log( strFrom+t(_te.toSuji)+t(_te.toDan)+strPKind);
+	},
+	finish : function(){
+		gcKifu.log("%TSUMI",`$END_TIME:${gcKifu.generateTimeStr()}`)
+		gcKifu.isFinished = true;
+	},
+	getFile : function(){
+		return gcKifu.arrLog.join("\n")+(gcKifu.isFinished?"":"\n%CHUDAN");
+	}
+};

@@ -102,14 +102,15 @@ function statePrepare(komaochi){
 	//駒の表示
 	initialKomaShow();
 
-	//TODO:棋譜を記録開始するタイミング
-
 	//先後選択して対局開始(駒落ちならCOM常先、そうでなければ半々)
 	startMatch( !!komaochi || Math.random()<0.5 );
 }
 
 //対局開始( com先フラグ )
 function startMatch( _bComPlaysFirst ){
+
+	//TODO:棋譜を記録開始するタイミング
+	gcKifu.start(_bComPlaysFirst);
 
 	gCtrlPhase  = _bComPlaysFirst ? 4 : 1; //コンピュータの思考:人間の入力待ち
 	gWhichMoves = _bComPlaysFirst ? 1 : 0; //0がHUM,1がCOMの手番
@@ -127,6 +128,7 @@ function startMatch( _bComPlaysFirst ){
 //対局終了( com勝利フラグ )
 function finishMatch( _bComWinsTheGame ){
 	//TODO:棋譜を記録完了するタイミング
+	gcKifu.finish();
 
 	newText((_bComWinsTheGame?"ぼく":"負けました　きみ")+"の勝ちにゃ　ありがとうございました");
 	gCtrlPhase = -1;
