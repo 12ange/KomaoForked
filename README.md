@@ -64,3 +64,21 @@ see: [Wikipedia(en) Shogi](https://en.wikipedia.org/wiki/Shogi)
 |成-る|promote -ion|
 |王手|check|
 |詰み|checkmate ; mate|
+
+## おまけ：棋譜ファイル形式
+どちらもテキスト(非バイナリ)ファイル。
+
+### 柿木将棋や竜王戦、叡王戦などなど ".kif", ".kifu"
+> [柿木さん本人による解説](http://kakinoki.o.oo7.jp/kif_format.html)
+
+こっちがデファクトスタンダード。
+
++ String型はUTF-8相当なので、拡張子`.kifu`で👍
++ 1行目のコメントは大抵、`# ---- ${appName} 棋譜ファイル ----`ってな感じなのでそうする
+
+### 金沢将棋やfloodgate ".csa" 形式
+> [CSA標準棋譜ファイル形式 V2.2](http://www2.computer-shogi.org/protocol/record_v22.html)
+
+成り立ちにより、コンピュータ同士の対局では業界標準。
+
++ UnicodeでもSJISでもどんとこい……というかnotationで使う文字が 0x00-0x7f に収まってる

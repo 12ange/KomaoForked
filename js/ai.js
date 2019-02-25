@@ -34,6 +34,7 @@ function comSide(){
 	var comTe = comThink();
 
 	if(!comTe.isOK){//投了なら
+		//TODO:棋譜を記録完了するタイミング-HUM勝利
 		comToryo();
 		return;
 	}
@@ -54,6 +55,7 @@ function comSide(){
 
 	//人間の指し手はあるか？
 	if(isHumanToryo()){
+		//TODO:棋譜を記録完了するタイミング-COM勝利
 		return;
 	}
 

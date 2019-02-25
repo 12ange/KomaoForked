@@ -34,14 +34,13 @@ var WHYNG_KING_INTO_CHECK = "王様が取られてしまうにゃ",
 
 //駒
 var TKoma = function TKoma(idNum,suji,dan,kind,sengo,use){
-	this.idNum = idNum;         //駒のid番号
+	this.idNum = idNum;       //駒のid番号
 	this.pos = (suji<<4)|dan; //位置・持ち駒になると-1
-	this.kind = kind;           //[1..8]=[歩,香,桂,銀,金,角,飛,玉]
-	this.sengo = sengo;         //0:先手, 1:後手
-	this.isUse = !!use;         //この駒を使うかどうか
-
-	this.isNari = false;        //false:生,   true:成
-	this.isMochi = false;       //false:盤上, true:持ち
+	this.kind = kind;         //[1..8]=[歩,香,桂,銀,金,角,飛,玉]
+	this.sengo = sengo&1;     //0:先手, 1:後手
+	this.isUse = !!use;       //この駒を使うかどうか
+	this.isNari = false;      //false:生,   true:成
+	this.isMochi = false;     //false:盤上, true:持ち
 }
 
 //指し手
@@ -49,8 +48,7 @@ var TSashite = function TSashite(){
 	this.isUtsu = false;
 	this.fromSuji = 0;
 	this.fromDan = 0;
-	//TODO: .MochiKoma がどう使われているか
-	this.MochiKoma = 0;
+	this.MochiKoma = 0; //打とうとしている駒種別(TKoma.kindと同型)
 	this.tottaKoma = 0; //駒IDが入る？
 	this.tottaNari = false; //TKoma.isNariのコピー。.tottaKomaが有効なIDなら参照される
 	this.toSuji = 0;

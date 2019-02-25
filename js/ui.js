@@ -114,6 +114,7 @@ function statePrepare(komaochi){
 
 function startCom(){
 	//コンピュータが先手または上手
+	//TODO:棋譜を記録開始するタイミング
 
 	//コンピュータの思考フェーズ
 	gCtrlPhase = 4;
@@ -130,6 +131,7 @@ function startCom(){
 
 function startHuman(){
 	//人間が先手
+	//TODO:棋譜を記録開始するタイミング
 
 	//人間の入力待ち
 	gCtrlPhase = 1;
