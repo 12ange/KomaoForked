@@ -1,9 +1,9 @@
 //思考用設定値
 var gcProbabilityBonus = 0.5; //指し手のボーナスを計算する割合(0-1)
-var gcValueHugeNega = -60000; //とてつもなく負の評価値 …… TODO:何故6万なのか
+var gcValueHugeNega = -60000; //とてつもなく負の評価値(最近は-30000とか-100000とか見るやつ)
 var gcaValuePKind = [0,100,500,500,600,600,1300,1400,3000]; //駒種別既定評価値
 var gcValueBeenPromoted = 300; //成駒の評価加算値
-var gcValueDoPromote = 1; //駒を成った時の評価加算値 …… 成駒の評価加算値に比べて著しく低いのは何故？
+var gcValueDoPromote = 1; //駒を成った時の評価加算値(成ることそれ自体の評価)
 var gcValueCptrByPawn = 70; //歩で駒を取った時の評価加算値
 var gcValueRecaptured = 75; //取って取り返される時の評価加算値
 var gcValueTakenFree = 40000; //タダ取りされる時の評価**減算**値
@@ -25,7 +25,7 @@ function aiMove(){
 	switchTeban();
 
 	//コンピュータの手番
-	setTimeout("comSide()",VERYSLOW);
+	setTimeout(comSide,VERYSLOW);
 }
 
 //コンピュータが考える
@@ -34,7 +34,6 @@ function comSide(){
 	var comTe = comThink();
 
 	if(!comTe.isOK){//投了なら
-		//TODO:棋譜を記録完了するタイミング-HUM勝利
 		comToryo();
 		return;
 	}
@@ -55,20 +54,15 @@ function comSide(){
 
 	//人間の指し手はあるか？
 	if(isHumanToryo()){
-		//TODO:棋譜を記録完了するタイミング-COM勝利
 		return;
+	}else{
+		//人間の入力フェーズへ
+		gCtrlPhase = 1;
 	}
-
-	//人間の入力フェーズへ
-	gCtrlPhase = 1;
 }
 
-function comToryo(){
-	//コンピュータが負けたときの処理
-	newText("負けました　きみの勝ちにゃ　ありがとうございました");
-	gCtrlPhase = -1;
-	restartText();
-}
+//コンピュータが負けたときの処理
+function comToryo(){ finishMatch(false); }
 
 //合法手はあるか？
 function hasLegalSashite(_arrSashite, _cntSashite){
@@ -83,11 +77,8 @@ function hasLegalSashite(_arrSashite, _cntSashite){
 function isHumanToryo(){
 	var bMatedHuman = ! hasLegalSashite(gCandidateMove, gCandidateCount);
 
-	if(bMatedHuman){
-		newText("ぼくの勝ちにゃ　ありがとうございました");
-		gCtrlPhase = -1;
-		restartText();
-	}
+	if(bMatedHuman){ finishMatch(true); } //com勝利
+
 	return bMatedHuman;
 }
 

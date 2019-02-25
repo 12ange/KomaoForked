@@ -102,81 +102,55 @@ function statePrepare(komaochi){
 	//駒の表示
 	initialKomaShow();
 
-	if(komaochi!=0){//コンピュータから
-		startCom();
-	}else if(Math.random()<0.5){//やっぱりコンピュータから
-		startCom();
-	}else{//人間から
-		startHuman();
+	//先後選択して対局開始(駒落ちならCOM常先、そうでなければ半々)
+	startMatch( !!komaochi || Math.random()<0.5 );
+}
+
+//対局開始( com先フラグ )
+function startMatch( _bComPlaysFirst ){
+	//TODO:棋譜を記録開始するタイミング
+
+	gCtrlPhase  = _bComPlaysFirst ? 4 : 1; //コンピュータの思考:人間の入力待ち
+	gWhichMoves = _bComPlaysFirst ? 1 : 0; //0がHUM,1がCOMの手番
+
+	//手番の明示
+	newText("おねがいします　"+( _bComPlaysFirst ? "ぼく":"きみ" )+"の番からにゃ");
+
+	if(_bComPlaysFirst){
+		setTimeout(comSide,VERYSLOW); //コンピュータの思考へ
+	}else{
+		gCandidateCount = makeCandidateTe(gCandidateMove); //最初の合法手の計算
 	}
-
 }
 
-function startCom(){
-	//コンピュータが先手または上手
-	//TODO:棋譜を記録開始するタイミング
+//対局終了( com勝利フラグ )
+function finishMatch( _bComWinsTheGame ){
+	//TODO:棋譜を記録完了するタイミング
 
-	//コンピュータの思考フェーズ
-	gCtrlPhase = 4;
-
-	//コンピュータの手番
-	gWhichMoves = 1;
-
-	//手番の明示
-	newText("おねがいします　ぼくの番からにゃ");
-
-	//コンピュータの思考へ
-	setTimeout("comSide()",VERYSLOW);
+	newText((_bComWinsTheGame?"ぼく":"負けました　きみ")+"の勝ちにゃ　ありがとうございました");
+	gCtrlPhase = -1;
+	restartText();
 }
 
-function startHuman(){
-	//人間が先手
-	//TODO:棋譜を記録開始するタイミング
-
-	//人間の入力待ち
-	gCtrlPhase = 1;
-
-	//人間の手番
-	gWhichMoves = 0;
-
-	//最初の合法手の計算
-	gCandidateCount = makeCandidateTe(gCandidateMove);
-
-	//手番の明示
-	newText("おねがいします　きみの番からにゃ");
-}
-
+//画像のプレローディング
 function preLoading(){
-	//画像のプレローディング
-
 	//駒
-	//表
-	for(var i=1; i<=8; i++){
-		for(var j=0; j<2; j++){
-			$("<img>")
-			.attr("src","komaImage/" + j + "0" + i + ".png");
-		}
-	}
-	//裏
-	var uraNum = [1,2,3,4,6,7];
-	for(var i=0; i<6; i++){
-		for(var j=0; j<2; j++){
-			$("<img>")
-			.attr("src","komaImage/" + j + "1" + uraNum[i] + ".png");
-		}
-	}
+	var a=[[1,2,3,4,5,6,7,8],[1,2,3,4,6,7]];
+	for( var i of [0,1] ){
+		for( var j in a ){
+			for( k of a[j] ){
+				$("<img>").attr("src","komaImage/"+i+j+k+".png");
+	}	}	}
 
 	//ハイライト
-	$("<img>")
-	.attr("src","komaImage/select.png");
+	$("<img>").attr("src","komaImage/select.png");
 
 	//盤
-	$("<img>")
-	.attr("src","banImage/ban.png");
+	$("<img>").attr("src","banImage/ban.png");
 }
 
+//盤の表示
 function imageBanShow(){
-	//盤の表示
 	$("<img>")
 	.attr("src","banImage/ban.png")
 	.attr("id","banImage")
@@ -184,8 +158,8 @@ function imageBanShow(){
 	.appendTo("#ban");//index.htmlにあるdivのid
 }
 
+//とりあえず駒の表示
 function initialKomaShow(){
-	//とりあえず駒の表示
 	for(var i=0; i<gPieces.length; i++){
 		if(gPieces[i].isUse){
 			komaAppend(gPieces[i]);
@@ -193,8 +167,8 @@ function initialKomaShow(){
 	}
 }
 
+//盤への駒の追加
 function komaAppend(appendKoma){
-	//盤への駒の追加
 	$("<img>")
 	.attr("src","komaImage/" + appendKoma.sengo + "0" + appendKoma.kind + ".png")
 	.attr("id","k" + appendKoma.idNum)
@@ -207,35 +181,33 @@ function komaAppend(appendKoma){
 	.appendTo("#ban");//index.htmlにあるdivのid
 }
 
+//駒の画像を消す
 function removeKoma(){
-	//駒の画像を消す
-
 	for(var idNum=0; idNum<40; idNum++){
 		$("#k" + idNum).remove();
 	}
 }
 
+//駒の移動先の座標・段
 function komaShowPositionTop(pos){
-	//駒の移動先の座標・段
 	return((pos % 16) * 50 - 25);
 }
 
+//駒の移動先の座標・筋
 function komaShowPositionLeft(pos){
-	//駒の移動先の座標・筋
 	return(- Math.floor(pos / 16) * 50 + 695);
 }
 
+//最初の文字の表示
 function initialTextShow(){
-	//最初の文字の表示
 	$("<div>")
 	.attr("id","talkField")
 	.attr("class","fields")
 	.appendTo("#ban");//index.htmlにあるdivのid
 }
 
+//メッセージの表示
 function newText(textMessage){
-	//メッセージの表示
-
 	$("#talkField")
 	.fadeOut(FAST,function(){
 		$("#talkField")
@@ -245,8 +217,8 @@ function newText(textMessage){
 	});
 }
 
+//最初の文字の表示
 function questionTextShow(){
-	//最初の文字の表示
 	$("<div>")
 	.attr("id","questionField")
 	.attr("class","fields")
@@ -273,8 +245,8 @@ function questionTextShow(){
 	.fadeOut(0);
 }
 
+//成るか成らないかのダイアログの表示
 function dialogOfNaru(){
-	//成るか成らないかのダイアログの表示
 
 	//その前に移動先のハイライト
 	selectHighlight(gTheMove.toSuji,gTheMove.toDan,0);
@@ -293,8 +265,9 @@ function dialogOfNaru(){
 	.fadeIn(FAST);
 }
 
+//成るか成らないか
 function determineIsNaru(_isNaru){
-	//成るか成らないか
+
 	gTheMove.isNaru = _isNaru;
 
 	//ダイアログを消す
@@ -309,9 +282,8 @@ function determineIsNaru(_isNaru){
 	forwardAndAi();
 }
 
+//もう一度対局するか
 function restartText(){
-	//もう一度対局するか
-
 	$("<div>")
 	.attr("id","alternativeRestart")
 	.attr("class","alternatives")
@@ -322,8 +294,8 @@ function restartText(){
 	.fadeIn(VERYSLOW);
 }
 
+//もう一度対局する
 function restartPrepare(){
-	//もう一度対局する
 	//TODO:PLが降参(リセット)したときにも使える
 
 	//ボタンの削除
