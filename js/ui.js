@@ -109,7 +109,7 @@ function statePrepare(komaochi){
 //対局開始( com先フラグ )
 function startMatch( _bComPlaysFirst ){
 
-	//TODO:棋譜を記録開始するタイミング
+	//棋譜を記録開始するタイミング
 	gcKifu.start(_bComPlaysFirst);
 
 	gCtrlPhase  = _bComPlaysFirst ? 4 : 1; //コンピュータの思考:人間の入力待ち
@@ -127,16 +127,12 @@ function startMatch( _bComPlaysFirst ){
 
 //対局終了( com勝利フラグ )
 function finishMatch( _bComWinsTheGame ){
-	//TODO:棋譜を記録完了するタイミング
+	//棋譜を記録完了するタイミング
 	gcKifu.finish();
 
 	newText((_bComWinsTheGame?"ぼく":"負けました　きみ")+"の勝ちにゃ　ありがとうございました");
 	gCtrlPhase = -1;
 	restartText();
-
-	if( window.confirm("棋譜を保存しますか？") ){
-		gcKifu.getCSAFileAs();
-	}
 }
 
 //画像のプレローディング
@@ -304,6 +300,10 @@ function restartText(){
 //もう一度対局する
 function restartPrepare(){
 	//TODO:PLが降参(リセット)したときにも使える
+
+	if( window.confirm("棋譜を保存しますか？") ){
+		gcKifu.getCSAFileAs();
+	}
 
 	//ボタンの削除
 	$("#alternativeRestart").remove();
