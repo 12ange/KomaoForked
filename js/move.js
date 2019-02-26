@@ -495,7 +495,7 @@ function forwardKoma(_te,_teban){
 	//内部変数を動かす
 	forwardState(_te,_teban,utsuId);
 
-	//TODO:棋譜を記録するタイミング
+	//棋譜を記録するタイミング
 	gcKifu.move(_te,_teban,komaId)
 }
 
