@@ -133,6 +133,10 @@ function finishMatch( _bComWinsTheGame ){
 	newText((_bComWinsTheGame?"ぼく":"負けました　きみ")+"の勝ちにゃ　ありがとうございました");
 	gCtrlPhase = -1;
 	restartText();
+
+	if( window.confirm("棋譜を保存しますか？") ){
+		gcKifu.getCSAFileAs();
+	}
 }
 
 //画像のプレローディング

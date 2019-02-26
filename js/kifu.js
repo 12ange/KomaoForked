@@ -5,6 +5,7 @@ const gcKifu = {
 	],
 	isFinished : false,
 	flagTenchi : false,
+	lastObjectUrl : "",
 	arrLog : [],
 
 	generateTimeStr : function(){
@@ -37,6 +38,11 @@ const gcKifu = {
 		);
 
 		gcKifu.isFinished = false;
+		if( gcKifu.lastObjectUrl !== "" ){
+			//Blobの解放
+			URL.revokeObjectURL(gcKifu.lastObjectUrl);
+			gcKifu.lastObjectUrl = "";
+		}
 	},
 	move : function(_te,_teban,_komaId){
 
@@ -59,7 +65,25 @@ const gcKifu = {
 		gcKifu.log("%TSUMI",`$END_TIME:${gcKifu.generateTimeStr()}`)
 		gcKifu.isFinished = true;
 	},
-	getFile : function(){
-		return gcKifu.arrLog.join("\n")+(gcKifu.isFinished?"":"\n%CHUDAN");
+	getCSAFileAs : function(_filename="komao",_flush=false){
+
+		if( _flush && gcKifu.lastObjectUrl !== "" ){
+			//Blobの解放
+			URL.revokeObjectURL(gcKifu.lastObjectUrl);
+			gcKifu.lastObjectUrl = "";
+		}
+
+		if( gcKifu.lastObjectUrl === "" ){
+			//String -> Blob -> ObjectURL
+			let s = gcKifu.arrLog.join("\n")+(gcKifu.isFinished?"":"\n%CHUDAN");
+			let bb = new Blob([s],{type:"text/plain"});
+			gcKifu.lastObjectUrl = URL.createObjectURL(bb);
+		}
+
+		let a = document.createElement("a");
+		a.href = gcKifu.lastObjectUrl;
+		a.target = "_blank";
+		a.download = `${_filename}.csa`;
+		a.click();
 	}
 };
