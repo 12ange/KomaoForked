@@ -291,22 +291,32 @@ function restartText(){
 	.attr("id","alternativeRestart")
 	.attr("class","alternatives")
 	.html("もう１回？")
-	.click(function(){restartPrepare();})
+	.click(()=>{restartPrepare(false);})
+	.appendTo("#ban")//index.htmlにあるdivのid
+	.hide()
+	.fadeIn(VERYSLOW);
+
+	$("<div>")
+	.attr("id","alternativeSaveKifu")
+	.attr("class","alternatives")
+	.html("棋譜保存？")
+	.click(()=>{restartPrepare(true);})
 	.appendTo("#ban")//index.htmlにあるdivのid
 	.hide()
 	.fadeIn(VERYSLOW);
 }
 
 //もう一度対局する
-function restartPrepare(){
+function restartPrepare(_flagSaveKifu){
 	//TODO:PLが降参(リセット)したときにも使える
 
-	if( window.confirm("棋譜を保存しますか？") ){
-		gcKifu.getCSAFileAs();
+	if( _flagSaveKifu ){
+		gcKifu.getCSAFileAs(`komao_${getLocalTimeISOStr().replace(/[-:T]/g,"_")}`);
 	}
 
 	//ボタンの削除
 	$("#alternativeRestart").remove();
+	$("#alternativeSaveKifu").remove();
 
 	//駒とかの削除
 	removeKoma();

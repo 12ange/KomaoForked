@@ -84,3 +84,11 @@ function createSashiteArray(){
 function distanceChebyshev(_sujA,_danA,_sujB,_danB){
 	return Math.max( Math.abs(_sujA-_sujB), Math.abs(_danA-_danB) );
 }
+
+//ISO式の日時文字列・秒まで
+function getLocalTimeISOStr( _timeInMs=Date.now() ){
+	//toISOStringはUTCで出る。TZoffsetを引けばUTC変換後が現在のlocalTimeになる。
+	let d = new Date(), o = d.getTimezoneOffset()*6e4;
+	d.setTime( _timeInMs-o );
+	return d.toISOString().slice(0,-5);
+}

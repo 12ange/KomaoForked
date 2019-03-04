@@ -9,14 +9,11 @@ const gcKifu = {
 	arrLog : [],
 
 	generateTimeStr : function(){
-		let d = new Date();
-		const pad = n=>(n>9?"":"0")+n;
-		return d.getFullYear() +"/"+ pad(d.getMonth()+1) +"/"+ pad(d.getDate()) +" "+
-			pad(d.getHours()) +":"+ pad(d.getMinutes()) +":"+ pad(d.getSeconds());
+		return getLocalTimeISOStr().replace(/-/g,"/").replace("T"," ");
 	},
-	log : function(...s){
-		gcKifu.arrLog.push(...s)
-	},
+
+	log : (...s)=>{ gcKifu.arrLog.push(...s) },
+
 	start : function( _bComPlaysFirst ){
 		//駒落ちチェック
 		let otosuStr = ["PI"];
