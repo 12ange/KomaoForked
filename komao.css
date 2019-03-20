@@ -1,5 +1,6 @@
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans+JP');
 
-body{ background-color:#fff; }
+body{ background-color:#fff; font-family:"Noto Sans JP",sans-serif; font-size:16px; }
 
 .alternatives,.fields,.komaochi,.pieces{ position:absolute; }
 .alternatives,.fields{ font-size:140%; width:200px; z-index:20; }
@@ -8,6 +9,7 @@ body{ background-color:#fff; }
 .fields,.pieces{ cursor:default; }
 .komaochi{ background-color:#fff; font-size:200%; width:330px; z-index:50; }
 .pieces{ z-index: 30; }
+.talks{ font-size:125%; }
 
 #alternativeFirst{ background-color:#a8f; top:350px; left:0px; }
 #alternativeSecond,
