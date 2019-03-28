@@ -67,6 +67,8 @@ var TSashite = function TSashite(){
 //--------------------------------------
 // 複数ファイル利用サブルーチン
 //--------------------------------------
+const NEW_TAG = tag => document.createElement(tag);
+const GET_ID = id => document.getElementById(id);
 
 //手番交代
 function switchTeban(){

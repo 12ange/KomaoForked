@@ -6,8 +6,7 @@ function initialMove(){
 
 function banClick(event,offset){
 	//駒や盤をクリックしたら
-	var suji;
-	var dan;
+	var suji, dan;
 	var messageMovableOrImpossible;
 	var movableNum;
 
@@ -35,6 +34,17 @@ function banClick(event,offset){
 			gCtrlPhase = 1;
 		}
 	}
+}
+function onClickBan(event){
+	banClick(event, $("#ban").offset());
+
+	//TODO:banClickとそのsubRoutineに渡す値をX,Yに変更
+
+	//let banRect = GET_ID("ban").getBounndingClientRect(),
+	//	banX = event.clientX - banRect.left,
+	//	banY = event.clientY - banRect.top;
+
+	//banClick(banX,banY);
 }
 
 function forwardAndAi(){
@@ -64,7 +74,7 @@ function clickSuji(event,offset){
 		return(-2);//駒台２列目
 	}
 
-	return(0);//番外
+	return(0);//盤外
 }
 
 function clickDan(event,offset){
@@ -76,40 +86,30 @@ function clickDan(event,offset){
 	return(0);
 }
 
+//クリックしたところをハイライト
 function selectHighlight(suji,dan,isErase){
-	//クリックしたところをハイライト
 
-	if(isErase){
-		highlightErase();//まずはハイライトを消す
-	}
+	//まずはハイライトを消す
+	if(isErase){ highlightErase(); }
 
 	if(suji==0 || dan==0){return;}//関係ないところをクリックしたらハイライトしない
 
-	$("<img>")
-	.attr("src","komaImage/select.png")
-	.attr("id","highlight")
-	.css("position","absolute")
+	$("<div>")
+	.attr("class","highlight") //指定をid->classに。これでhighlightErase()を単純にできた
 	.css("top",selectShowPositionTop(dan) + "px")
 	.css("left",selectShowPositionLeft(suji) + "px")
-	.css("z-index","40")
-    // IE6.0, IE7.0
-    .css("filter","alpha(opacity=50)") 
-    // Firefox, Netscape
-    .css("MozOpacity","0.5")
-    // Chrome, Safari, Opera
-    .css("opacity","0.5")
-	.click(function(event){banClick(event,$("#ban").offset());})
+	.click(onClickBan)
 	.appendTo("#ban");//index.htmlにあるdivのid
 }
 
 
+//駒の移動先の座標・段
 function selectShowPositionTop(dan){
-	//駒の移動先の座標・段
 	return(dan * 50 - 30);
 }
 
+//駒の移動先の座標・筋
 function selectShowPositionLeft(suji){
-	//駒の移動先の座標・筋
 	if(1<=suji && suji<=9){
 		return(- suji * 50 + 690);
 	}else if(gWhichMoves==0 && suji==-1){//先手
@@ -123,11 +123,9 @@ function selectShowPositionLeft(suji){
 	}
 }
 
+//ハイライトを消す
 function highlightErase(){
-	//ハイライトを消す
-	//二つ必要
-	$("#highlight").remove();
-	$("#highlight").remove();
+	$(".highlight").remove(); //この場合はhighlightクラス全部消す、という効果
 }
 
 function fromInput(suji,dan,errorMessage){
@@ -147,7 +145,7 @@ function fromInput(suji,dan,errorMessage){
 		//選んだ駒の確認
 		newText("どこへ動かすにゃ？")
 		//選択した駒をハイライト
-		selectHighlight(suji,dan,1);
+		selectHighlight(suji,dan,true);
 		//移動先を選ぶフェーズへ
 		gCtrlPhase = 2;
 		return;
@@ -163,7 +161,7 @@ function fromInput(suji,dan,errorMessage){
 			//選んだ駒の確認
 			newText("どこへ打つにゃ？")
 			//選択した駒をハイライト
-			selectHighlight(suji,dan,1);
+			selectHighlight(suji,dan,true);
 			//移動先を選ぶフェーズへ
 			gCtrlPhase = 2;
 			return;
@@ -175,7 +173,7 @@ function fromInput(suji,dan,errorMessage){
 			//選んだ駒の確認
 			newText("どこへ打つにゃ？")
 			//選択した駒をハイライト
-			selectHighlight(suji,dan,1);
+			selectHighlight(suji,dan,true);
 			//移動先を選ぶフェーズへ
 			gCtrlPhase = 2;
 			return;
@@ -187,7 +185,7 @@ function fromInput(suji,dan,errorMessage){
 			//選んだ駒の確認
 			newText("どこへ打つにゃ？")
 			//選択した駒をハイライト
-			selectHighlight(suji,dan,1);
+			selectHighlight(suji,dan,true);
 			//移動先を選ぶフェーズへ
 			gCtrlPhase = 2;
 			return;
@@ -199,7 +197,7 @@ function fromInput(suji,dan,errorMessage){
 			//選んだ駒の確認
 			newText("どこへ打つにゃ？")
 			//選択した駒をハイライト
-			selectHighlight(suji,dan,1);
+			selectHighlight(suji,dan,true);
 			//移動先を選ぶフェーズへ
 			gCtrlPhase = 2;
 			return;
@@ -211,7 +209,7 @@ function fromInput(suji,dan,errorMessage){
 			//選んだ駒の確認
 			newText("どこへ打つにゃ？")
 			//選択した駒をハイライト
-			selectHighlight(suji,dan,1);
+			selectHighlight(suji,dan,true);
 			//移動先を選ぶフェーズへ
 			gCtrlPhase = 2;
 			return;
@@ -223,7 +221,7 @@ function fromInput(suji,dan,errorMessage){
 			//選んだ駒の確認
 			newText("どこへ打つにゃ？")
 			//選択した駒をハイライト
-			selectHighlight(suji,dan,1);
+			selectHighlight(suji,dan,true);
 			//移動先を選ぶフェーズへ
 			gCtrlPhase = 2;
 			return;
@@ -235,7 +233,7 @@ function fromInput(suji,dan,errorMessage){
 			//選んだ駒の確認
 			newText("どこへ打つにゃ？")
 			//選択した駒をハイライト
-			selectHighlight(suji,dan,1);
+			selectHighlight(suji,dan,true);
 			//移動先を選ぶフェーズへ
 			gCtrlPhase = 2;
 			return;
@@ -249,7 +247,7 @@ function fromInput(suji,dan,errorMessage){
 			//選んだ駒の確認
 			newText("どこへ打つにゃ？")
 			//選択した駒をハイライト
-			selectHighlight(suji,dan,1);
+			selectHighlight(suji,dan,true);
 			//移動先を選ぶフェーズへ
 			gCtrlPhase = 2;
 			return;
@@ -261,7 +259,7 @@ function fromInput(suji,dan,errorMessage){
 			//選んだ駒の確認
 			newText("どこへ打つにゃ？")
 			//選択した駒をハイライト
-			selectHighlight(suji,dan,1);
+			selectHighlight(suji,dan,true);
 			//移動先を選ぶフェーズへ
 			gCtrlPhase = 2;
 			return;
@@ -273,7 +271,7 @@ function fromInput(suji,dan,errorMessage){
 			//選んだ駒の確認
 			newText("どこへ打つにゃ？")
 			//選択した駒をハイライト
-			selectHighlight(suji,dan,1);
+			selectHighlight(suji,dan,true);
 			//移動先を選ぶフェーズへ
 			gCtrlPhase = 2;
 			return;
@@ -285,7 +283,7 @@ function fromInput(suji,dan,errorMessage){
 			//選んだ駒の確認
 			newText("どこへ打つにゃ？")
 			//選択した駒をハイライト
-			selectHighlight(suji,dan,1);
+			selectHighlight(suji,dan,true);
 			//移動先を選ぶフェーズへ
 			gCtrlPhase = 2;
 			return;
@@ -297,7 +295,7 @@ function fromInput(suji,dan,errorMessage){
 			//選んだ駒の確認
 			newText("どこへ打つにゃ？")
 			//選択した駒をハイライト
-			selectHighlight(suji,dan,1);
+			selectHighlight(suji,dan,true);
 			//移動先を選ぶフェーズへ
 			gCtrlPhase = 2;
 			return;
@@ -309,7 +307,7 @@ function fromInput(suji,dan,errorMessage){
 			//選んだ駒の確認
 			newText("どこへ打つにゃ？")
 			//選択した駒をハイライト
-			selectHighlight(suji,dan,1);
+			selectHighlight(suji,dan,true);
 			//移動先を選ぶフェーズへ
 			gCtrlPhase = 2;
 			return;
@@ -321,7 +319,7 @@ function fromInput(suji,dan,errorMessage){
 			//選んだ駒の確認
 			newText("どこへ打つにゃ？")
 			//選択した駒をハイライト
-			selectHighlight(suji,dan,1);
+			selectHighlight(suji,dan,true);
 			//移動先を選ぶフェーズへ
 			gCtrlPhase = 2;
 			return;
@@ -654,16 +652,13 @@ function mochiKomaPositionTop(kind,_teban){
 function mochiCountShow(_kind,_teban,_maisuu){
 	//持ち駒の枚数の表示
 
-	$("#m" + _teban + _kind)
-	.remove();//まずは消す
+	$("#m" + _teban + _kind).remove();//まずは消す
 
-	$("<div>")
+	$("<div>") //NEW_TAG
 	.attr("id","m" + _teban + _kind)
-	.css("position","absolute")
-	.css("font-size","140%")
+	.attr("class","komacount")
 	.css("top",(20+mochiKomaPositionTop(_kind,_teban)) + "px")
 	.css("left",(45+mochiKomaPositionLeft(_kind,_teban)) +"px")
-	.css("z-index","20")
 	.appendTo("#ban");//index.htmlにあるdivのid
 
 	if(_maisuu>=2){//2枚以上なら枚数を横に表示

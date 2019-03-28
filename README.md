@@ -83,3 +83,6 @@ see: [Wikipedia(en) Shogi](https://en.wikipedia.org/wiki/Shogi)
 
 + UnicodeでもSJISでもどんとこい……というかnotationで使う文字が 0x00-0x7f に収まってる
   + けれど読む側がどの文字コードでも対応しているとは限らないため、出力全文字を 0x00-0x7f に収めるのが良さそう(に思ったので、そうした)
+
+## coming up next
+jqueryを外す：と共に古のブラウザーとお別れ(HTML5.x/ECMAScript2015~/CSS3.x/SVG1.1)

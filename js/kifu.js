@@ -30,13 +30,12 @@ const gcKifu = {
 		gcKifu.arrLog.length=0;
 		gcKifu.log(
 			"V2.2",
-			`N${gcKifu.flagTenchi?"-":"+"}PLAYER`,
-			`N${gcKifu.flagTenchi?"+":"-"}KOMAO`,
+			gcKifu.flagTenchi?"N+KOMAO\nN-PLAYER":"N+PLAYER\nN-KOMAO",
 			`$START_TIME:${gcKifu.generateTimeStr()}`,
 			otosuStr.join("")
 		);
+		//Blobの解放
 		if( gcKifu.lastObjectUrl !== "" ){
-			//Blobの解放
 			URL.revokeObjectURL(gcKifu.lastObjectUrl);
 			gcKifu.lastObjectUrl = "";
 		}

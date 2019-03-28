@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head prefix="og: http://ogp.me/ns#">
 <meta http-equiv="Content-Script-Type" content="text/javascript">
@@ -8,7 +9,7 @@
 <meta property="og:description" content="入門者向け、とにかく弱いコンピュータ将棋(ブラウザ将棋)。漢字で書くと「駒男」でもあり、「子猫（こ・まお）」でもあります。">
 <meta property="og:type" content="website">
 <!-- meta property="og:image" content="表示する画像のURL絶対パス XXX/komaocat.png"-->
-<!-- meta property="og:url" content="サイトのURL絶対パス"-->
+<!-- meta property="og:url" content="サイトのURL絶対パス XXX/index.html"-->
 
 <link rel="stylesheet" type="text/css" href="./komao.css">
 
@@ -27,7 +28,28 @@
 <body>
 <p>※ このページは、<a href="http://www.geocities.jp/komao81/">Yahoo!ジオシティーズにある「こまお」</a>をベースに勝手ながら改修したものです。
 [[ <a href="https://github.com/12ange/KomaoForked">GitHub</a> ]]</p>
-<div id="ban"></div>
+
+<div id="ban">
+	<svg id="banImage" width="930" height="490" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<!--将棋盤の枠線-->
+		<symbol id="lines" width="490" height="490" viewbox="0 0 490 490">
+			<path d="M20,20h450m-450,50h450m-450,50h450m-450,50h450m-450,50h450m-450,50h450m-450,50h450m-450,50h450m-450,50h450m-450,50h450"/>
+		</symbol>
+		<!--駒台-->
+		<g fill="#f95">
+			<rect x="0" y="0" width="200" height="240"/>
+			<rect x="730" y="250" width="200" height="240"/>
+		</g>
+		<!--将棋盤-->
+		<rect x="220" y="0" width="490" height="490" fill="#fb6"/>
+		<use x="220" y="0" width="490" height="490" xlink:href="#lines" stroke="rgba(0,0,0,0.5)" stroke-width="2"/>
+		<use x="220" y="0" width="490" height="490" xlink:href="#lines" stroke="rgba(0,0,0,0.5)" stroke-width="2" transform="rotate(90 465 245)"/>
+		<!--猫-->
+		<image x="730" y="-40" width="200" height="200" xlink:href="./komaocat.png"/>
+	</svg>
+</div>
+<!-- pieces:40x41 -->
+<!-- FU, KY, KE, GI, KI, KA, HI, OU, TO, NY, NK, NG, UM, RY -->
 <p><a href="faq.html">ちゅういがき</a> / <a href="hint10/index.html">１０まいおちこうりゃく</a></p>
 </body>
 </html>
