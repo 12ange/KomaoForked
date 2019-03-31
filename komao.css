@@ -7,7 +7,7 @@ body{ background-color:#fff; font-family:"Noto Sans JP",sans-serif; font-size:16
 .alternatives,.fields{ width:200px; }
 .alternatives,.komaochi{ cursor:pointer; }
 .alternatives,.komaochi,#questionField{ text-align:center; }
-.fields,.pieces{ cursor:default; }
+.fields,.komacount,.pieces{ cursor:default; }
 .highlight{ background-color:rgba(141,95,211,.5); height:50px; width:50px; z-index:40; }
 .komaochi{ background-color:#fff; font-size:200%; left:300px; width:330px; z-index:50; }
 .pieces{ z-index:30; }
