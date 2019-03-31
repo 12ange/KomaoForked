@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans+JP');
+
+body{ background-color:#fff; font-family:"Noto Sans JP",sans-serif; font-size:16px; }
+
+.alternatives,.fields,.highlight,.komacount,.komaochi,.pieces{ position:absolute; }
+.alternatives,.fields,.komacount{ font-size:140%; z-index:20; }
+.alternatives,.fields{ width:200px; }
+.alternatives,.komaochi{ cursor:pointer; }
+.alternatives,.komaochi,#questionField{ text-align:center; }
+.fields,.komacount,.pieces{ cursor:default; }
+.highlight{ background-color:rgba(141,95,211,.5); height:50px; width:50px; z-index:40; }
+.komaochi{ background-color:#fff; font-size:200%; left:300px; width:330px; z-index:50; }
+.pieces{ z-index:30; }
+.talks{ font-size:120%; }
+
+#alternativeFirst{ background-color:#a8f; top:350px; left:0px; }
+#alternativeSecond,
+#alternativeSaveKifu{ background-color:#f8a; top:400px; left:0px; }
+#alternativeRestart{ background-color:#ccf; top:450px; left:0px; }
+#ban,#banImage { position:relative; }
+#banImage{ z-index:0; }
+#questionField{ top:280px; left:0px; }
+#talkField{ background-color:#fff; top:120px; left:730px; }

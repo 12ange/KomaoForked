@@ -7,8 +7,7 @@ var gPieces   = [],      //将棋に使われる全駒(TKoma型)
 	gInHandPc = [[],[]], //駒台にある駒の数[先後][種別＝TKoma.kind]
 //盤
 	gTblPcIndex = new Array(256), //位置から駒ID(gPiecesのindex)への逆引き
-	gTblSqDepend = new Array(256), //0空白,1先手駒,2後手駒,4壁
-	//TODO:1=PLR駒,2=COM駒かも？ 要追跡
+	gTblSqDepend = new Array(256), //0空白,1=PLR駒,2=COM駒,4壁
 //フェーズ
 	gCtrlPhase = 0,
 	//-1=リセット待ち,0=メニュー選択待ち,1=from入力待ち,2=to入力待ち,3=isNaru入力待ち,4=アニメ→思考→アニメ間
@@ -68,6 +67,8 @@ var TSashite = function TSashite(){
 //--------------------------------------
 // 複数ファイル利用サブルーチン
 //--------------------------------------
+const NEW_TAG = tag => document.createElement(tag);
+const GET_ID = id => document.getElementById(id);
 
 //手番交代
 function switchTeban(){
@@ -84,4 +85,12 @@ function createSashiteArray(){
 //駒同士のチェビシェフ距離
 function distanceChebyshev(_sujA,_danA,_sujB,_danB){
 	return Math.max( Math.abs(_sujA-_sujB), Math.abs(_danA-_danB) );
+}
+
+//ISO式の日時文字列・秒まで
+function getLocalTimeISOStr( _timeInMs=Date.now() ){
+	//toISOStringはUTCで出る。TZoffsetを引けばUTC変換後が現在のlocalTimeになる。
+	let d = new Date(), o = d.getTimezoneOffset()*6e4;
+	d.setTime( _timeInMs-o );
+	return d.toISOString().slice(0,-5);
 }
